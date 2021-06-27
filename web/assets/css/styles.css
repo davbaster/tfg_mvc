@@ -1,0 +1,20 @@
+.wrapper {
+  /*display: flex;*/
+  /*flex-direction: row;*/
+  /*height: 100vh;*/
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  background: var(--bs-blue);
+  color: var(--bs-white);
+}
+
