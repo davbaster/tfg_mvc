@@ -83,22 +83,27 @@ class UserModel extends Model implements IModel {
 
             $query = $this->query('SELECT * FROM users');
 
-            // p es puntero elemento actual
+            // user es puntero elemento actual
             // PDO::FETCH_ASSOC devuelve un objeto transformado
-            while($p = $query->fetch(PDO::FETCH_ASSOC)){
-                $item = new UserModel();
+            while($user = $query->fetch(PDO::FETCH_ASSOC)){
+                $this = new UserModel();
 
-                $item->setCedula($p['cedula']);
-                $item->setNombre($p['nombre']);
-                $item->setApellido1($p['apellido1']);
-                $item->setApellido2($p['apellido2']);
-                $item->setTelefono($p['telefono']);
-                $item->setDireccion($p['direccion']);
-                $item->setCuentaBancaria($p['cuentaBancaria']);
-                $item->setEmail($p['email']);
-                $item->setContrasena($p['contrasena']);
-                $item->setRole($p['role']);
+                $this->setCedula($user['cedula']);
+                $this->setNombre($user['nombre']);
+                $this->setApellido1($user['apellido1']);
+                $this->setApellido2($user['apellido2']);
+                $this->setTelefono($user['telefono']);
+                $this->setDireccion($user['direccion']);
+                $this->setCuentaBancaria($user['cuentaBancaria']);
+                $this->setEmail($user['email']);
+                $this->setContrasena($user['contrasena']);
+                $this->setRole($user['role']);
+
+                // guarda el usuario en el array $items
+                array_push($items, $this);
             }
+
+            return $items;
 
         }catch(PDOException $e){
             error_log('USERMODEL::getAll->PDOException ' . $e);
@@ -107,10 +112,109 @@ class UserModel extends Model implements IModel {
         }
     }
 
+    // busca cedula en BD
+    public function get($cedula){
 
-    public function get($id){}
-    public function delete($id){}
-    public function update(){}
+        try {
+
+            $query = $this->prepare('SELECT * FROM users WHERE cedula = :cedula');
+            // ejecutando sentencia
+            $query->execute([
+                'cedula' => $cedula
+            ]);
+
+            $user = $query->fetch(PDO::FETCH_ASSOC);
+
+            // user es puntero elemento actual
+            // PDO::FETCH_ASSOC devuelve un objeto transformado
+
+            // llenando la informacion del usuario en el objeto this
+            $this->setCedula($user['cedula']);
+            $this->setNombre($user['nombre']);
+            $this->setApellido1($user['apellido1']);
+            $this->setApellido2($user['apellido2']);
+            $this->setTelefono($user['telefono']);
+            $this->setDireccion($user['direccion']);
+            $this->setCuentaBancaria($user['cuentaBancaria']);
+            $this->setEmail($user['email']);
+            $this->setContrasena($user['contrasena']);
+            $this->setRole($user['role']);
+
+
+
+            return $this;
+
+        }catch(PDOException $e){
+            error_log('USERMODEL::get->PDOException ' . $e);
+            return false;
+
+        }
+
+    }
+
+
+    // borra un usuario dado la cedula
+    public function delete($cedula){
+
+        try {
+
+            $query = $this->prepare('DELETE FROM users WHERE cedula = :cedula');
+            // ejecutando sentencia
+            $query->execute([
+                'cedula' => $cedula
+            ]);
+
+            return true;
+
+        }catch(PDOException $e){
+            error_log('USERMODEL::delete->PDOException ' . $e);
+            return false;
+
+        }
+
+    }
+
+    // primero llamar a get(cedula), para rellenar con la informacion del usuario el objeto $this
+    public function update(){
+
+        try {
+
+            $query = $this->prepare('UPDATE users SET cedula = :cedula,
+                                    nombre = :nombre,
+                                    apellido1 = :apellido1,
+                                    apellido2 = :apellido2,
+                                    telefono = :telefono,
+                                    direccion = :direccion,
+                                    cuentaBancaria = :cuentaBancaria,
+                                    email = :email,
+                                    contrasena = :contrasena,
+                                    role = :role
+                                    WHERE cedula = :cedula');
+            // ejecutando sentencia
+            $query->execute([
+                'cedula' => $this->cedula,
+                'nombre' => $this->nombre,
+                'apellido1' => $this->apellido1,
+                'apellido2' => $this->apellido2,
+                'telefono' => $this->telefono,
+                'direccion' => $this->direccion,
+                'cuentaBancaria' => $this->cuentaBancaria,
+                'email' => $this->email,
+                'contrasena' => $this->contrasena,
+                'role' => $this->role
+            ]);
+
+                return true;
+
+        }catch(PDOException $e){
+            error_log('USERMODEL::update->PDOException ' . $e);
+            return false;
+
+        }
+    }
+
+    // se pasa un arreglo con informacion y este los convierte en miembros
+    // 
     public function from($array){}
 
 
@@ -137,9 +241,7 @@ class UserModel extends Model implements IModel {
         $this->contrasena = $this->getHashedPassword($contrasena);
     }
 
-    private function getHashedPassword (){
-        
-    }
+
 
     // getters
     public function getId(){
@@ -161,6 +263,13 @@ class UserModel extends Model implements IModel {
     public function getCuentaBancaria(){ return $this->cuentaBancaria;}
     public function getEmail(){ return $this->email;}
     public function getContrasena(){ return $this->contrasena;}
+
+    // encrypta password para ser almacenado en la base de datos
+    private function getHashedPassword ($password){
+        // costo entre mas alto mas gasto de cpu y mayor seguridad
+        return password_hash($password, PASSWORD_DEFAULT, ['cost' => 1]);
+
+    }
 
 
 }
