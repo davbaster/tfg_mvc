@@ -2,14 +2,6 @@
 
 class UserModel extends Model implements IModel {
 
-    private $id;
-    private $username;
-    private $password;
-    private $role;
-    private $budget;
-    private $photo;
-    private $name;
-
 
     private $cedula;
     private $nombre;
@@ -20,19 +12,13 @@ class UserModel extends Model implements IModel {
     private $cuentaBancaria;
     private $email;
     private $contrasena;
+    private $role;
 
     public function __construct(){
 
         parent::__construct();
 
-        $this->id ='';
-        $this->username ='';
-        $this->password ='';
-        $this->budget =0.0;
-        $this->photo ='';
-        $this->name ='';
-        
-
+   
         $this->cedula ='';
         $this->nombre ='';
         $this->apellido1 ='';
@@ -200,7 +186,7 @@ class UserModel extends Model implements IModel {
                 'direccion' => $this->direccion,
                 'cuentaBancaria' => $this->cuentaBancaria,
                 'email' => $this->email,
-                'contrasena' => $this->contrasena,
+                'contrasena' => $this->contrasena, //password ya en formato de hash
                 'role' => $this->role
             ]);
 
@@ -213,12 +199,58 @@ class UserModel extends Model implements IModel {
         }
     }
 
-    // se pasa un arreglo con informacion y este los convierte en miembros
+    // se pasa un arreglo con informacion y este asigna sus contenidos al objeto $this
     // 
-    public function from($array){}
+    public function from($array){
+
+        $this->setCedula         = $array['cedula'];
+        $this->setNombre         = $array['nombre'];
+        $this->setApellido1      = $array['apellido1'];
+        $this->setApellido2      = $array['apellido2'];
+        $this->setTelefono       = $array['telefono'];
+        $this->setDireccion      = $array['direccion'];
+        $this->setCuentaBancaria = $array['cuentaBancaria'];
+        $this->setEmail          = $array['email'];
+        $this->setContrasena     = $array['contrasena'];
+        $this->setRole           = $array['role'];
+
+    }
+
+    // verifica si el usuario existe
+    public function exists($cedula){
+        try{
+            $query = $this->prepare('SELECT cedula FROM users WHERE cedula = :cedula');
+            $query->execute(['cedula' => $cedula]);
+
+            if($query->rowCount() > 0){
+                // hay usuarios con la cedula ingresada
+                return true;
+            }else{
+                return false;
+            }
+
+        }catch (PDOException $e){
+            error_log('USERMODEL::exists->PDOException ' . $e);
+            return false;
+        }
+    }
+
+    // compara passwords
+    public function comparePasswords($contrasena, $cedula){
+        try{
+
+            $user = $this->get($cedula);
+
+            return password_verify($contrasena, $user->getContrasena());
+
+        }catch(PDOException $e){
+            error_log('USERMODEL::comparePasswords->PDOException ' . $e);
+            return false;
+        }
+    }
 
 
-    // setters and getters
+    // setters
     public function setId($id){
         $this->id = $id;
     }
