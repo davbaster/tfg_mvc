@@ -1,6 +1,3 @@
-# Update the VARIANT arg in docker-compose.yml to pick a PHP version: 7, 7.4, 7.3
-#ARG VARIANT=8
-#FROM mcr.microsoft.com/vscode/devcontainers/php:0-${VARIANT}
 FROM php:8.0.7-apache-buster
 
 # Install MariaDB client
@@ -23,6 +20,10 @@ RUN if [ "${INSTALL_NODE}" = "true" ]; then su vscode -c "umask 0002 && . /usr/l
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
 # [Optional] Uncomment this line to install global node packages.
-# RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
+# RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&
+
+#creates /www folder and link /
+RUN mkdir /www && \
+  ln -s /www /var/www/html/
 
 

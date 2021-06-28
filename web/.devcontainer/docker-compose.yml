@@ -16,7 +16,7 @@ services:
         USER_GID: 1000
 
     volumes:
-      - /home/david/development/php/tfg/web:/workspace:cached
+      - ..:/www:cached
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity

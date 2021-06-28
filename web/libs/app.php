@@ -1,7 +1,10 @@
 <?php
+
+    require_once 'controllers/errores.php';
+
     class App{
 
-        function _construct(){
+        function __construct(){
             $url = isset($_GET['url']) ? $_GET['url'] : null;
             // quita los / del url
             $url = rtrim($url, '/');
@@ -23,7 +26,7 @@
                 return false;
             }
 
-            $archivoController = 'controllers/' . url[0] . '.php';
+            $archivoController = 'controllers/' . $url[0] . '.php';
 
             
             if(file_exists($archivoController)){
@@ -63,6 +66,8 @@
 
                     }else{
                         // error, no existe el metodo
+                        $controller = new Errores();
+                        $controller->render();
                     }
 
                 }else{
@@ -74,6 +79,8 @@
 
             }else{
                 // no existe archivo, despliega error
+                $controller = new Errores();
+                $controller->render();
             }
 
 
