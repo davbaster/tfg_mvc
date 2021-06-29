@@ -1,0 +1,52 @@
+{
+    "sites":[
+        {
+            "site": "",
+            "access": "public",
+            "role":""
+        },
+        {
+            "site": "dashboard",
+            "access": "private",
+            "role":"user"
+        },
+        {
+            "site": "rebajos",
+            "access": "private",
+            "role":"admin"
+        },
+        {
+            "site": "pagos",
+            "access": "private",
+            "role":"admin"
+        },
+        {
+            "site": "planillas",
+            "access": "private",
+            "role":"user"
+        },
+        {
+            "site": "reportes",
+            "access": "private",
+            "role":"admin"
+        },
+        {
+            "site": "usuarios",
+            "access": "private",
+            "role":"admin"
+        }
+    ],
+
+    "default-sites": [
+        {
+            "site": "dashboard",
+            "role":"user"
+        },
+        {
+            "site": "admin",
+            "role":"admin"
+        }
+
+    ]
+}
+
