@@ -25,7 +25,9 @@ class SessionController extends Controller {
 
         $json = $this->getJSONFileConfig();
 
+        // agrega los sitios
         $this->sites = $json['sites'];
+
         // agrega los sitios por defecto segun establecidos en archivo json
         $this->defaultSites = $json['defaultsites'];
 
@@ -50,12 +52,33 @@ class SessionController extends Controller {
         if($this->existsSession()){
             $role = $this->getUserSessionData()->getRole();
 
-            // valida si la pagina a entrar es publica
+            //y la pagina a entrar es publica
             if($this->isPublic()){
+                // manda al usuario a su dashboard
+                $this->redirectDefaultSiteByRole($role);
+            }else{
+                // si esta autorizado
+                if($this->isAuthorized($role) ){
+                    // lo dejo pasar
 
+                }else{
+                    // si no esta autorizado
+                    // lo redirijo a su pagina default
+                    $this->redirectDefaultSiteByRole($role);
+                }
+                
             }
         }else{
             // no existe la session
+            if($this->isPublic() ){
+                // pagina publica
+                // no pasa nada, lo deja entrar
+            }else{
+                // pagina  es privada
+                // redirige al usuario al index
+                header('Location: ' . constant('URL') . '');
+
+            }
         }
     }
 
@@ -98,7 +121,22 @@ class SessionController extends Controller {
         // exp reg reemplaza ?.* por un string vacio
         $currentURL = preg_replace("/\?.*/", "", $currentURL);
 
+        // para cada sitio entonces
+        for($i = 0; $i < sizeof($this->sites); $i++){
+
+            // verifica si el url actual tiene nivel accesso publico
+            if ($currentURL == $this->sites[$i]['site'] && 
+                $this->sites[$i]['access'] == 'public') {
+                
+                return true;
+            }
+        }
+
+        // sitio es privado
+        return false;
+
     }
+
 
     //convierte el url en un arreglo y devuelve el string despues del http
     function getCurrentPage(){
@@ -109,6 +147,69 @@ class SessionController extends Controller {
 
         // regresa despues del http
         return $url[2];
+    }
+
+
+    // redirige al usuario a su pagina por defecto dependiendo del rol
+
+    private function redirectDefaultSiteByRole($role){
+        $url = '';
+        for($i = 0; $i < sizeof($this->sites); $i++){
+            // a que pagina voy a redirigir deacuerdo a este rol
+            if($this->sites[$i]['role'] == $role){
+                //dado role user
+                //            /expenses/dashboard
+                $url = '/expenses/' . $this->sites[$i]['site'];
+                break;
+            }
+        }
+        // voy a redirigir a
+        header('location:' . $url );
+
+    }
+
+
+    // verifica si el usuario esta autorizado para ver esa pagina
+    private function isAuthorized($role){
+
+        $currentURL = $this->getCurrentPage();
+        // exp reg reemplaza ?.* por un string vacio
+        // quita los caracteres que no necesitamos
+        $currentURL = preg_replace("/\?.*/", "", $currentURL);
+
+        // para cada sitio entonces
+        for($i = 0; $i < sizeof($this->sites); $i++){
+
+            // verifica si el rol actual esta autorizado para ver el site
+            if ($currentURL == $this->sites[$i]['site'] && 
+                $this->sites[$i]['role'] == $role) {
+                
+                return true;
+            }
+        }
+
+        // usuario no autorizado
+        return false;
+
+    }
+
+
+    // 
+    function authorizedAccess($role){
+
+        switch ($role) {
+            case 'user':
+                $this->redirect($this->defaultSites['user'], []);
+                break;
+
+            case 'admin':
+                $this->redirect($this->defaultSites['admin'], []);
+                break;
+            
+            default:
+                # code...
+                break;
+        }
     }
 
 }
