@@ -1,5 +1,7 @@
 <?php
 
+require_once 'classes/session.php';
+
 class SessionController extends Controller {
 
     private $userSession;
@@ -29,7 +31,7 @@ class SessionController extends Controller {
         $this->sites = $json['sites'];
 
         // agrega los sitios por defecto segun establecidos en archivo json
-        $this->defaultSites = $json['defaultsites'];
+        $this->defaultSites = $json['default-sites'];
 
         $this->validateSession();
     }
@@ -117,9 +119,12 @@ class SessionController extends Controller {
 
     // verifica si la pagina es publica
     function isPublic(){
+
+        error_log('SESSIONCONTROLLER::isPublic ');
+
         $currentURL = $this->getCurrentPage();
         // exp reg reemplaza ?.* por un string vacio
-        $currentURL = preg_replace("/\?.*/", "", $currentURL);
+        $currentURL = preg_replace("/\?./*/", "", $currentURL);
 
         // para cada sitio entonces
         for($i = 0; $i < sizeof($this->sites); $i++){
@@ -193,9 +198,16 @@ class SessionController extends Controller {
 
     }
 
-
     // 
-    function authorizedAccess($role){
+    function initialize($user){
+        $this->session->setCurrentUser($user->getId());
+        $this->authorizeAccess($user->getRole());
+    }
+
+
+    // devuelve al usuario a su pagina por defecto
+    // dependiendo de su role
+    function authorizeAccess($role){
 
         switch ($role) {
             case 'user':
@@ -206,10 +218,13 @@ class SessionController extends Controller {
                 $this->redirect($this->defaultSites['admin'], []);
                 break;
             
-            default:
-                # code...
-                break;
         }
+    }
+
+    // sale de la session
+    function logout(){
+        $this->session->closeSession();
+
     }
 
 }

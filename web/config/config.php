@@ -1,6 +1,6 @@
 <?php
 
-    define('URL' , 'http://localhost:80/web');
+    define('URL' , 'http://localhost:41062/www/');
 
     define('HOST', 'localhost');
     define('DB', 'expensesapp');
