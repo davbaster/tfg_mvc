@@ -1,5 +1,7 @@
 <?php
 
+require_once 'models/usermodel.php';
+
 class Signup extends SessionController{
 
     function __construct()

@@ -12,7 +12,7 @@
     <?php $this->showMessages(); ?>
 
     <!-- sending form using POST -->
-    <form class="p-2" action="<?php echo constant('URL');  ?> signup/newUser" method="POST">
+    <form class="p-2" action="<?php echo constant('URL');  ?>/signup/newUser" method="POST">
                         
                                                     
                             <div class="row mb-3 gx-3">

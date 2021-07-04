@@ -16,15 +16,17 @@
 			"server": "localhost",
 			"previewLimit": 50,
 			"port": 3306,
-			"database": "mariadb",
-			"username": "root",
-			"password": "mariadb"
+			"database": "db_user_system",
+			"username": "mariadb",
+			"password": "pk515601"
 		}]
 	},
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"felixfbecker.php-pack",
+		// "felixfbecker.php-pack",
+		"felixfbecker.php-debug",
+		"bmewburn.vscode-intelephense-client",
 		"mrmlnc.vscode-apache",
 		"mtxr.sqltools",
 		"mtxr.sqltools-driver-mysql"
@@ -35,6 +37,7 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "chmod a+x \"$(pwd)\" && rm -rf /var/www/html && ln -s \"$(pwd)\" /var/www/html && apache2-foreground && sudo a2enmod rewrite && sudo service apache2 restart",
+		// "postCreateCommand": "sudo a2enmod rewrite && apache2-foreground",
 	// "postCreateCommand": "chmod a+x \"$(pwd)\" && rm -rf /var/www/html && ln -s \"$(pwd)\" /var/www/html",
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	//"remoteUser": "vscode"

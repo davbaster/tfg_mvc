@@ -72,21 +72,23 @@ class UserModel extends Model implements IModel {
             // user es puntero elemento actual
             // PDO::FETCH_ASSOC devuelve un objeto transformado
             while($user = $query->fetch(PDO::FETCH_ASSOC)){
-                $this = new UserModel();
+                // $this = new UserModel(); si se usa da PHP Fatal error:  Cannot re-assign $this
+                $nuevoUsuario = new UserModel();
 
-                $this->setCedula($user['cedula']);
-                $this->setNombre($user['nombre']);
-                $this->setApellido1($user['apellido1']);
-                $this->setApellido2($user['apellido2']);
-                $this->setTelefono($user['telefono']);
-                $this->setDireccion($user['direccion']);
-                $this->setCuentaBancaria($user['cuentaBancaria']);
-                $this->setEmail($user['email']);
-                $this->setContrasena($user['contrasena']);
-                $this->setRole($user['role']);
+                // cambie $this por $nuevoUsuario
+                $nuevoUsuario->setCedula($user['cedula']);
+                $nuevoUsuario->setNombre($user['nombre']);
+                $nuevoUsuario->setApellido1($user['apellido1']);
+                $nuevoUsuario->setApellido2($user['apellido2']);
+                $nuevoUsuario->setTelefono($user['telefono']);
+                $nuevoUsuario->setDireccion($user['direccion']);
+                $nuevoUsuario->setCuentaBancaria($user['cuentaBancaria']);
+                $nuevoUsuario->setEmail($user['email']);
+                $nuevoUsuario->setContrasena($user['contrasena']);
+                $nuevoUsuario->setRole($user['role']);
 
                 // guarda el usuario en el array $items
-                array_push($items, $this);
+                array_push($items, $nuevoUsuario);
             }
 
             return $items;
@@ -115,6 +117,8 @@ class UserModel extends Model implements IModel {
             // PDO::FETCH_ASSOC devuelve un objeto transformado
 
             // llenando la informacion del usuario en el objeto this
+            // revisar si se tiene que crear un nuevo usuario y llenar la informacion
+            // porque he estado teniendo problemas con  $this = new UserModel(); linea 75
             $this->setCedula($user['cedula']);
             $this->setNombre($user['nombre']);
             $this->setApellido1($user['apellido1']);
@@ -299,7 +303,7 @@ class UserModel extends Model implements IModel {
     // encrypta password para ser almacenado en la base de datos
     private function getHashedPassword ($password){
         // costo entre mas alto mas gasto de cpu y mayor seguridad
-        return password_hash($password, PASSWORD_DEFAULT, ['cost' => 1]);
+        return password_hash($password, PASSWORD_DEFAULT, ['cost' => 10]);
 
     }
 
