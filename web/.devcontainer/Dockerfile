@@ -1,9 +1,15 @@
 FROM php:8.0.7-apache-buster
 
+# copy apache2.conf custom file
+# COPY apache2.conf /etc/apache2
+
 # Install MariaDB client
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get install -y mariadb-client \ 
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+
+# install pdo extentions
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 # Update args in docker-compose.yaml to set the UID/GID of the "vscode" user.
 ARG USER_UID=1000

@@ -27,18 +27,24 @@ class Database {
 
     public function connect(){
         try{
-            $connection = "mysql:host=" . $this->host . ";dbname=" . $this->db . 
+
+            $connection = "mysql:host=" . $this->host . ";dbname=" . $this->db . ";charset=" . $this->charset;
             $options = [
                 PDO::ATTR_ERRMODE               => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_EMULATE_PREPARES      => false,
             ];
+
+            // error_log('El contenido de options = ' . print_r($options));
+            error_log('El contenido de connection = ' . $connection );
             
-            $this->conn = new PDO($connection, $this->dbuser, $this->dbpass, $options);
+            // $this->conn = new PDO($connection, $this->dbuser, $this->dbpass, $options);
+            $pdo = new PDO($connection, $this->dbuser, $this->dbpass, $options);
             error_log('Conexion a BD exitosa');
-            return $this->conn;
+            // return $this->conn;
+            return $pdo;
 
         }catch(PDOException $e){
-            error_log('Error connection: ' . $e->getMessage());
+            error_log('database.php Line 41> Error connection: ' . $e->getMessage());
         }
     }
 

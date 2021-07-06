@@ -17,7 +17,7 @@
 			"previewLimit": 50,
 			"port": 3306,
 			"database": "db_user_system",
-			"username": "mariadb",
+			"username": "root",
 			"password": "pk515601"
 		}]
 	},
@@ -37,8 +37,8 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "chmod a+x \"$(pwd)\" && rm -rf /var/www/html && ln -s \"$(pwd)\" /var/www/html && apache2-foreground && sudo a2enmod rewrite && sudo service apache2 restart",
-		// "postCreateCommand": "sudo a2enmod rewrite && apache2-foreground",
+	"postCreateCommand": "sudo a2enmod rewrite && apache2-foreground"
 	// "postCreateCommand": "chmod a+x \"$(pwd)\" && rm -rf /var/www/html && ln -s \"$(pwd)\" /var/www/html",
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	//"remoteUser": "vscode"
+	// "remoteUser": "vscode"
 }
