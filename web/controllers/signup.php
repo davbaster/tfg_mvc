@@ -27,23 +27,29 @@ class Signup extends SessionController{
 
             $cedula = $this->getPost('cedula');
             $contrasena = $this->getPost('contrasena');
+            // hacer procedimiento para llenar info usuario?? sino, llenar las variables aqui.
 
             // validacion de los valores recibidos
             if($cedula == '' || empty ($cedula) || $contrasena == '' || empty($contrasena)){
                 $this->redirect('signup', ['error' => ErrorMessages::ERROR_SIGNUP_NEWUSER_EMPTY]);
             }
 
+            // se llena la info del usuario
             $user = new UserModel();
-            $user->setCedula($cedula);
-            $user->setContrasena($contrasena);
-            $user->setRole($user);
+            // $user->setCedula($cedula);
+            // $user->setContrasena($contrasena);
+            // $user->setRol($user);
+            $this->obtenerInfoDeFormulario($user);
+
+    
 
             if ($user->exists($cedula)) {
                 // si ya existe la cedula
                 $this->redirect('signup', ['error' => ErrorMessages::ERROR_SIGNUP_NEWUSER_EXISTS]);
             }else if ($user->save()){
+                error_log('signup::newUser -> Cedula no existe, y se ha creado el usuario');
                 // retorna al index, despliega mensaje de exito, despues de insertar a DB el usuario
-                $this->redirect('', ['success' => ErrorMessages::ERROR_SIGNUP_NEWUSER_EXISTS]);
+                $this->redirect('', ['success' => SuccessMessages::SUCCESS_SIGNUP_NEWUSER]);
             }else{
                 $this->redirect('signup', ['error' => ErrorMessages::ERROR_SIGNUP_NEWUSER]);
             }
@@ -52,6 +58,35 @@ class Signup extends SessionController{
             // sino existe
             $this->redirect('signup', ['error' => ErrorMessages::ERROR_SIGNUP_NEWUSER]);
         }
+    }
+
+    // llena la info del form que viene en el post en un usuario nuevo
+    function obtenerInfoDeFormulario($user){
+
+        // obtener la informacion del formulario enviado por el post
+        $cedula = $this->getPost('cedula');
+        $nombre = $this->getPost('nombre');
+        $apellido1 = $this->getPost('apellido1');
+        $apellido2 = $this->getPost('apellido2');
+        $telefono = $this->getPost('telefono');
+        $direccion = $this->getPost('direccion');
+        $cuentaBancaria = $this->getPost('cuentaBancaria');
+        $email = $this->getPost('email');
+        $contrasena = $this->getPost('contrasena');
+
+
+        // asignando los valores al objeto user
+        $user->setCedula($cedula);
+        $user->setNombre($nombre);
+        $user->setApellido1($apellido1);
+        $user->setApellido2($apellido2);
+        $user->setTelefono($telefono);
+        $user->setDireccion($direccion);
+        $user->setCuentaBancaria($cuentaBancaria);
+        $user->setEmail($email);
+        $user->setContrasena($contrasena);
+        $user->setRol($user);
+
     }
 
 }

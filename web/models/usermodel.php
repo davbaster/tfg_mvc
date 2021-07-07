@@ -12,7 +12,7 @@ class UserModel extends Model implements IModel {
     private $cuentaBancaria;
     private $email;
     private $contrasena;
-    private $role;
+    private $rol;
 
     public function __construct(){
 
@@ -28,7 +28,7 @@ class UserModel extends Model implements IModel {
         $this->cuentaBancaria ='';
         $this->email ='';
         $this->contrasena ='';
-        $this->role = '';
+        $this->rol = '';
         
 
 
@@ -38,7 +38,7 @@ class UserModel extends Model implements IModel {
     public function save(){
         try{
             // preparando la sentencia
-            $query = $this->prepare('INSERT INTO users (cedula, nombre, apellido1,apellido2,telefono,direccion,cuentaBancaria,email,contrasena,role) VALUES (:cedula,:nombre,:apellido1,:apellido2,:telefono,:direccion,:cuentaBancaria,:email,:contrasena,:role)');
+            $query = $this->prepare('INSERT INTO users (cedula, nombre, apellido1,apellido2,telefono,direccion,cuentaBancaria,email,contrasena,rol) VALUES (:cedula,:nombre,:apellido1,:apellido2,:telefono,:direccion,:cuentaBancaria,:email,:contrasena,:rol)');
 
             // referenciando los placeholders
             $query->execute([
@@ -51,7 +51,7 @@ class UserModel extends Model implements IModel {
                 'cuentaBancaria' => $this->cuentaBancaria,
                 'email' => $this->email,
                 'contrasena' => $this->contrasena,
-                'role' => $this->role
+                'rol' => $this->rol //puede ponerse como enum, buscar si se inserta diferente
             ]);
 
             return true;
@@ -85,7 +85,7 @@ class UserModel extends Model implements IModel {
                 $nuevoUsuario->setCuentaBancaria($user['cuentaBancaria']);
                 $nuevoUsuario->setEmail($user['email']);
                 $nuevoUsuario->setContrasena($user['contrasena']);
-                $nuevoUsuario->setRole($user['role']);
+                $nuevoUsuario->setRol($user['rol']);
 
                 // guarda el usuario en el array $items
                 array_push($items, $nuevoUsuario);
@@ -128,7 +128,7 @@ class UserModel extends Model implements IModel {
             $this->setCuentaBancaria($user['cuentaBancaria']);
             $this->setEmail($user['email']);
             $this->setContrasena($user['contrasena']);
-            $this->setRole($user['role']);
+            $this->setRol($user['rol']);
 
 
 
@@ -178,7 +178,7 @@ class UserModel extends Model implements IModel {
                                     cuentaBancaria = :cuentaBancaria,
                                     email = :email,
                                     contrasena = :contrasena,
-                                    role = :role
+                                    rol = :rol
                                     WHERE cedula = :cedula');
             // ejecutando sentencia
             $query->execute([
@@ -191,7 +191,7 @@ class UserModel extends Model implements IModel {
                 'cuentaBancaria' => $this->cuentaBancaria,
                 'email' => $this->email,
                 'contrasena' => $this->contrasena, //password ya en formato de hash
-                'role' => $this->role
+                'rol' => $this->rol
             ]);
 
                 return true;
@@ -216,7 +216,7 @@ class UserModel extends Model implements IModel {
         $this->setCuentaBancaria = $array['cuentaBancaria'];
         $this->setEmail          = $array['email'];
         $this->setContrasena     = $array['contrasena'];
-        $this->setRole           = $array['role'];
+        $this->setRol           = $array['rol'];
 
     }
 
@@ -259,7 +259,7 @@ class UserModel extends Model implements IModel {
         $this->id = $id;
     }
 
-    public function setRole($role){ $this->role = $role;}
+    public function setRol($rol){ $this->rol = $rol;}
     public function setBudget($budget){ $this->budget = $budget;}
     public function setPhoto($photo){ $this->photo = $photo;}
     public function setName($name){ $this->name = $name;}
@@ -284,7 +284,7 @@ class UserModel extends Model implements IModel {
         return $this->id;
     }
 
-    public function getRole(){ return $this->role;}
+    public function getRol(){ return $this->rol;}
     public function getBudget(){return $this->budget;}
     public function getPhoto(){return $this->photo;}
     public function getName(){ return $this->name;}
