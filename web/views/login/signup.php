@@ -76,6 +76,11 @@
                         </div>
                         <div id="passError" ></div>
 
+                        <div class="mb-3">
+                            <input type="rol" name="rol" id="rol" class="form-control form-control-lg" placeholder="rol del usuario">
+                            <div class="invalid-feedback">Rol es requerido</div>
+                        </div>
+
 
                         <div class="mb-3">
                             <input type="submit" value="Agregar Usuario" class="btn btn-primary btn-block btn-lg" id="add-user-btn">

@@ -26,22 +26,35 @@ class Signup extends SessionController{
 
 
             $cedula = $this->getPost('cedula');
+            $nombre = $this->getPost('nombre');
+            $apellido1 = $this->getPost('apellido1');
+            $apellido2 = $this->getPost('apellido2');
+            $rol = $this->getPost('rol');
+
             $contrasena = $this->getPost('contrasena');
             // hacer procedimiento para llenar info usuario?? sino, llenar las variables aqui.
 
-            // validacion de los valores recibidos
-            if($cedula == '' || empty ($cedula) || $contrasena == '' || empty($contrasena)){
+            // validacion de los valores obligatorios recibidos
+            if($cedula == '' || empty ($cedula) || $nombre == '' || empty($nombre) 
+                || $apellido1 == '' || empty($apellido1) || $apellido2 == '' || empty($apellido2) 
+                || $rol == '' || empty($rol) ){
+
                 $this->redirect('signup', ['error' => ErrorMessages::ERROR_SIGNUP_NEWUSER_EMPTY]);
             }
 
             // se llena la info del usuario
             $user = new UserModel();
-            // $user->setCedula($cedula);
+            $user->setCedula($cedula);
+            $user->setNombre($cedula);
+            $user->setApellido1($apellido1);
+            $user->setApellido2($apellido2);
+            $user->setRol($user); //problema al asignar rol, rompe el programa
             // $user->setContrasena($contrasena);
-            // $user->setRol($user);
-            $this->obtenerInfoDeFormulario($user);
-
-    
+            
+            error_log('informacion de $user: ' . $user->getRol());
+            // $user = $this->obtenerInfoDeFormulario($user);
+            
+            
 
             if ($user->exists($cedula)) {
                 // si ya existe la cedula
@@ -61,6 +74,7 @@ class Signup extends SessionController{
     }
 
     // llena la info del form que viene en el post en un usuario nuevo
+    // este metodo no esta sirviendo, parece que no llega el objeto.
     function obtenerInfoDeFormulario($user){
 
         // obtener la informacion del formulario enviado por el post
@@ -86,6 +100,9 @@ class Signup extends SessionController{
         $user->setEmail($email);
         $user->setContrasena($contrasena);
         $user->setRol($user);
+        
+
+        return $user;
 
     }
 
