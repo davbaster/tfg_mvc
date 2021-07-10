@@ -24,15 +24,20 @@ class Signup extends SessionController{
         // verifica si existe cedula y password
         if($this->existPost(['cedula', 'contrasena'])){
 
-
+            //Valores obligatorios
             $cedula = $this->getPost('cedula');
             $nombre = $this->getPost('nombre');
             $apellido1 = $this->getPost('apellido1');
             $apellido2 = $this->getPost('apellido2');
             $rol = $this->getPost('rol');
 
+            //valores opcionales
+            $telefono = $this->getPost('telefono');
+            $direccion = $this->getPost('direccion');
+            $cuentaBancaria = $this->getPost('cuentaBancaria');
+            $email = $this->getPost('email');
             $contrasena = $this->getPost('contrasena');
-            // hacer procedimiento para llenar info usuario?? sino, llenar las variables aqui.
+            
 
             // validacion de los valores obligatorios recibidos
             if($cedula == '' || empty ($cedula) || $nombre == '' || empty($nombre) 
@@ -42,16 +47,26 @@ class Signup extends SessionController{
                 $this->redirect('signup', ['error' => ErrorMessages::ERROR_SIGNUP_NEWUSER_EMPTY]);
             }
 
+            // hacer procedimiento para llenar info usuario?? sino, llenar las variables aqui.
             // se llena la info del usuario
             $user = new UserModel();
             $user->setCedula($cedula);
             $user->setNombre($cedula);
             $user->setApellido1($apellido1);
             $user->setApellido2($apellido2);
-            $user->setRol($user); //problema al asignar rol, rompe el programa
-            // $user->setContrasena($contrasena);
+            $user->setRol($rol); 
+
+            //llena variables opcionales
+            $user->setTelefono($telefono);
+            $user->setDireccion($direccion);
+            $user->setCuentaBancaria($cuentaBancaria);
+            $user->setEmail($email);
+            if (!empty($contrasena)) {
+                $user->setContrasena($contrasena);
+            }
             
-            error_log('informacion de $user: ' . $user->getRol());
+            
+            // error_log('informacion de $user: ' . $user->getRol());
             // $user = $this->obtenerInfoDeFormulario($user);
             
             

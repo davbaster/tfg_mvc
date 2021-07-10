@@ -66,18 +66,18 @@
                         </div>
                         
                         <div class="mb-3">
-                            <input type="text" name="contrasena" id="contrasena" class="form-control form-control-lg" placeholder="Password" required>
+                            <input type="text" name="contrasena" id="contrasena" class="form-control form-control-lg" placeholder="Password">
                             <div class="invalid-feedback">Ingrese un password</div>
                         </div>
                         
                         <div class="mb-3">
-                            <input type="text" name="confcontrasena" id="confcontrasena" class="form-control form-control-lg" placeholder="Confirme Password" required>
+                            <input type="text" name="confcontrasena" id="confcontrasena" class="form-control form-control-lg" placeholder="Confirme Password">
                             <div class="invalid-feedback">Confirmacion de password es requerido!</div>
                         </div>
                         <div id="passError" ></div>
 
                         <div class="mb-3">
-                            <input type="rol" name="rol" id="rol" class="form-control form-control-lg" placeholder="rol del usuario">
+                            <input type="rol" name="rol" id="rol" class="form-control form-control-lg" placeholder="rol del usuario" required>
                             <div class="invalid-feedback">Rol es requerido</div>
                         </div>
 
