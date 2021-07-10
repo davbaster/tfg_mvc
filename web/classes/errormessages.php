@@ -7,6 +7,9 @@ class ErrorMessages{
     const ERROR_SIGNUP_NEWUSER = "001";
     const ERROR_SIGNUP_NEWUSER_EMPTY = "002";
     const ERROR_SIGNUP_NEWUSER_EXISTS = "003";
+    const ERROR_LOGIN_AUTHENTICATE_EMPTY = "004";
+    const ERROR_LOGIN_AUTHENTICATE_DATA = "005";
+    const ERROR_LOGIN_AUTHENTICATE = "006";
 
     private $errorList = [];
 
@@ -14,9 +17,12 @@ class ErrorMessages{
 
         $this->errorList = [
             ErrorMessages::ERROR_ADMIN_NEWCATEGORY_EXISTS => 'El nombre de la categoria ya existe',
-            ErrorMessages::ERROR_SIGNUP_NEWUSER => 'Hubo un error  al intentar procesar la solicitud, el usuario ya existe',
-            ErrorMessages::ERROR_SIGNUP_NEWUSER_EMPTY => 'Hubo un error  al intentar procesar la solicitud, hay campos vacio',
-            ErrorMessages::ERROR_SIGNUP_NEWUSER_EXISTS => 'Hubo un error  al intentar procesar la solicitud, ya existe el numero de cedula'
+            ErrorMessages::ERROR_SIGNUP_NEWUSER => 'Hubo un error al intentar procesar la solicitud, el usuario ya existe',
+            ErrorMessages::ERROR_SIGNUP_NEWUSER_EMPTY => 'Hubo un error al intentar procesar la solicitud, hay campos vacio',
+            ErrorMessages::ERROR_SIGNUP_NEWUSER_EXISTS => 'Hubo un error al intentar procesar la solicitud, ya existe el numero de cedula',
+            ErrorMessages::ERROR_LOGIN_AUTHENTICATE_EMPTY => 'Hubo un error, Llena los campos de cedula y clave',
+            ErrorMessages::ERROR_LOGIN_AUTHENTICATE_DATA => 'Hubo un error, Cedula o clave incorrectos',
+            ErrorMessages::ERROR_LOGIN_AUTHENTICATE => 'No se pudo procesar la solicitud. Ingrese la cedula y clave'
         ];
 
     }
