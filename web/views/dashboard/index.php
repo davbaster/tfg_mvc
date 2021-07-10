@@ -12,10 +12,9 @@
 </head>
 
 <body class="bg-light"><div>
-    <?php
-        //Si usuario quiere devolverse, se redirigira a pagina principal 
-        require_once './php/session.php';
-    ?>
+<p>
+  <?php $this->showMessages() ?>
+</p>
 </div><nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" aria-label="Main navigation">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">JyC</a>
