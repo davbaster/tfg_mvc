@@ -6,7 +6,7 @@
             "role":""
         },
         {
-            "site": "principal",
+            "site": "dashboard",
             "access": "private",
             "role":"user"
         },
@@ -38,8 +38,8 @@
     ],
 
     "default-sites": {
-        "user": "principal",
-        "admin": "principal"
+        "user": "dashboard",
+        "admin": "dashboard"
     }
 }
 

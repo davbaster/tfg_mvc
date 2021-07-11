@@ -20,16 +20,20 @@
                     //item se vuelve un arreglo que contiene la info de un usuario 
                     $item = $query->fetch(PDO::FETCH_ASSOC);
 
+                    //var_dump($item);//Sirve para Debug y verificacion de row extraido de la DB
+
                     $user = new UserModel();
                     // rellenando el usuario con la funcion que recibe un arreglo
                     $user->from($item);
 
 
                     // validamos password ingresado con password almacenado
+                    error_log('LoginModel-> contrasena provista: ' . $contrasena . ' Contrasena en DB: ' . $user->getContrasena());
                     if (password_verify($contrasena, $user->getContrasena())) {
                         
                         error_log('LoginModel::login->sucess');
                         // regreso objeto userModel
+                        //VERIFICAR si user esta lleno y a quien se lo estamos enviando
                         return $user;
                     }else{
                         error_log('LoginModel::login->CONTRASENA NO ES IGUAL');

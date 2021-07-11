@@ -56,7 +56,7 @@
         function redirect($route, $mensajes){
 
 
-            error_log('CONTROLLER::redirect => ruta= ' . $route);
+            // error_log('CONTROLLER::redirect => ruta= ' . $route);
 
             $data = [];
             $params = '';

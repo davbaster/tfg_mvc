@@ -51,7 +51,7 @@ class Signup extends SessionController{
             // se llena la info del usuario
             $user = new UserModel();
             $user->setCedula($cedula);
-            $user->setNombre($cedula);
+            $user->setNombre($nombre);
             $user->setApellido1($apellido1);
             $user->setApellido2($apellido2);
             $user->setRol($rol); 
@@ -62,6 +62,8 @@ class Signup extends SessionController{
             $user->setCuentaBancaria($cuentaBancaria);
             $user->setEmail($email);
             if (!empty($contrasena)) {
+
+                error_log('signup::Guardando contrasena: ' . $contrasena);
                 $user->setContrasena($contrasena);
             }
             

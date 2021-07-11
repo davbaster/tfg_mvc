@@ -52,7 +52,7 @@ class SessionController extends Controller {
 
         // si existe la session
         if($this->existsSession()){
-            $role = $this->getUserSessionData()->getRole();
+            $role = $this->getUserSessionData()->getRol();
 
             //y la pagina a entrar es publica
             if($this->isPublic()){
@@ -201,7 +201,7 @@ class SessionController extends Controller {
     // 
     function initialize($user){
         $this->session->setCurrentUser($user->getId());
-        $this->authorizeAccess($user->getRole());
+        $this->authorizeAccess($user->getRol());
     }
 
 

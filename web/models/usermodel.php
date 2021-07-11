@@ -207,6 +207,9 @@ class UserModel extends Model implements IModel {
     // 
     public function from($array){
 
+
+        //var_dump($array); //Debugging line: con esto reviso si se mando el array lleno 
+
         $this->setCedula         = $array['cedula'];
         $this->setNombre         = $array['nombre'];
         $this->setApellido1      = $array['apellido1'];
@@ -215,7 +218,8 @@ class UserModel extends Model implements IModel {
         $this->setDireccion      = $array['direccion'];
         $this->setCuentaBancaria = $array['cuentaBancaria'];
         $this->setEmail          = $array['email'];
-        $this->setContrasena     = $array['contrasena'];
+        error_log('USERMODEL::Contrasena recibida en array[contrasena] ' . $array['contrasena']);
+        $this->setContrasena($array['contrasena']);
         $this->setRol           = $array['rol'];
 
     }
@@ -274,13 +278,16 @@ class UserModel extends Model implements IModel {
     public function setCuentaBancaria($cuentaBancaria){ $this->cuentaBancaria = $cuentaBancaria;}
     public function setEmail($email){ $this->email = $email;}
     public function setContrasena($contrasena){ 
-        $this->contrasena = $this->getHashedPassword($contrasena);
+        error_log('USERMODEL::setContrasena-> Contrasena recibida: ' . $contrasena);
+        // $this->contrasena = $this->getHashedPassword($contrasena);
+        $this->contrasena = $contrasena;
     }
 
 
 
     // getters
     public function getId(){
+        // vericar que tiene ID y quien lo usa, porque creo que esta sin uso
         return $this->id;
     }
 

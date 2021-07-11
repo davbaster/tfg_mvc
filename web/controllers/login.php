@@ -19,6 +19,8 @@ class Login extends SessionController{
             $cedula = $this->getPost('cedula');
             $contrasena = $this->getPost('contrasena');
 
+            // error_log('Login::authenticate ->POST cedula: ' . $cedula . ' clave: ' . $contrasena);
+
             // validacion de los valores obligatorios recibidos
             if($cedula == '' || empty ($cedula) || $contrasena == '' || empty($contrasena)  ){
 

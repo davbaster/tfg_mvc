@@ -10,7 +10,7 @@ class Dashboard extends SessionController{
 
     function render(){
         error_log('Dashboard::render -> Carga el index del Dashboard');
-        $this->view->render('dasboard/index');
+        $this->view->render('dashboard/index');
     }
 
 

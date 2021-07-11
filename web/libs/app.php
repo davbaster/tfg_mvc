@@ -27,7 +27,7 @@
             }
 
             $archivoController = 'controllers/' . $url[0] . '.php';
-
+            error_log('APP::CONSTRUCT line 30-> enrutando al usuario a ' . $url[0] . '.php');
             
             if(file_exists($archivoController)){
                 // existe nombre controlador, y lo mandamos a llamar
