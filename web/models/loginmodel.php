@@ -28,12 +28,13 @@
 
 
                     // validamos password ingresado con password almacenado
-                    error_log('LoginModel-> contrasena provista: ' . $contrasena . ' Contrasena en DB: ' . $user->getContrasena());
+                    // error_log('LoginModel-> contrasena provista: ' . $contrasena . ' Contrasena en DB: ' . $user->getContrasena());
                     if (password_verify($contrasena, $user->getContrasena())) {
                         
-                        error_log('LoginModel::login->sucess');
+                        error_log('LoginModel::login->Contrasena se verifico y es correcta');
                         // regreso objeto userModel
-                        //VERIFICAR si user esta lleno y a quien se lo estamos enviando
+                        // var_dump($user);//VERIFICAR si user esta lleno y a quien se lo estamos enviando
+
                         return $user;
                     }else{
                         error_log('LoginModel::login->CONTRASENA NO ES IGUAL');

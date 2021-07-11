@@ -1,4 +1,7 @@
 <?php
+
+// require_once 'models/loginmodel.php';
+
 class Login extends SessionController{
 
     function __construct(){
@@ -29,15 +32,22 @@ class Login extends SessionController{
             }
 
             // regresa usuario de tipo userModel
-            $user = $this->model->login($cedula, $contrasena);
+            
+            $user = $this->model->login($cedula, $contrasena); //ERROR no esta llamando a login, algo pasa con ese model
+            
+            error_log('Login::authenticate -> Revisando datos del usuario devuelto. Cedula: ' . $user->getCedula() ); //Debugging: revisando la cedula que trae el Objeto
+            
+            //var_dump($user);//Debugging:  Revisando si el usuario viene con datos
 
             if ( $user != NULL ) {
                 // si se autentico el usuario
                 //inicializa, esta dentro de la clase session controller
+                error_log('Login::authenticate -> Usuario no es NULL, y se va a mandar a llamar inicialize. Cedula: ' . $user->getCedula());
                 $this->initialize($user);
             }else{
                 // sino se pudo autenticar
                 // redirige a pagina de inicio
+                error_log('Login::authenticate -> Usuario es NULL');
                 $this->redirect('', ['error' => ErrorMessages::ERROR_LOGIN_AUTHENTICATE_DATA]);
 
             }

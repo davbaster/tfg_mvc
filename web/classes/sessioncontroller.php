@@ -1,6 +1,7 @@
 <?php
 
 require_once 'classes/session.php';
+require_once 'models/usermodel.php';
 
 class SessionController extends Controller {
 
@@ -92,10 +93,10 @@ class SessionController extends Controller {
         if(!$this->session->exists() ) return false;
 
         // verifica si la session creada tiene informacion
-        if($this->session->get_current_user() == NULL) return false;
+        if($this->session->getCurrentUser() == NULL) return false;
 
         // sino se activan las condicionales, entonces existe una session con informacion, y se hace las siguientes lineas
-        $userid = $this->session->get_current_user();
+        $userid = $this->session->getCurrentUser();
 
         // si existe un usuario retorne verdadero
         if($userid) return true;
@@ -104,14 +105,14 @@ class SessionController extends Controller {
         return false;
     }
 
-    // deacuerdo a los datos de la session crea un nuevo modelo de nuestro usuario
+    // deacuerdo a los datos (id = cedula) de la session crea un nuevo modelo de nuestro usuario
     // utilizando informacion de la BD
     function getUserSessionData(){
 
-        $cedula = $this->userid;
+        $idCedula = $this->session->getCurrentUser();
         $this->user = new UserModel();
         // obtenemos los datos del usuario desde la BD
-        $this->user->get($cedula);
+        $this->user->get($idCedula);
         error_log('SESSIONCONTROLLER::getUserSessionData -> ' . $this->user->getName());
         // retornamos el usuario con la informacion extraida desde la BD
         return $this->user;
@@ -198,9 +199,11 @@ class SessionController extends Controller {
 
     }
 
-    // 
+    // Lo utiliza Controller::login->authenticate
     function initialize($user){
-        $this->session->setCurrentUser($user->getId());
+        
+        error_log('SessionController:initialize -> cedula para session: '. $user->getCedula() );//ERROR no esta mandando el objeto, se manda como string
+        $this->session->setCurrentUser($user->getCedula());
         $this->authorizeAccess($user->getRol());
     }
 
