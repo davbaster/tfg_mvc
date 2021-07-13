@@ -8,7 +8,7 @@
         {
             "site": "dashboard",
             "access": "private",
-            "role":"user"
+            "role":"admin"
         },
         {
             "site": "rebajos",

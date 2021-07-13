@@ -111,6 +111,7 @@ class SessionController extends Controller {
     function getUserSessionData(){
         
         $idCedula = $this->session->getCurrentUser();
+        error_log('SESSIONCONTROLLER::getUserSessionData -> La cedula que esta en la session es:' . $idCedula  );//Debugging line
         $this->user = new UserModel();
         // obtenemos los datos del usuario desde la BD
         $this->user->get($idCedula);
@@ -165,8 +166,8 @@ class SessionController extends Controller {
             // a que pagina voy a redirigir deacuerdo a este rol
             if($this->sites[$i]['role'] == $role){
                 //dado role user
-                //            /expenses/dashboard
-                $url = '/expenses/' . $this->sites[$i]['site'];
+                //            /www/dashboard
+                $url = '/www/' . $this->sites[$i]['site'];
                 break;
             }
         }
@@ -203,7 +204,7 @@ class SessionController extends Controller {
     // Lo utiliza Controller::login->authenticate
     function initialize($user){
         
-        error_log('SessionController:initialize -> cedula para session: '. $user->getCedula() );//ERROR no esta mandando el objeto, se manda como string
+        //error_log('SessionController:initialize -> cedula para session: '. $user->getCedula() );//DEBUGGING: Para revisar datos del objeto
         $this->session->setCurrentUser($user->getCedula());
         $this->authorizeAccess($user->getRol());
     }

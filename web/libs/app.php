@@ -12,9 +12,11 @@
             $url = explode('/', $url);
             //usuario/hacerPago
 
+            error_log('APP::CONSTRUCT-> contenido de $url: ' . $url[0]); //DEBUGGING: revisando el contenido
+
             //verifica si no se define un nombre de controlador
             if(empty($url[0])){
-                error_log('APP::CONSTRUCT-> no hay controlador especificado. ');
+                error_log('APP::CONSTRUCT-> no hay controlador especificado, cargando controllador por defecto login.php');
                 // si no existe controlador
                 $archivoController = 'controllers/login.php';
                 require_once $archivoController;
@@ -26,11 +28,12 @@
                 return false;
             }
 
+            //Si en el $url viene el nombre de un controlador
             $archivoController = 'controllers/' . $url[0] . '.php';
-            error_log('APP::CONSTRUCT line 30-> enrutando al usuario a ' . $url[0] . '.php');
+            error_log('APP::CONSTRUCT-> controlador especificado es: ' . $url[0] . '.php');
             
             if(file_exists($archivoController)){
-                // existe nombre controlador, y lo mandamos a llamar
+                // existe el archivo del controlador, entonces lo incluimos
                 require_once $archivoController;
 
                 $controller = new $url[0];

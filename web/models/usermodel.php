@@ -210,17 +210,17 @@ class UserModel extends Model implements IModel {
 
         //var_dump($array); //Debugging line: con esto reviso si se mando el array lleno 
 
-        $this->setCedula         = $array['cedula'];
-        $this->setNombre         = $array['nombre'];
-        $this->setApellido1      = $array['apellido1'];
-        $this->setApellido2      = $array['apellido2'];
-        $this->setTelefono       = $array['telefono'];
-        $this->setDireccion      = $array['direccion'];
-        $this->setCuentaBancaria = $array['cuentaBancaria'];
-        $this->setEmail          = $array['email'];
+        $this->setCedula          ($array['cedula']) ;
+        $this->setNombre          ($array['nombre'] ) ;
+        $this->setApellido1       ( $array['apellido1'] ) ;
+        $this->setApellido2       ( $array['apellido2'] ) ;
+        $this->setTelefono        ( $array['telefono'] ) ;
+        $this->setDireccion       ($array['direccion'] ) ;
+        $this->setCuentaBancaria  ( $array['cuentaBancaria'] ) ;
+        $this->setEmail           ( $array['email'] ) ;
         error_log('USERMODEL::Contrasena recibida en array[contrasena] ' . $array['contrasena']);
         $this->setContrasena($array['contrasena']);
-        $this->setRol           = $array['rol'];
+        $this->setRol             ( $array['rol'] ) ;
 
     }
 

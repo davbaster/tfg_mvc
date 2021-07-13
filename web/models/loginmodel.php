@@ -35,7 +35,7 @@
                         
                         error_log('LoginModel::login->Contrasena se verifico y es correcta');
                         // regreso objeto userModel
-                        // var_dump($user);//VERIFICAR si user esta lleno y a quien se lo estamos enviando
+                        //var_dump($user);//DEBUGGING: verificar si user esta lleno y a quien se lo estamos enviando
 
                         return $user;
                     }else{
@@ -49,6 +49,10 @@
                 return NULL;
 
             }
+        }
+
+        function holaMundo(){
+            error_log('Model::LoginModel-> El objeto LoginModel si se esta creando y puede correr funciones ');//Debugging: solamente usada para debug
         }
     }
 ?>

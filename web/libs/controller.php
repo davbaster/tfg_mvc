@@ -1,20 +1,30 @@
 <?php
+    
 
     class Controller{
+
+        // private $model;
 
         function __construct(){
             $this->view = new View();
         }
     
+        //app.php construct calls this function
         function loadModel($model){
             $url = 'models/' . $model . 'model.php';
+            error_log('CONTROLLER::loadModel =>Mostrando valor de models/$model: ' . $url); //Debugging: revisando si se crea el objeto $this->model
 
             if(file_exists($url)){
                 require_once $url;
 
                 // armando nombre del model camelCase
-                $modelName = $model.'Model';
-                $this->model = new $modelName();
+                $modelCap = ucfirst($model); //primera letra en mayuscula
+                $modelName = $modelCap.'Model';
+                //$modelName = $model.'Model';
+                error_log('CONTROLLER::loadModel =>Mostrando valor de $modelName: ' . $modelName); //Debugging: *arreglado* la primera letra de la url no esta en mayuscula
+
+                $this->model = new $modelName(); 
+                $this->model->holaMundo(); //Debugging: solo existe para ver si el objeto es creado, y la funcion es especifica del objeto LoginModel.                                                
             }
         }
 
