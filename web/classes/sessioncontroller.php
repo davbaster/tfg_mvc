@@ -48,6 +48,7 @@ class SessionController extends Controller {
     // verifica si usuario tiene session abierta hay session
     // verifica si la pagina que se quiere acceder es publica o privada
     // verifca si deacuerdo al rol del usuario tiene permiso para ver la pagina
+    //init lo llama
     public function validateSession(){
         error_log('SESSIONCONTROLLER::validateSession');
 
@@ -79,7 +80,7 @@ class SessionController extends Controller {
             }else{
                 // pagina  es privada
                 // redirige al usuario al index
-                header('Location: ' . constant('URL') . '');
+                header('Location: ' . constant('URL') . '/' . '');
 
             }
         }
@@ -108,7 +109,7 @@ class SessionController extends Controller {
     // deacuerdo a los datos (id = cedula) de la session crea un nuevo modelo de nuestro usuario
     // utilizando informacion de la BD
     function getUserSessionData(){
-
+        
         $idCedula = $this->session->getCurrentUser();
         $this->user = new UserModel();
         // obtenemos los datos del usuario desde la BD

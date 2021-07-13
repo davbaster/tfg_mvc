@@ -1,11 +1,16 @@
 <?php
 
-// require_once 'models/loginmodel.php';
+require_once 'models/loginmodel.php';
 
 class Login extends SessionController{
 
+    private $model;
+    
+
     function __construct(){
         parent::__construct();
+        $this->model = new LoginModel();
+
         error_log('Login::construct -> inicio de Login');
         
     }
@@ -32,7 +37,6 @@ class Login extends SessionController{
             }
 
             // regresa usuario de tipo userModel
-            
             $user = $this->model->login($cedula, $contrasena); //ERROR no esta llamando a login, algo pasa con ese model
             
             error_log('Login::authenticate -> Revisando datos del usuario devuelto. Cedula: ' . $user->getCedula() ); //Debugging: revisando la cedula que trae el Objeto
