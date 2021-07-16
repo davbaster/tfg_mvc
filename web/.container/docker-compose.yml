@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.1'
 
 services: 
   app:
@@ -6,17 +6,13 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        # [Choice] PHP version: 7, 7.4, 7.3
-        #VARIANT: "8"
-        # [Option] Install Node.js
-        INSTALL_NODE: "false"
-        NODE_VERSION: "lts/*"
         # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
         USER_UID: 1000
         USER_GID: 1000
 
     volumes:
       - ..:/www:cached
+
     ports:
       - "41062:80"
 
@@ -24,7 +20,7 @@ services:
     command: sleep infinity
 
     # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
-    network_mode: service:db
+    #network_mode: service:db
 
     # Uncomment the next line to use a non-root user for all processes.
     # user: vscode

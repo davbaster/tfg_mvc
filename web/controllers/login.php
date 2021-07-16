@@ -38,19 +38,19 @@ class Login extends SessionController{
             //$this->model->holaMundo() ; //Debugging:
             $user = $this->model->login($cedula, $contrasena); //ERROR no esta llamando a login, algo pasa con ese model
             
-            error_log('Login::authenticate -> Revisando datos del usuario devuelto. Cedula: ' . $user->getCedula() ); //Debugging: revisando la cedula que trae el Objeto
+            //error_log('Login::authenticate -> Revisando datos del usuario devuelto. Cedula: ' . $user->getCedula() ); //Debugging: revisando la cedula que trae el Objeto
             
             //var_dump($user);//Debugging:  Revisando si el usuario viene con datos
 
             if ( $user != NULL ) {
                 // si se autentico el usuario
                 //inicializa, esta dentro de la clase session controller
-                error_log('Login::authenticate -> Usuario no es NULL, y se va a mandar a llamar inicialize. Cedula: ' . $user->getCedula());
+                error_log('Login::authenticate -> Cedula: ' . $user->getCedula() .', rol: ' . $user->getRol());
                 $this->initialize($user);
             }else{
                 // sino se pudo autenticar
                 // redirige a pagina de inicio
-                error_log('Login::authenticate -> Usuario es NULL');
+                //error_log('Login::authenticate -> Usuario es NULL');
                 $this->redirect('', ['error' => ErrorMessages::ERROR_LOGIN_AUTHENTICATE_DATA]);
 
             }

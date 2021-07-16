@@ -167,12 +167,14 @@ class SessionController extends Controller {
             if($this->sites[$i]['role'] == $role){
                 //dado role user
                 //            /www/dashboard
-                $url = '/www/' . $this->sites[$i]['site'];
+                //$url = '/www/' . $this->sites[$i]['site'];
+                $url = '/' . $this->sites[$i]['site'];
                 break;
             }
         }
         // voy a redirigir a
-        header('location:' . $url );
+        error_log('SESSIONCONTROLLER::redirectDefaultSiteByRole -> ' . constant('URL') . $url );
+        header('location:' . constant('URL') . $url );
 
     }
 
@@ -182,8 +184,9 @@ class SessionController extends Controller {
 
         $currentURL = $this->getCurrentPage();
         // exp reg reemplaza ?.* por un string vacio
-        // quita los caracteres que no necesitamos
-        $currentURL = preg_replace("/\?.*/", "", $currentURL);
+        // quita los caracteres que no necesitamos, delimitador es ~
+        $currentURL = preg_replace('/~?.*/', '""', $currentURL);
+
 
         // para cada sitio entonces
         for($i = 0; $i < sizeof($this->sites); $i++){
@@ -204,7 +207,7 @@ class SessionController extends Controller {
     // Lo utiliza Controller::login->authenticate
     function initialize($user){
         
-        //error_log('SessionController:initialize -> cedula para session: '. $user->getCedula() );//DEBUGGING: Para revisar datos del objeto
+        error_log('SessionController:initialize -> cedula : '. $user->getCedula() );//DEBUGGING: Para revisar datos del objeto
         $this->session->setCurrentUser($user->getCedula());
         $this->authorizeAccess($user->getRol());
     }
@@ -212,9 +215,11 @@ class SessionController extends Controller {
 
     // devuelve al usuario a su pagina por defecto
     // dependiendo de su role
-    function authorizeAccess($role){
+    function authorizeAccess($rol){
 
-        switch ($role) {
+        error_log('SessionController:authorizeAccess -> rol : '. $rol );//DEBUGGING: Para revisar datos del objeto
+
+        switch ($rol) {
             case 'user':
                 $this->redirect($this->defaultSites['user'], []);
                 break;
