@@ -84,6 +84,7 @@
             }
             // redirige a la pagina principal, ver constantes en config.php
             header('Location: ' . constant("URL") . '/' . $route . $params);
+            error_log('CONTROLLER::redirect => redirigiendo a: '  . constant("URL") . '/' . $route . $params);
         }
 
 

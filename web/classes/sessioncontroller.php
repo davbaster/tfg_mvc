@@ -127,7 +127,7 @@ class SessionController extends Controller {
 
         $currentURL = $this->getCurrentPage();
         // exp reg reemplaza ?.* por un string vacio
-        $currentURL = preg_replace("/\?./*/", "", $currentURL);
+        //$currentURL = preg_replace("/\?.*/", "", $currentURL); //ARREGLAR no esta funcionando el pre_replace
 
         // para cada sitio entonces
         for($i = 0; $i < sizeof($this->sites); $i++){
@@ -159,7 +159,8 @@ class SessionController extends Controller {
 
 
     // redirige al usuario a su pagina por defecto dependiendo del rol
-
+    //POSIBLE ERROR: si estoy en un sitio autorizado para mi rol, porque me va a dirigir al sitio por defecto para mi rol?
+    //podria ir un if y un return empty para salir si estuviera autorizado
     private function redirectDefaultSiteByRole($role){
         $url = '';
         for($i = 0; $i < sizeof($this->sites); $i++){
@@ -185,7 +186,7 @@ class SessionController extends Controller {
         $currentURL = $this->getCurrentPage();
         // exp reg reemplaza ?.* por un string vacio
         // quita los caracteres que no necesitamos, delimitador es ~
-        $currentURL = preg_replace('/~?.*/', '""', $currentURL);
+        //$currentURL = preg_replace('/~?.*/', '', $currentURL); //ARREGLAR no esta funcionando el pre_replace
 
 
         // para cada sitio entonces
