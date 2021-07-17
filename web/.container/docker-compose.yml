@@ -1,10 +1,11 @@
-version: '3.1'
+version: '3.8'
 
 services: 
   app:
     build:
       context: .
       dockerfile: Dockerfile
+
       args:
         # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
         USER_UID: 1000
@@ -31,6 +32,8 @@ services:
   db:
     image: mariadb:10.4
     restart: unless-stopped
+    ports:
+      - "3306:3306"
     volumes:
       - mariadb-data:/var/lib/mysql
     environment:

@@ -17,8 +17,6 @@ services:
 
     volumes:
       - ..:/www:cached
-    ports:
-      - "41062:80"
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
