@@ -6,17 +6,19 @@
 
         function __construct(){
             $url = isset($_GET['url']) ? $_GET['url'] : null;
-            // quita los / del url
+            // quita los / al final de la url 
             $url = rtrim($url, '/');
             // divide en partes el url y los guarda en array
-            $url = explode('/', $url);
-            //usuario/hacerPago
+            //http://localhost/www/usuario/hacerPago
+            $url = explode('/', $url); 
+            ///parametro url contiene = usuario/hacerPago
 
-            // error_log('APP::CONSTRUCT-> contenido de $url: ' . $url[0]); //DEBUGGING: revisando el contenido
+
 
             //verifica si no se define un nombre de controlador
             if(empty($url[0])){
-                // error_log('APP::CONSTRUCT-> no hay controlador especificado, cargando controllador por defecto login.php');
+                error_log('APP::CONSTRUCT-> No hay controlador especificado. ');
+
                 // si no existe controlador
                 $archivoController = 'controllers/login.php';
                 require_once $archivoController;
@@ -36,21 +38,23 @@
                 // existe el archivo del controlador, entonces lo incluimos
                 require_once $archivoController;
 
-                $controller = new $url[0];//DUDA, si aqui estuvieramos creando un nuevo controllador del tipo login
-                $controller->loadModel($url[0]); //controlador login puede usar la funccion loadModel?
+                $controller = new $url[0]; //$url[0] hace referencia al nombre del controlador
+                $controller->loadModel($url[0]); 
 
+                //revisa si hay segundo parametro
                 // si hay un metodo en el url[1] /controllador/metodo1
                 if(isset($url[1])){
                     
                     // valida que dentro de este objeto($controller) exista el metodo1 ($url[1])
                     if(method_exists($controller, $url[1])){
                         
-                        // verifica si hay parametros para el metodo
+                        // verifica si hay parametros para el metodo1
                         if(isset($url[2])){
                             
 
                             // numero parametros
-                            $nparam = count($url) - 2;
+                            //quito los dos primeros parametros
+                            $nparam = count($url) - 2;//0=nombreControlador, 1=metodo
 
                             // arreglo de parametros
                             $nparams = [];
@@ -60,10 +64,10 @@
                                 array_push($nparams, $url[$i] + 2);
                             }
                             //mandando a llamar el metodo enviando parametros
-                            $controller->{$url[1]}($nparams);
+                            $controller->{$url[1]}($nparams);  
                         }else{
                             // no tiene parametros, se manda a llamar
-                            // el metodo tal cual
+                            // corre el metodo tal cual
                             $controller->{$url[1]}();
                         }
 
@@ -82,6 +86,7 @@
 
             }else{
                 // no existe archivo, despliega error
+                //metodo por defecto
                 $controller = new Errores();
                 $controller->render();
             }

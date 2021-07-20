@@ -33,7 +33,7 @@ class ErrorMessages{
     }
 
     // toma una clave y va a devolver si existe o no
-    public function existKey($key){
+    public function existKey($key){//revisar nombre existKey para ver extra S despues de t
         if(array_key_exists($key, $this->errorList)){
             return true;
         }else{

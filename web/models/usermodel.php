@@ -218,7 +218,7 @@ class UserModel extends Model implements IModel {
         $this->setDireccion       ($array['direccion'] ) ;
         $this->setCuentaBancaria  ( $array['cuentaBancaria'] ) ;
         $this->setEmail           ( $array['email'] ) ;
-        error_log('USERMODEL::Contrasena recibida en array[contrasena] ' . $array['contrasena']);
+        //error_log('USERMODEL::Contrasena recibida en array[contrasena] ' . $array['contrasena']);
         $this->setContrasena($array['contrasena']);
         $this->setRol             ( $array['rol'] ) ;
 
@@ -278,7 +278,7 @@ class UserModel extends Model implements IModel {
     public function setCuentaBancaria($cuentaBancaria){ $this->cuentaBancaria = $cuentaBancaria;}
     public function setEmail($email){ $this->email = $email;}
     public function setContrasena($contrasena){ 
-        error_log('USERMODEL::setContrasena-> Contrasena recibida: ' . $contrasena);
+        //error_log('USERMODEL::setContrasena-> Contrasena recibida: ' . $contrasena);
         // $this->contrasena = $this->getHashedPassword($contrasena);
         $this->contrasena = $contrasena;
     }

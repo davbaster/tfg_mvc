@@ -2,7 +2,7 @@
 
 require_once 'models/loginmodel.php';
 
-class Login extends SessionController{
+class Login extends SessionController{ //extends Controller??
 
         
 

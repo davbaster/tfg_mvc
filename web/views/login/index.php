@@ -10,13 +10,11 @@
     <!-- <link rel="stylesheet" href="assets/css/styles.css"> -->
 </head>
 
-<body><div>
-
-</div>
+<body>
+    <?php $this->showMessages(); ?>
     <div class="container">
         <div class="row row-login" id="login-box">
             <div class="col-10 col-sm-6 col-md-4 offset-1 offset-sm-3 offset-md-4 my-auto">
-                <p><?php $this->showMessages(); ?></p>
                 <h1>Jimenez y Cordoba</h1>
                 <div>
                     <div class="card-body">

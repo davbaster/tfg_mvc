@@ -6,6 +6,7 @@
 
         }
 
+        //se utiliza para pasar informacion del controlador a la vista
         // $nombre = nombre de la vista
         // $data = parametros que se le van a pasar a la vista
         function render ($nombre, $data = []){
@@ -19,7 +20,7 @@
 
         private function handleMessages(){
             if(isset($_GET['success']) && isset($_GET['error'])  ){
-                // error no puede existir success y error al mismo tiempo
+                // error: no puede existir success y error al mismo tiempo
 
             }else if(isset($_GET['success'])) {
                 $this->handleSuccess();

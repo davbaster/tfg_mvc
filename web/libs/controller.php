@@ -12,7 +12,7 @@
         //app.php construct calls this function
         function loadModel($model){
             $url = 'models/' . $model . 'model.php';
-            error_log('CONTROLLER::loadModel =>Mostrando valor de models/$model: ' . $url); //Debugging: revisando si se crea el objeto $this->model
+
 
             if(file_exists($url)){
                 require_once $url;
@@ -20,11 +20,9 @@
                 // armando nombre del model camelCase
                 $modelCap = ucfirst($model); //primera letra en mayuscula
                 $modelName = $modelCap.'Model';
-                //$modelName = $model.'Model';
-                error_log('CONTROLLER::loadModel =>Mostrando valor de $modelName: ' . $modelName); //Debugging: *arreglado* la primera letra de la url no esta en mayuscula
 
-                $this->model = new $modelName(); 
-                $this->model->holaMundo(); //Debugging: solo existe para ver si el objeto es creado, y la funcion es especifica del objeto LoginModel.                                                
+                $this->model = new $modelName();//inicializando el modelo 
+               
             }
         }
 
@@ -39,6 +37,7 @@
             }
             return true; //existen todos los parametros
         }
+
 
         // verifica si existe cuando reciba parametros 
         // con que un parametro no existe, devuelve false
@@ -72,19 +71,20 @@
             $params = '';
 
             foreach($mensajes as $key => $mensaje){
-                //                clave        valor   
+                //meto al array $data el mensaje      key = clave        valor = mensaje   
                 array_push($data, $key . '=' . $mensaje);
             }
-            // uned los elementos de un arreglo con un caracter &, permite delimitar cada uno de los parametros
+            // uned los elementos de un arreglo con un caracter &, & permite delimitar cada uno de los parametros
+            // ?nombre=David&apellido=Cordoba
             $params = join('&', $data);
 
-            // ?nombre=David&apellido=Cordoba
+            
             if($params != ''){
                 $params = '?' . $params;
             }
             // redirige a la pagina principal, ver constantes en config.php
             header('Location: ' . constant("URL") . '/' . $route . $params);
-            error_log('CONTROLLER::redirect => redirigiendo a: '  . constant("URL") . '/' . $route . $params);
+            //error_log('CONTROLLER::redirect => redirigiendo a: '  . constant("URL") . '/' . $route . $params);
         }
 
 

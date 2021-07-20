@@ -8,7 +8,7 @@
         }
 
         function render(){
-            error_log('Errores::render -> Carga el index de Errores');
+            //error_log('Errores::render -> Carga el index de Errores');
             $this->view->render('errores/index');
         }
 
