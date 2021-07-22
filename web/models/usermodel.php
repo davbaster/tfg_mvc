@@ -71,6 +71,7 @@ class UserModel extends Model implements IModel {
 
             // user es puntero elemento actual
             // PDO::FETCH_ASSOC devuelve un objeto transformado
+            //setPasswordSinHash para cuando llenamos un usuario con la info de la BD
             while($user = $query->fetch(PDO::FETCH_ASSOC)){
                 // $this = new UserModel(); si se usa da PHP Fatal error:  Cannot re-assign $this
                 $nuevoUsuario = new UserModel();
@@ -84,7 +85,8 @@ class UserModel extends Model implements IModel {
                 $nuevoUsuario->setDireccion($user['direccion']);
                 $nuevoUsuario->setCuentaBancaria($user['cuentaBancaria']);
                 $nuevoUsuario->setEmail($user['email']);
-                $nuevoUsuario->setContrasena($user['contrasena']);
+                //$nuevoUsuario->setContrasena($user['contrasena']);//esta volviendo a hashear la contrasena
+                $this->setContrasenaSinHash($user['contrasena']);
                 $nuevoUsuario->setRol($user['rol']);
 
                 // guarda el usuario en el array $items
@@ -101,6 +103,7 @@ class UserModel extends Model implements IModel {
     }
 
     // busca cedula en BD
+    //setPasswordSinHash para cuando llenamos un usuario con la info de la BD
     public function get($cedula){
 
         try {
@@ -113,12 +116,12 @@ class UserModel extends Model implements IModel {
 
             $user = $query->fetch(PDO::FETCH_ASSOC);
 
-            // user es puntero elemento actual
-            // PDO::FETCH_ASSOC devuelve un objeto transformado
+            //user es puntero elemento actual
+            //PDO::FETCH_ASSOC devuelve un objeto transformado
 
-            // llenando la informacion del usuario en el objeto this
-            // revisar si se tiene que crear un nuevo usuario y llenar la informacion
-            // porque he estado teniendo problemas con  $this = new UserModel(); linea 75
+            //llenando la informacion del usuario en el objeto this
+            //revisar si se tiene que crear un nuevo usuario y llenar la informacion
+            //porque he estado teniendo problemas con  $this = new UserModel(); linea 75
             $this->setCedula($user['cedula']);
             $this->setNombre($user['nombre']);
             $this->setApellido1($user['apellido1']);
@@ -127,7 +130,8 @@ class UserModel extends Model implements IModel {
             $this->setDireccion($user['direccion']);
             $this->setCuentaBancaria($user['cuentaBancaria']);
             $this->setEmail($user['email']);
-            $this->setContrasena($user['contrasena']);
+            //$this->setContrasena($user['contrasena']);
+            $this->setContrasenaSinHash($user['contrasena']);
             $this->setRol($user['rol']);
 
 
@@ -190,7 +194,7 @@ class UserModel extends Model implements IModel {
                 'direccion' => $this->direccion,
                 'cuentaBancaria' => $this->cuentaBancaria,
                 'email' => $this->email,
-                'contrasena' => $this->contrasena, //password ya en formato de hash
+                'contrasena' => $this->contrasena, //password ya en formato de hash //posible que tengamos que aplicar hash aqui
                 'rol' => $this->rol
             ]);
 
@@ -244,12 +248,15 @@ class UserModel extends Model implements IModel {
     }
 
     // compara passwords
-    public function comparePasswords($contrasena, $cedula){
+    public function comparePasswords($cedula, $contrasena){
         try{
 
             $user = $this->get($cedula);
+            // error_log('USERMODEL::comparePasswords->contrasena en BD: ' . $user->getContrasena());
+            // error_log('USERMODEL::comparePasswords->contrasena data : ' . $this->getHashedPassword($contrasena) );
+            return password_verify($contrasena, $user->getContrasena()); 
 
-            return password_verify($contrasena, $user->getContrasena());
+
 
         }catch(PDOException $e){
             error_log('USERMODEL::comparePasswords->PDOException ' . $e);
@@ -279,9 +286,15 @@ class UserModel extends Model implements IModel {
     public function setEmail($email){ $this->email = $email;}
     public function setContrasena($contrasena){ 
         //error_log('USERMODEL::setContrasena-> Contrasena recibida: ' . $contrasena);
-        // $this->contrasena = $this->getHashedPassword($contrasena);
-        $this->contrasena = $contrasena;
+        $this->contrasena = $this->getHashedPassword($contrasena);
+        //$this->contrasena = $contrasena;
     }
+    public function setContrasenaSinHash($contrasena){ 
+        
+        $this->contrasena = $contrasena;
+        
+    }
+
 
 
 
@@ -310,7 +323,10 @@ class UserModel extends Model implements IModel {
     // encrypta password para ser almacenado en la base de datos
     private function getHashedPassword ($password){
         // costo entre mas alto mas gasto de cpu y mayor seguridad
-        return password_hash($password, PASSWORD_DEFAULT, ['cost' => 10]);
+        //return password_hash($password, PASSWORD_DEFAULT, ['cost' => 10]);
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        //error_log('USERMODEL::hashed password-> '. $hashedPassword );
+        return $hashedPassword;
 
     }
 

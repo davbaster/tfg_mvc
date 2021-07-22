@@ -31,7 +31,8 @@
 
                     // validamos password ingresado con password almacenado
                     // error_log('LoginModel-> contrasena provista: ' . $contrasena . ' Contrasena en DB: ' . $user->getContrasena());
-                    if (password_verify($contrasena, $user->getContrasena())) {
+                    //if (password_verify($contrasena, $user->getContrasena())) {
+                    if ($user->comparePasswords($cedula, $contrasena) ) {
                         
                         error_log('LoginModel::login->Contrasena se verifico y es correcta');
                         // regreso objeto userModel

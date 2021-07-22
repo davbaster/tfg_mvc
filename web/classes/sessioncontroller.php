@@ -10,7 +10,8 @@ class SessionController extends Controller {
     private $userid;
 
     private $session;
-    private $site;
+    private $sites;
+    private $defaultSites;
 
     private $user;
 
