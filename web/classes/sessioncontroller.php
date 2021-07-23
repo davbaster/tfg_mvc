@@ -59,6 +59,7 @@ class SessionController extends Controller {
 
             //y la pagina a entrar es publica
             if($this->isPublic()){
+                //Esto se puede quitar si siempre queremos que el usuario se tenga que loguear.
                 // manda al usuario a su dashboard
                 $this->redirectDefaultSiteByRole($role);
             }else{
@@ -68,7 +69,7 @@ class SessionController extends Controller {
 
                 }else{
                     // si no esta autorizado
-                    // lo redirijo a su pagina default
+                    // lo redirijo a su pagina default (El Dashboard)
                     $this->redirectDefaultSiteByRole($role);
                 }
                 
@@ -80,7 +81,7 @@ class SessionController extends Controller {
                 // no pasa nada, lo deja entrar
             }else{
                 // pagina  es privada
-                // redirige al usuario al index
+                // redirige al usuario al index (pagina login )
                 header('Location: ' . constant('URL') . '/' . '');
 
             }
@@ -112,7 +113,7 @@ class SessionController extends Controller {
     function getUserSessionData(){
         
         $idCedula = $this->session->getCurrentUser();
-        error_log('SESSIONCONTROLLER::getUserSessionData -> La cedula que esta en la session es:' . $idCedula  );//Debugging line
+        //error_log('SESSIONCONTROLLER::getUserSessionData -> La cedula que esta en la session es:' . $idCedula  );//Debugging line
         $this->user = new UserModel();
         // obtenemos los datos del usuario desde la BD
         $this->user->get($idCedula);
@@ -128,7 +129,7 @@ class SessionController extends Controller {
 
         $currentURL = $this->getCurrentPage();
         // exp reg reemplaza ?.* por un string vacio
-        //$currentURL = preg_replace("/\?.*/", "", $currentURL); //ARREGLAR no esta funcionando el pre_replace
+        $currentURL = preg_replace('/\?.*/', "", $currentURL); 
 
         // para cada sitio entonces
         for($i = 0; $i < sizeof($this->sites); $i++){
@@ -159,7 +160,8 @@ class SessionController extends Controller {
     }
 
 
-    // redirige al usuario a su pagina por defecto dependiendo del rol
+    // redirige al usuario a su pagina por defecto dependiendo del rol, si ya tiene una session abierta
+    // Si yo siempre quiero que se tenga que loguear, creo que no habria que llamar el metodo
     //POSIBLE ERROR: si estoy en un sitio autorizado para mi rol, porque me va a dirigir al sitio por defecto para mi rol?
     //podria ir un if y un return empty para salir si estuviera autorizado
     private function redirectDefaultSiteByRole($role){
@@ -187,7 +189,7 @@ class SessionController extends Controller {
         $currentURL = $this->getCurrentPage();
         // exp reg reemplaza ?.* por un string vacio
         // quita los caracteres que no necesitamos, delimitador es ~
-        //$currentURL = preg_replace('/~?.*/', '', $currentURL); //ARREGLAR no esta funcionando el pre_replace
+        $currentURL = preg_replace('/\?.*/', "", $currentURL); 
 
 
         // para cada sitio entonces
@@ -209,17 +211,17 @@ class SessionController extends Controller {
     // Lo utiliza Controller::login->authenticate
     function initialize($user){
         
-        error_log('SessionController:initialize -> cedula : '. $user->getCedula() );//DEBUGGING: Para revisar datos del objeto
+        //error_log('SessionController:initialize -> cedula : '. $user->getCedula() );//DEBUGGING: Para revisar datos del objeto
         $this->session->setCurrentUser($user->getCedula());
         $this->authorizeAccess($user->getRol());
     }
 
 
-    // devuelve al usuario a su pagina por defecto
+    // devuelve al usuario a su pagina (dashboard) por defecto
     // dependiendo de su role
     function authorizeAccess($rol){
 
-        error_log('SessionController:authorizeAccess -> rol : '. $rol );//DEBUGGING: Para revisar datos del objeto
+        //error_log('SessionController:authorizeAccess -> rol : '. $rol );//DEBUGGING: Para revisar datos del objeto
 
         switch ($rol) {
             case 'user':
