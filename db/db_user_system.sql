@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Jul 16, 2021 at 03:36 PM
+-- Generation Time: Jul 24, 2021 at 07:37 PM
 -- Server version: 10.4.18-MariaDB-1:10.4.18+maria~focal
 -- PHP Version: 7.4.20
 
@@ -24,6 +24,33 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `pagos`
+--
+
+CREATE TABLE `pagos` (
+  `id` int(20) NOT NULL,
+  `title` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+  `peticion_pago_id` int(5) NOT NULL,
+  `amount` float(10,2) NOT NULL,
+  `date` date NOT NULL,
+  `id_user` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `peticiones_pago`
+--
+
+CREATE TABLE `peticiones_pago` (
+  `id` int(7) NOT NULL,
+  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `color` varchar(7) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -37,7 +64,7 @@ CREATE TABLE `users` (
   `direccion` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `cuentaBancaria` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `contrasena` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `contrasena` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `rol` varchar(20) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -46,11 +73,25 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`idUsuario`, `cedula`, `nombre`, `apellido1`, `apellido2`, `telefono`, `direccion`, `cuentaBancaria`, `email`, `contrasena`, `rol`) VALUES
-(12, '7', 'david', 'c', 'c', '', '', '', '', '$2y$10$D5lQeRrAYEpnbATVj1/5veK368avN8K1JPUgcCi48X9F7tUbFnmpC', 'admin');
+(24, '7', 'David', 'c', 'c', '', '', '', '', '$2y$10$7.Z2veMZYqji5yCyGAKS..fwQCby6W71aeFktJQ45RbV4zqVDzbT2', 'admin');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `pagos`
+--
+ALTER TABLE `pagos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_user_pago` (`id_user`),
+  ADD KEY `id_peticion_pago` (`peticion_pago_id`) USING BTREE;
+
+--
+-- Indexes for table `peticiones_pago`
+--
+ALTER TABLE `peticiones_pago`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
@@ -67,7 +108,18 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `pagos`
+--
+ALTER TABLE `pagos`
+  ADD CONSTRAINT `id_peticion_pago` FOREIGN KEY (`peticion_pago_id`) REFERENCES `peticiones_pago` (`id`),
+  ADD CONSTRAINT `id_user_pago` FOREIGN KEY (`id_user`) REFERENCES `pagos` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
