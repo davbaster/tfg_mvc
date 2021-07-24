@@ -13,6 +13,18 @@ class Dashboard extends SessionController{
         $this->view->render('dashboard/index');
     }
 
+    //getPagos
+    public function getExpenses(){
+
+
+
+    }
+
+    //getPlanillas
+    public function getCategories(){
+
+    }
+
 
 }
 
