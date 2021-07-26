@@ -36,7 +36,8 @@ class PeticionModel extends Model implements IModel {
     }
 
 
-    //
+    //muestra todas las peticiones de pago
+    //apenas vista admin
     public function getAll(){
         $items = [];
     

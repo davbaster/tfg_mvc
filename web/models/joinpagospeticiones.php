@@ -6,6 +6,7 @@ class JoinPagosPeticionesModel extends Model {
     private $title;
     private $amount;
     private $categoryId; //$peticionPagoId;
+    private $peticionPagoId;
     private $date;
     private $userId;
     private $nameCategory;
@@ -27,14 +28,14 @@ class JoinPagosPeticionesModel extends Model {
             $query = $this->prepare('SELECT pagos.id as pago_id, title, peticion_pago_id, amount, date, id_user, peticiones_pago.id, name, color  FROM pagos INNER JOIN peticiones_pago WHERE pagos.peticion_pago_id = peticiones_pago.id AND pagos.id_user = :userId ORDER BY date');
             $query->execute(["userId" => $userId]);
 
-
+            //$p es un arreglo que guarda las filas del query anterior, filas de un join
             while($p = $query->fetch(PDO::FETCH_ASSOC)){
                 $item = new JoinPagosPeticionesModel();
-                $item->from($p);
+                $item->from($p);//va rellenando el objeto del tipo JoinPagosPeticionesModel con la info de las filas guardadas en $p
                 array_push($items, $item);
             }
 
-            return $items;
+            return $items;//devuelve un arreglo de objetos de JoinPagosPeticionesModel
 
         }catch(PDOException $e){
             echo $e;
