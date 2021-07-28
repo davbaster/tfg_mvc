@@ -224,7 +224,7 @@ class PagosModel extends Model implements IModel {
 
     //total de pagos por planilla este mes
     //$categoryid podria ser el idContratista, para sacar la cantidad total de pagos que se hizo a un contratista en el mes
-    //$categoryid podria ser el idPlanilla, para sacar el monto total de una planilla pagada
+    //$categoryid podria ser el idPlanilla, para sacar el monto total de una planilla pagada 
     function getTotalByCategoryThisMonth($peticionPagoId, $userId){
         error_log("ExpensesModel::getTotalByCategoryThisMonth");
         try{
@@ -240,6 +240,29 @@ class PagosModel extends Model implements IModel {
 
         }catch(PDOException $e){
             error_log("**ERROR: PagosModel::getTotalByCategoryThisMonth: error: " . $e);
+            return NULL;
+        }
+    }
+
+
+    //
+    function getTotalByMonthAndCategory($date, $peticionPagoId, $userId){
+        try{
+            $total = 0;
+            $year = substr($date, 0, 4);
+            $month = substr($date, 5, 7);
+            $query = $this->db->connect()->prepare('SELECT SUM(amount) AS total from pagos WHERE peticion_pago_id = :val AND id_user = :user AND YEAR(date) = :year AND MONTH(date) = :month');
+            $query->execute(['val' => $peticionPagoId, 'user' => $userId, 'year' => $year, 'month' => $month]);
+
+            if($query->rowCount() > 0){
+                $total = $query->fetch(PDO::FETCH_ASSOC)['total'];
+            }else{
+                return 0;
+            }
+            
+            return $total;
+
+        }catch(PDOException $e){
             return NULL;
         }
     }

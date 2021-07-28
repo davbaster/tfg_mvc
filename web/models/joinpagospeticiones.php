@@ -72,6 +72,9 @@ class JoinPagosPeticionesModel extends Model {
     }
 
 
+    
+
+
     public function getPagoId(){return $this->pagoId;}
     public function getTitle(){return $this->title;}
     public function getPeticionPagoId(){return $this->peticionPagoId;}
