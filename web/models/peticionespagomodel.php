@@ -1,6 +1,6 @@
 <?php
 
-class PeticionModel extends Model implements IModel {
+class PeticionesPagoModel extends Model implements IModel {
 
 
     private $id;
@@ -45,7 +45,7 @@ class PeticionModel extends Model implements IModel {
             $query = $this->query('SELECT * FROM peticiones_pago');
     
             while($p = $query->fetch(PDO::FETCH_ASSOC)){
-                $item = new PeticionModel();
+                $item = new PeticionesPagoModel();
                 $item->from($p); 
                 
                 array_push($items, $item);
@@ -120,10 +120,10 @@ class PeticionModel extends Model implements IModel {
             $query->execute( ['name' => $name]);
             
             if($query->rowCount() > 0){
-                error_log('PeticionModel::exists() => true');
+                error_log('PeticionesPagoModel::exists() => true');
                 return true;
             }else{
-                error_log('PeticionModel::exists() => false');
+                error_log('PeticionesPagoModel::exists() => false');
                 return false;
             }
         }catch(PDOException $e){

@@ -18,7 +18,7 @@ class Dashboard extends SessionController{
         $pagosModel             = new PagosModel();
         $pagos                  = $this->getPagos(5);
         $totalThisMonth         = $pagosModel->getTotalAmountThisMonth($this->user->getId());
-        $maxExpensesThisMonth   = $pagosModel->getMaxExpensesThisMonth($this->user->getId());
+        $maxExpensesThisMonth   = $pagosModel->getMaxPaymentThisMonth($this->user->getId());
         $peticionesPagos        = $this->getPeticionesPagos();
 
         $this->view->render('dashboard/index', [

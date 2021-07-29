@@ -2,6 +2,8 @@
 
 require_once 'classes/session.php';
 require_once 'models/usermodel.php';
+require_once 'models/pagosmodel.php';//DEBUG possiblement se necesite borrar 
+require_once 'models/peticionespagomodel.php';//DEBUG possiblement se necesite borrar 
 
 class SessionController extends Controller {
 

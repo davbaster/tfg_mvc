@@ -41,7 +41,7 @@
             "role":"admin"
         },
         {
-            "site": "usuarios",
+            "site": "user",
             "access": "private",
             "role":"admin"
         }
