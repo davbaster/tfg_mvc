@@ -24,21 +24,21 @@ class User extends SessionController{
 
         //si no existe
         if(!$this->existPOST('budget')){
-            $this->redirect('user', ['error' => Errors::ERROR_USER_UPDATEBUDGET]);
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEBUDGET]);
             return;
         }
 
         $budget = $this->getPost('budget');
 
         if(empty($budget) || $budget === 0 || $budget < 0){//valida sea vacio, igual o menor que cero
-            $this->redirect('user', ['error' => Errors::ERROR_USER_UPDATEBUDGET_EMPTY]);
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEBUDGET_EMPTY]);
             return;
         }
     
         $this->user->setBudget($budget);//asignando budget al usuario
 
         if($this->user->update()){//si se actualiza
-            $this->redirect('user', ['success' => Success::SUCCESS_USER_UPDATEBUDGET]);
+            $this->redirect('user', ['success' => SuccessMessages::SUCCESS_USER_UPDATEBUDGET]);
         }else{
             //error
         }
@@ -49,20 +49,20 @@ class User extends SessionController{
     //
     function updateName(){
         if(!$this->existPOST('name')){
-            $this->redirect('user', ['error' => Errors::ERROR_USER_UPDATEBUDGET]);
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEBUDGET]);
             return;
         }
 
         $name = $this->getPost('name');//buscamos por nombre
 
         if(empty($name) || $name == NULL){
-            $this->redirect('user', ['error' => Errors::ERROR_USER_UPDATEBUDGET]);
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEBUDGET]);
             return;
         }
         
         $this->user->setName($name);
         if($this->user->update()){
-            $this->redirect('user', ['success' => Success::SUCCESS_USER_UPDATEBUDGET]);
+            $this->redirect('user', ['success' => SuccessMessages::SUCCESS_USER_UPDATEBUDGET]);
         }else{
             //error
         }
@@ -72,7 +72,7 @@ class User extends SessionController{
     //actualiza el password del usuario
     function updatePassword(){
         if(!$this->existPOST(['current_password', 'new_password'])){//sino existe
-            $this->redirect('user', ['error' => Errors::ERROR_USER_UPDATEPASSWORD]);
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
             return;
         }
 
@@ -80,12 +80,12 @@ class User extends SessionController{
         $new     = $this->getPost('new_password');
 
         if(empty($current) || empty($new)){//si alguno esta vacio
-            $this->redirect('user', ['error' => Errors::ERROR_USER_UPDATEPASSWORD_EMPTY]);
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD_EMPTY]);
             return;
         }
 
         if($current === $new){//si son iguales
-            $this->redirect('user', ['error' => Errors::ERROR_USER_UPDATEPASSWORD_ISNOTTHESAME]);
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD_ISNOTTHESAME]);
             return;
         }
 
@@ -96,14 +96,14 @@ class User extends SessionController{
             $this->user->setPassword($new);
             
             if($this->user->update()){//si se actualizo
-                $this->redirect('user', ['success' => Success::SUCCESS_USER_UPDATEPASSWORD]);
+                $this->redirect('user', ['success' => SuccessMessages::SUCCESS_USER_UPDATEPASSWORD]);
             }else{
                 //error
-                $this->redirect('user', ['error' => Errors::ERROR_USER_UPDATEPASSWORD]);
+                $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
             }
         }else{
             //si el hash es falso, password incorrecto
-            $this->redirect('user', ['error' => Errors::ERROR_USER_UPDATEPASSWORD]);
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
             return;
         }
     }
@@ -111,8 +111,10 @@ class User extends SessionController{
 
     //
     function updatePhoto(){
+        error_log("USERCONTROLLER::updatePhoto() started");
+
         if(!isset($_FILES['photo'])){//si no existe
-            $this->redirect('user', ['error' => Errors::ERROR_USER_UPDATEPHOTO]);
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPHOTO]);
             return;
         }
         $photo = $_FILES['photo'];
@@ -137,19 +139,28 @@ class User extends SessionController{
 
         if ($uploadOk == false) {
             //echo "Sorry, your file was not uploaded.";
-            $this->redirect('user', ['error' => Errors::ERROR_USER_UPDATEPHOTO_FORMAT]);
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPHOTO_FORMAT]);
         // if everything is ok, try to upload file
             return;
         } else {
-            if (move_uploaded_file($photo["tmp_name"], $target_file)) {//si mueve archivo
-                $this->model->updatePhoto($hash, $this->user->getId()); //$hash solo tiene el nombre del archivo con la extencion
-                $this->redirect('user', ['success' => Success::SUCCESS_USER_UPDATEPHOTO]);
-                return;
 
-            } else {//sino se mueve el archivo
-                $this->redirect('user', ['error' => Errors::ERROR_USER_UPDATEPHOTO]);
-                return;
+            try {
+                //code...
+                if (move_uploaded_file($photo["tmp_name"], $target_file)) {//si mueve archivo
+                    $this->model->updatePhoto($hash, $this->user->getId()); //$hash solo tiene el nombre del archivo con la extencion
+                    $this->redirect('user', ['success' => SuccessMessages::SUCCESS_USER_UPDATEPHOTO]);
+                    return;
+    
+                } else {//sino se mueve el archivo
+                    $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPHOTO]);
+                    return;
+                }
+
+            } catch (Throwable $e) {
+                //throw $th;
+                error_log('USERCONTROLLER::updatePhoto->Exception ' . $e);
             }
+           
         }
         
     }

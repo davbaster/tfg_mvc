@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Jul 27, 2021 at 03:14 AM
+-- Generation Time: Jul 29, 2021 at 08:48 PM
 -- Server version: 10.4.18-MariaDB-1:10.4.18+maria~focal
 -- PHP Version: 7.4.20
 
@@ -65,15 +65,17 @@ CREATE TABLE `users` (
   `cuentaBancaria` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `contrasena` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `rol` varchar(20) COLLATE utf8_unicode_ci NOT NULL
+  `rol` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `foto` varchar(300) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`idUsuario`, `cedula`, `nombre`, `apellido1`, `apellido2`, `telefono`, `direccion`, `cuentaBancaria`, `email`, `contrasena`, `rol`) VALUES
-(24, '7', 'David', 'c', 'c', '', '', '', '', '$2y$10$7.Z2veMZYqji5yCyGAKS..fwQCby6W71aeFktJQ45RbV4zqVDzbT2', 'admin');
+INSERT INTO `users` (`idUsuario`, `cedula`, `nombre`, `apellido1`, `apellido2`, `telefono`, `direccion`, `cuentaBancaria`, `email`, `contrasena`, `rol`, `foto`) VALUES
+(24, '7', 'David', 'c', 'c', '', '', '', '', '$2y$10$7.Z2veMZYqji5yCyGAKS..fwQCby6W71aeFktJQ45RbV4zqVDzbT2', 'admin', ''),
+(25, '4', 'David', 'c', 'm', '', '', '', '', '$2y$10$3rl0w6VlZlG96yqLcZGgPO2hVQC2MEEpJjTt.kgjGVdcn0UTJa.Q2', 'user', '');
 
 --
 -- Indexes for dumped tables
@@ -108,7 +110,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Constraints for dumped tables

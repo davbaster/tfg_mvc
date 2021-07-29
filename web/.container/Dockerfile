@@ -34,9 +34,9 @@ RUN pecl install xdebug && docker-php-ext-enable xdebug \
 COPY php.ini "$PHP_INI_DIR/php.ini"
 
 # Update args in docker-compose.yaml to set the UID/GID of the "vscode" user.
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
-RUN if [ "$USER_GID" != "1000" ] || [ "$USER_UID" != "1000" ]; then groupmod --gid $USER_GID vscode && usermod --uid $USER_UID --gid $USER_GID vscode; fi
+#ARG USER_UID=1000
+#ARG USER_GID=$USER_UID
+#RUN if [ "$USER_GID" != "1000" ] || [ "$USER_UID" != "1000" ]; then groupmod --gid $USER_GID vscode && usermod --uid $USER_UID --gid $USER_GID vscode; fi
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
@@ -46,6 +46,12 @@ RUN if [ "$USER_GID" != "1000" ] || [ "$USER_UID" != "1000" ]; then groupmod --g
 #creates /www folder and link /
 RUN mkdir /www && \
   ln -s /www /var/www/html/
+
+#giving write permissions to folder
+RUN chown -R www-data:www-data /var/www/html/
+
+#giving write permissions to folder - use when production
+#RUN chown -R www-data:www-data /www/public/
 
 #apache complements
 RUN a2enmod rewrite

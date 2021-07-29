@@ -1,6 +1,7 @@
 <?php
     $user = $this->d['user'];
 ?>
+<?php echo exec('whoami'); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -26,9 +27,9 @@
                             <label for="photo">Foto de perfil</label>
                             
                             <?php
-                                if(!empty($user->getPhoto())){
+                                if(!empty($user->getFoto())){
                             ?>
-                                <img src="<?php echo constant('URL') ?>/public/img/photos/<?php echo $user->getPhoto() ?>" width="50" height="50" />
+                                <img src="<?php echo constant('URL') ?>/public/img/photos/<?php echo $user->getFoto() ?>" width="50" height="50" />
                             <?php
                                 }
                             ?>
