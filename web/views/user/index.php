@@ -16,15 +16,15 @@
                 <section id="info-user-container">
                     <form action=<?php echo constant('URL'). '/user/updateName' ?> method="POST">
                         <div class="section">
-                            <label for="name">Nombre</label>
-                            <input type="text" name="name" id="name" autocomplete="off" required value="<?php echo $user->getNombre() ?>">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" name="nombre" id="nombre" autocomplete="off" required value="<?php echo $user->getNombre() ?>">
                             <div><input type="submit" value="Cambiar nombre" /></div>
                         </div>
                     </form>
 
                     <form action="<?php echo constant('URL'). '/user/updatePhoto' ?>" method="POST" enctype="multipart/form-data">
                         <div class="section">
-                            <label for="photo">Foto de perfil</label>
+                            <label for="foto">Foto de perfil</label>
                             
                             <?php
                                 if(!empty($user->getFoto())){
@@ -33,7 +33,7 @@
                             <?php
                                 }
                             ?>
-                            <input type="file" name="photo" id="photo" autocomplete="off" required>
+                            <input type="file" name="foto" id="foto" autocomplete="off" required>
                             <div><input type="submit" value="Cambiar foto de perfil" /></div>
                         </div>
                     </form>

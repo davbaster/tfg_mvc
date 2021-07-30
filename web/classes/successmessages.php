@@ -3,15 +3,19 @@
 class SuccessMessages{
 
     // SUCCESS_CONTROLLER_METHOD_ACTION
-    const SUCCESS_ADMIN_NEWCATEGORY_EXISTS = "500";
-    const SUCCESS_SIGNUP_NEWUSER = "501";
+    const SUCCESS_ADMIN_NEWCATEGORY_EXISTS = "s5000";
+    const SUCCESS_SIGNUP_NEWUSER = "s5010";
+    const SUCCESS_USER_UPDATEPHOTO = "s5020";
+    const SUCCESS_USER_UPDATEPASSWORD = "s5021";
 
     private $successList = [];
 
     public function __construct(){
         $this->successList = [
             SuccessMessages::SUCCESS_ADMIN_NEWCATEGORY_EXISTS => 'Todo salio bien con la categoria ingresada',
-            SuccessMessages::SUCCESS_SIGNUP_NEWUSER => 'Usuario ingresado correctamente'
+            SuccessMessages::SUCCESS_SIGNUP_NEWUSER => 'Usuario ingresado correctamente',
+            SuccessMessages::SUCCESS_USER_UPDATEPASSWORD => 'Clave actualizada correctamente',
+            SuccessMessages::SUCCESS_USER_UPDATEPHOTO => 'Foto actualizada correctamente'
         ];
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+//require_once 'models/usermodel.php'; //TODO borrar si no se ocupa
+
 class User extends SessionController{
 
     private $user;
@@ -48,19 +50,19 @@ class User extends SessionController{
 
     //
     function updateName(){
-        if(!$this->existPOST('name')){
+        if(!$this->existPOST('nombre')){
             $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEBUDGET]);
             return;
         }
 
-        $name = $this->getPost('name');//buscamos por nombre
+        $name = $this->getPost('nombre');//buscamos por nombre
 
         if(empty($name) || $name == NULL){
             $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEBUDGET]);
             return;
         }
         
-        $this->user->setName($name);
+        $this->user->setNombre($name);
         if($this->user->update()){
             $this->redirect('user', ['success' => SuccessMessages::SUCCESS_USER_UPDATEBUDGET]);
         }else{
@@ -93,7 +95,7 @@ class User extends SessionController{
         $newHash = $this->model->comparePasswords($current, $this->user->getId());//metodo de userModel
         if($newHash){
             //si lo es actualizar con el nuevo
-            $this->user->setPassword($new);
+            $this->user->setContrasena($new);
             
             if($this->user->update()){//si se actualizo
                 $this->redirect('user', ['success' => SuccessMessages::SUCCESS_USER_UPDATEPASSWORD]);
@@ -113,11 +115,11 @@ class User extends SessionController{
     function updatePhoto(){
         error_log("USERCONTROLLER::updatePhoto() started");
 
-        if(!isset($_FILES['photo'])){//si no existe
+        if(!isset($_FILES['foto'])){//si no existe
             $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPHOTO]);
             return;
         }
-        $photo = $_FILES['photo'];
+        $photo = $_FILES['foto'];
 
         $target_dir = "public/img/photos/";
         $extarr = explode('.',$photo["name"]);//divide el nombre en el punto en un arreglo
@@ -147,7 +149,8 @@ class User extends SessionController{
             try {
                 //code...
                 if (move_uploaded_file($photo["tmp_name"], $target_file)) {//si mueve archivo
-                    $this->model->updatePhoto($hash, $this->user->getId()); //$hash solo tiene el nombre del archivo con la extencion
+                    $this->user->setFoto($hash); //$hash tiene el nombre del archivo con la extencion
+                    $this->user->update();
                     $this->redirect('user', ['success' => SuccessMessages::SUCCESS_USER_UPDATEPHOTO]);
                     return;
     
