@@ -6,30 +6,29 @@ class PagosModel extends Model implements IModel {
 
     //************ */
     private $id;
-    private $amount;
     private $estadoPago; //antiguo tittle, ESTADOS: pagado, pendiente
-    private $categoryId; //BORRAR si luego no es necesario
     private $peticionPagoId;
+    private $amount;
     private $date; //fecha pago
     private $userId; //id del usuario al que se le pago
-    private $idContrato;
+   
     //TODO deberian haber adelantos?? o es mejor que haya un objeto adelanto que cuando se crea un pago busque adelantos y los liste
+    //TODO deberian haber rebajos?? ose tiene que manejar en otra parte?
    
 
-
+    //setters
     public function setId($id){ $this->id = $id; }
-    public function setTitle($title){ $this->title = $title; }
-    public function setAmount($amount){ $this->amount = $amount; }
+    public function setEstadoPago($estadoPago){ $this->estadoPago = $estadoPago; }
     public function setPeticionPagoId($peticionPagoId){ $this->peticionPagoId = $peticionPagoId; }//setPeticionPagoId
-    public function setCategoryId($categoryid){ $this->categoryid = $categoryid; }//BORRAR luego si no necesaria
+    public function setAmount($amount){ $this->amount = $amount; }
     public function setDate($date){ $this->date = $date; }
     public function setUserId($userid){ $this->userid = $userid; }
 
+    //getters
     public function getId(){ return $this->id;}
-    public function getTitle(){ return $this->title; }
-    public function getAmount(){ return $this->amount; }
+    public function getEstadoPago(){ return $this->estadoPago; }
     public function getPeticionPagoId(){ return $this->peticionPagoId; } //setPeticionPagoId
-    public function getCategoryId(){ return $this->categoryid; }//BORRAR luego si no necesaria
+    public function getAmount(){ return $this->amount; }
     public function getDate(){ return $this->date; }
     public function getUserId(){ return $this->userid; }
 
@@ -42,13 +41,14 @@ class PagosModel extends Model implements IModel {
 
     public function save(){
         try{
-            $query = $this->prepare('INSERT INTO pagos (title, amount, peticion_pago_id, date, id_user) VALUES(:title, :amount, :peticionPagoId, :d, :user)');
+            $query = $this->prepare('INSERT INTO pagos (estado_pago, peticion_pago_id, amount,date, id_user) VALUES(:estadoPago, :peticionPagoId,:amount, :d, :user)');
             $query->execute([
-                'title' => $this->title, 
-                'amount' => $this->amount, 
+                'estadoPago' => $this->estadoPago, 
                 'peticionPagoId' => $this->peticionPagoId, 
-                'user' => $this->userId, 
-                'd' => $this->date
+                'amount' => $this->amount, 
+                'd' => $this->date,
+                'user' => $this->userId
+
             ]);
 
             //si devuelve resultado de una fila insertada
@@ -117,13 +117,21 @@ class PagosModel extends Model implements IModel {
 
     public function update(){
         try{
-            $query = $this->prepare('UPDATE pagos SET title = :title, amount = :amount, peticion_pago_id = :peticionPagoId, date = :d, id_user = :user WHERE id = :id');
+            $query = $this->prepare('UPDATE pagos SET 
+                                    estado_pago = :estadoPago, 
+                                    peticion_pago_id = :peticionPagoId, 
+                                    amount = :amount,  
+                                    date = :d, 
+                                    id_user = :user 
+                                    WHERE id = :id');
+
             $query->execute([
-                'title' => $this->title, 
-                'amount' => $this->amount, 
+                'id' => $this->id,
+                'estadoPago' => $this->estadoPago, 
                 'peticionPagoId' => $this->peticionPagoId, 
-                'user' => $this->userid, 
-                'd' => $this->date
+                'amount' => $this->amount, 
+                'd' => $this->date,
+                'user' => $this->userid
             ]);
             return true;
         }catch(PDOException $e){
@@ -135,9 +143,9 @@ class PagosModel extends Model implements IModel {
 
     public function from($array){
         $this->id = $array['id'];
-        $this->title = $array['title'];
-        $this->amount = $array['amount'];
+        $this->estadoPago = $array['estadoPago'];
         $this->peticionPagoId = $array['peticion_pago_id'];
+        $this->amount = $array['amount'];
         $this->date = $array['date'];
         $this->userid = $array['id_user'];
     }
@@ -225,34 +233,56 @@ class PagosModel extends Model implements IModel {
     //total de pagos por planilla este mes
     //$categoryid podria ser el idContratista, para sacar la cantidad total de pagos que se hizo a un contratista en el mes
     //$categoryid podria ser el idPlanilla, para sacar el monto total de una planilla pagada 
-    function getTotalByCategoryThisMonth($peticionPagoId, $userId){
-        error_log("ExpensesModel::getTotalByCategoryThisMonth");
+    //getTotalByCategoryThisMonth
+    // function getTotalByCategoryThisMonth($peticionPagoId, $userId){ 
+    //     error_log("ExpensesModel::getTotalByCategoryThisMonth");
+    //     try{
+    //         $total = 0;
+    //         $year = date('Y');
+    //         $month = date('m');
+    //         $query = $this->prepare('SELECT SUM(amount) AS total from pagos WHERE peticion_pago_id = :peticionPagoId AND id_user = :userId AND YEAR(date) = :year AND MONTH(date) = :month');
+    //         $query->execute(['peticionPagoId' => $peticionPagoId, 'userId' => $userId, 'year' => $year, 'month' => $month]);
+            
+    //         $total = $query->fetch(PDO::FETCH_ASSOC)['total'];//trae la fila en la columna total
+    //         if($total == NULL) return 0;
+    //         return $total;
+
+    //     }catch(PDOException $e){
+    //         error_log("**ERROR: PagosModel::getTotalByCategoryThisMonth: error: " . $e);
+    //         return NULL;
+    //     }
+    // }
+    //lista la cantidad total pagada a un usuario en el mes actual.
+    function getTotalByUserThisMonth($userId){ 
+        error_log("ExpensesModel::getTotalByUserThisMonth");
         try{
             $total = 0;
             $year = date('Y');
             $month = date('m');
-            $query = $this->prepare('SELECT SUM(amount) AS total from pagos WHERE peticion_pago_id = :peticionPagoId AND id_user = :userId AND YEAR(date) = :year AND MONTH(date) = :month');
-            $query->execute(['peticionPagoId' => $peticionPagoId, 'userId' => $userId, 'year' => $year, 'month' => $month]);
+            $query = $this->prepare('SELECT SUM(amount) AS total from pagos WHERE id_user = :userId AND YEAR(date) = :year AND MONTH(date) = :month');
+            $query->execute(['userId' => $userId, 'year' => $year, 'month' => $month]);
             
             $total = $query->fetch(PDO::FETCH_ASSOC)['total'];//trae la fila en la columna total
             if($total == NULL) return 0;
             return $total;
 
         }catch(PDOException $e){
-            error_log("**ERROR: PagosModel::getTotalByCategoryThisMonth: error: " . $e);
+            error_log("**ERROR: PagosModel::getTotalByUserThisMonth: error: " . $e);
             return NULL;
         }
     }
 
+    //TODO hacer metodo que liste todos los pagos dado un userID  MES / CANTIDAD
 
-    //
-    function getTotalByMonthAndCategory($date, $peticionPagoId, $userId){
+    //lista la cantidad total pagada a un usuario dado el mes actual.
+    //getTotalByMonthAndCategory 
+    function getTotalByMonthAndUserId($date,$userId){
         try{
             $total = 0;
             $year = substr($date, 0, 4);
             $month = substr($date, 5, 7);
-            $query = $this->db->connect()->prepare('SELECT SUM(amount) AS total from pagos WHERE peticion_pago_id = :val AND id_user = :user AND YEAR(date) = :year AND MONTH(date) = :month');
-            $query->execute(['val' => $peticionPagoId, 'user' => $userId, 'year' => $year, 'month' => $month]);
+            $query = $this->db->connect()->prepare('SELECT SUM(amount) AS total from pagos WHERE id_user = :user AND YEAR(date) = :year AND MONTH(date) = :month');
+            $query->execute(['user' => $userId, 'year' => $year, 'month' => $month]);
 
             if($query->rowCount() > 0){
                 $total = $query->fetch(PDO::FETCH_ASSOC)['total'];
@@ -267,10 +297,11 @@ class PagosModel extends Model implements IModel {
         }
     }
 
-
+    //TODO BORRAR si no se ocupa
     //Puede contar los pagos por planilla este mes
     //$categoryid podria ser el idContratista, para poder contar los pagos que se hizo por contratista en el mes
     //$categoryid podria ser el idPlanilla, para poder contar los pagos que se hicieron a una planilla pagada este mes
+    //getNumberOfPaymentsByCategoryThisMonth
     function getNumberOfPaymentsByCategoryThisMonth($peticionPagoId, $userId){
         try{
             $total = 0;

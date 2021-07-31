@@ -77,15 +77,17 @@ class Admin extends SessionController {
     }
 
 
-    //TODO hacer aqui metodos para ver las peticiones autorizadas pero sin pagar
+    //Lista peticiones autorizadas pero sin pagar
     private function getPeticionesPendientesPago($peticiones){
         $peticionesSinPagar = [];
 
         $indice = 0;
-        foreach ($peticionesPago as $peticion) {
+        foreach ($peticiones as $peticion) {
 
             if ($peticion->getAprobado && $peticion->getEstadoPago == 'pendiente' ) {//si estado aprobado y estado = pendiente
                 if(!array_key_exists($peticion->getPeticionPagoId(), $peticionesSinPagar)){ //si el id no esta en el arreglo
+                                                                    //FIXME porque verifico si el id esta almacenado en la lista, si lo que estoy guardando 
+                                                                    //es el objeto peticionPago???
                     $peticionesSinPagar[$indice] = $peticion;  //guarda la peticion pendiente de pago
                     $indice++;  
                 }
@@ -98,15 +100,60 @@ class Admin extends SessionController {
         return $peticionesSinPagar;
     }
 
+    //Lista las pagos pendientes de pago
+    private function getPagosPendientes($pagos){
+        $pagosPendientes = [];
+
+        $indice = 0;
+        foreach ($pagos as $p) {
+
+            if ($p->getEstadoPago == 'pendiente' ) {//estado = pendiente , un pago esta pendiente porque su peticion de pago fue autorizado previamente
+                if(!array_key_exists($p->getId(), $pagosPendientes)){ //si el id no esta en el arreglo
+                                                                    //FIXME porque verifico si el id esta almacenado en la lista, si lo que estoy guardadon 
+                                                                    //es el objeto pago???
+                    $pagosPendientes[$indice] = $p;  //guarda la peticion pendiente de pago
+                    $indice++;  
+                }
+                
+            }
+
+        }
+
+
+        return $pagosPendientes;
+    }
+
 
 
     //TODO hacer aqui metodo para ver las peticiones pendientes de autorizar.
 
 
+    //FIXME 
+    private function getStatistics(){
+        $res = [];
 
-    function getStatistics (){
+        $userModel = new UserModel();
+        $users = $userModel->getAll();
+        
+        $expenseModel = new ExpensesModel();
+        $expenses = $expenseModel->getAll();
 
+        $categoriesModel = new CategoriesModel();
+        $categories = $categoriesModel->getAll();
+
+        $res['count-users'] = count($users);
+        $res['count-expenses'] = count($expenses);
+        $res['max-expenses'] = $this->getMaxAmount($expenses);
+        $res['min-expenses'] = $this->getMinAmount($expenses);
+        $res['avg-expenses'] = $this->getAverageAmount($expenses);
+        $res['count-categories'] = count($categories);
+        $res['mostused-category'] = $this->getCategoryMostUsed($expenses);
+        $res['lessused-category'] = $this->getCategoryLessUsed($expenses);
+
+        return $res;
     }
+
+
 }
 
 
