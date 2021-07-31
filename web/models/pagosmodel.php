@@ -7,14 +7,14 @@ class PagosModel extends Model implements IModel {
     //************ */
     private $id;
     private $amount;
-    private $title;
+    private $estadoPago; //antiguo tittle, ESTADOS: pagado, pendiente
     private $categoryId; //BORRAR si luego no es necesario
     private $peticionPagoId;
     private $date; //fecha pago
     private $userId; //id del usuario al que se le pago
-
     private $idContrato;
-    private $estadoPago;//bool
+    //TODO deberian haber adelantos?? o es mejor que haya un objeto adelanto que cuando se crea un pago busque adelantos y los liste
+   
 
 
     public function setId($id){ $this->id = $id; }
