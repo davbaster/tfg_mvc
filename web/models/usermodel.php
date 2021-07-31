@@ -177,8 +177,8 @@ class UserModel extends Model implements IModel {
     public function update(){
 
         try {
-
-            $query = $this->prepare('UPDATE users SET cedula = :cedula,
+            //TODO something does not work if you try to add cedula = :cedula and 'cedula' => $this->cedula,
+            $query = $this->prepare('UPDATE users SET 
                                     nombre = :nombre,
                                     apellido1 = :apellido1,
                                     apellido2 = :apellido2,
@@ -192,6 +192,7 @@ class UserModel extends Model implements IModel {
                                     WHERE cedula = :cedula');
             // ejecutando sentencia
             $query->execute([
+                
                 'cedula' => $this->cedula,
                 'nombre' => $this->nombre,
                 'apellido1' => $this->apellido1,
@@ -256,7 +257,7 @@ class UserModel extends Model implements IModel {
     }
 
     // compara passwords
-    public function comparePasswords($cedula, $contrasena){
+    public function comparePasswords($contrasena, $cedula){
         try{
 
             $user = $this->get($cedula);

@@ -7,6 +7,7 @@ class SuccessMessages{
     const SUCCESS_SIGNUP_NEWUSER = "s5010";
     const SUCCESS_USER_UPDATEPHOTO = "s5020";
     const SUCCESS_USER_UPDATEPASSWORD = "s5021";
+    const SUCCESS_USER_UPDATENAME = "s5022";
 
     private $successList = [];
 
@@ -15,7 +16,8 @@ class SuccessMessages{
             SuccessMessages::SUCCESS_ADMIN_NEWCATEGORY_EXISTS => 'Todo salio bien con la categoria ingresada',
             SuccessMessages::SUCCESS_SIGNUP_NEWUSER => 'Usuario ingresado correctamente',
             SuccessMessages::SUCCESS_USER_UPDATEPASSWORD => 'Clave actualizada correctamente',
-            SuccessMessages::SUCCESS_USER_UPDATEPHOTO => 'Foto actualizada correctamente'
+            SuccessMessages::SUCCESS_USER_UPDATEPHOTO => 'Foto actualizada correctamente',
+            SuccessMessages::SUCCESS_USER_UPDATENAME => 'Nombre actualizado correctamente'
         ];
     }
 

@@ -35,7 +35,7 @@ class Database {
             ];
 
             // error_log('El contenido de options = ' . print_r($options));
-            error_log('El contenido de connection = ' . $connection );
+            //error_log('El contenido de connection = ' . $connection );
             
             // $this->conn = new PDO($connection, $this->dbuser, $this->dbpass, $options);
             $pdo = new PDO($connection, $this->dbuser, $this->dbpass, $options);

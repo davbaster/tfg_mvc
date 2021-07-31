@@ -50,21 +50,21 @@ class User extends SessionController{
 
     //
     function updateName(){
-        if(!$this->existPOST('nombre')){
-            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEBUDGET]);
+        if(!$this->existPOST(['nombre'])){
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATENAME]);
             return;
         }
 
         $name = $this->getPost('nombre');//buscamos por nombre
 
         if(empty($name) || $name == NULL){
-            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEBUDGET]);
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATENAME]);
             return;
         }
         
         $this->user->setNombre($name);
         if($this->user->update()){
-            $this->redirect('user', ['success' => SuccessMessages::SUCCESS_USER_UPDATEBUDGET]);
+            $this->redirect('user', ['success' => SuccessMessages::SUCCESS_USER_UPDATENAME]);
         }else{
             //error
         }
@@ -87,12 +87,12 @@ class User extends SessionController{
         }
 
         if($current === $new){//si son iguales
-            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD_ISNOTTHESAME]);
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD_THESAME]);
             return;
         }
 
         //validar que el current es el mismo que el guardado
-        $newHash = $this->model->comparePasswords($current, $this->user->getId());//metodo de userModel
+        $newHash = $this->model->comparePasswords($current, $this->user->getCedula());//metodo de userModel
         if($newHash){
             //si lo es actualizar con el nuevo
             $this->user->setContrasena($new);
@@ -104,7 +104,7 @@ class User extends SessionController{
                 $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
             }
         }else{
-            //si el hash es falso, password incorrecto
+            //si el hash es falso, password actual incorrecto
             $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
             return;
         }
