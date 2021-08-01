@@ -128,27 +128,31 @@ class Admin extends SessionController {
     //TODO hacer aqui metodo para ver las peticiones pendientes de autorizar.
 
 
-    //FIXME 
+    //FIXME sacar todas las peticiones de pago para trabajar no es eficiente, arreglar.
     private function getStatistics(){
         $res = [];
 
-        $userModel = new UserModel();
-        $users = $userModel->getAll();
+        // $userModel = new UserModel();
+        // $users = $userModel->getAll();
         
-        $expenseModel = new ExpensesModel();
-        $expenses = $expenseModel->getAll();
+        $pagosModel = new PagosModel();
+        $pagos = $pagosModel->getAll();
 
-        $categoriesModel = new CategoriesModel();
-        $categories = $categoriesModel->getAll();
+        $peticionesModel = new PeticionesPagoModel();
+        $peticiones = $peticionesModel->getAll();
 
-        $res['count-users'] = count($users);
-        $res['count-expenses'] = count($expenses);
-        $res['max-expenses'] = $this->getMaxAmount($expenses);
-        $res['min-expenses'] = $this->getMinAmount($expenses);
-        $res['avg-expenses'] = $this->getAverageAmount($expenses);
-        $res['count-categories'] = count($categories);
-        $res['mostused-category'] = $this->getCategoryMostUsed($expenses);
-        $res['lessused-category'] = $this->getCategoryLessUsed($expenses);
+        $res['peticiones-pendientes'] = $this->getPeticionesPendientesPago($peticiones);
+        $res['pagos-pendientes'] = $this->getPagosPendientes($pagos);
+        
+
+        // $res['count-users'] = count($users);
+        // $res['count-expenses'] = count($expenses);
+        // $res['max-expenses'] = $this->getMaxAmount($expenses);
+        // $res['min-expenses'] = $this->getMinAmount($expenses);
+        // $res['avg-expenses'] = $this->getAverageAmount($expenses);
+        // $res['count-categories'] = count($categories);
+        // $res['mostused-category'] = $this->getCategoryMostUsed($expenses);
+        // $res['lessused-category'] = $this->getCategoryLessUsed($expenses);
 
         return $res;
     }
