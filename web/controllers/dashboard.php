@@ -1,5 +1,8 @@
 <?php
 
+require_once 'models/pagosmodel.php';
+require_once 'models/peticionespagomodel.php';
+
 class Dashboard extends SessionController{
 
     private $user;
@@ -15,18 +18,31 @@ class Dashboard extends SessionController{
     //
     function render(){
         error_log("Dashboard::RENDER() ");
+        // $pagosModel             = new PagosModel();
+        // $pagos                  = $this->getPagos(5);
+        // $totalThisMonth         = $pagosModel->getTotalAmountThisMonth($this->user->getId());
+        // $maxExpensesThisMonth   = $pagosModel->getMaxPaymentThisMonth($this->user->getId());
+        // $peticionesPagos        = $this->getPeticionesPagos();
+
+
         $pagosModel             = new PagosModel();
-        $pagos                  = $this->getPagos(5);
-        $totalThisMonth         = $pagosModel->getTotalAmountThisMonth($this->user->getId());
-        $maxExpensesThisMonth   = $pagosModel->getMaxPaymentThisMonth($this->user->getId());
-        $peticionesPagos        = $this->getPeticionesPagos();
+        $pagosPendientes        = $pagosModel->getPagosPendientes();
+
+        $peticionesPagoModel    = new PeticionesPagoModel();
+        $petiPendientesPagar    = $peticionesPagoModel->getPeticionesPendientesPago();//planillas (peticiones pago) aprobadas y pendientes de pago
+        $petiPendientesAprobar  = $peticionesPagoModel->getPeticionesPendientesAprobacion();//planillas (peticiones pago) pendientes de aprobar
+
+
+
+
+        
 
         $this->view->render('dashboard/index', [
-            'user'                 => $this->user,
-            'pagos'                => $pagos,
-            'totalAmountThisMonth' => $totalThisMonth,
-            'maxPagosThisMonth'    => $maxPagosThisMonth,
-            'peticionesPagos'      => $peticionesPagos
+            'user'                      => $this->user,
+            'pagosPendientes'           => $pagosPendientes,
+            'petiPendientesPagar'       => $petiPendientesPagar,
+            'petiPendientesAprobar'     => $petiPendientesAprobar
+            
         ]);
     }
 

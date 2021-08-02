@@ -76,9 +76,9 @@ class Admin extends SessionController {
         return ($sum / count($peticionesPago));
     }
 
-
-    //Lista peticiones autorizadas pero sin pagar
-    private function getPeticionesPendientesPago($peticiones){
+    //TODO borrar despues de implementarse correctamente en operacionespeticionespago.php
+    //Lista peticiones pendientes de aprobar
+    private function getPeticionesPendientesAprobacion($peticiones){
         $peticionesSinPagar = [];
 
         $indice = 0;

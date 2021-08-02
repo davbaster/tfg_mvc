@@ -1,3 +1,11 @@
+<?php
+
+    $user                      = $this->d['user'];
+    $pagosPendientes           = $this->d['pagosPendientes'];
+    $petiPendientesPagar       = $this->d['petiPendientesPagar'];
+    $petiPendientesAprobar     = $this->d['petiPendientesAprobar'];
+
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,25 +17,33 @@
     <?php require 'header.php'; ?>
 
     <div id="main-container">
-        
+        <?php $this->showMessages() ?>
         <div id="expenses-container" class="container">
         
             <div id="left-container">
                 
                 <div id="expenses-summary">
                     <div>
-                        <h2>Bienvenido </h2>
+                        <h2>Bienvenido <?php echo $user->getNombre() ?></h2>
                     </div>
                     <div class="cards-container">
                         <div class="card w-100">
                             <div class="total-budget">
                                 <span class="total-budget-text">
-                                    Balance General del Mes    
+                                    Balance General del Contrato     
                                 </span>
                             </div>
                             <div class="total-expense">
                                 
-                                
+                             <?php
+                                //total pagado del contrato $user->getBudget() = monto del contrato
+                               if($totalThisMonth == NULL){
+                                   echo 'Hubo un problema al cargar la informacion';
+                               }else{?>
+                                    <span class="<?php echo ($user->getBudget() < $totalThisMonth)? 'broken': '' ?>">$<?php
+                                   echo number_format($totalThisMonth, 2);?>
+                                    </span>
+                                <?php }?>
                                 
                             </div>
                         </div>
@@ -37,11 +53,30 @@
                             <div class="total-budget">
                                 <span class="total-budget-text">
                                     de
-                                    $
+                                    $<?php 
+                                        //budget es la cantidad asignado al contrato
+                                        echo number_format($user->getBudget(),2) . ' te quedan del contrato';
+                                    ?>
                                 </span>
                             </div>
                             <div class="total-expense">
-                                
+                                <?php
+                                    
+                                    //total pagado del contrato $user->getBudget() = monto del contrato
+                                if($totalThisMonth == NULL){
+                                    echo 'Hubo un problema al cargar la informacion';
+                                }else{?>
+                                        <span>
+                                            <?php
+                                                $gap = $user->getBudget() - $totalThisMonth;
+                                                if ($gap < 0) {
+                                                    echo "-$" . number_format(abs($user->getBudget() - $totalThisMonth), 2);
+                                                }else{
+                                                    echo "$" . number_format($user->getBudget() - $totalThisMonth, 2);
+                                                }
+                                            ?>
+                                        </span> 
+                                    <?php }?>
                             </div>
                         </div>
                         
@@ -51,7 +86,15 @@
                             
                             </div>
                             <div class="total-expense">
-                                
+                                <?php
+                                    //peticionPago pagada mas alta en el mes
+                                if($totalThisMonth == NULL){
+                                    echo 'Hubo un problema al cargar la informacion';
+                                }else{?>
+                                        <span>$<?php
+                                            echo number_format($maxExpensesThisMonth, 2);?>
+                                        </span>
+                                <?php }?>
                             </div>
                         </div>
 

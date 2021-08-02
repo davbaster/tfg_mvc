@@ -1,3 +1,12 @@
+<?php
+
+    $user                      = $this->d['user'];
+    $pagosPendientes           = $this->d['pagosPendientes'];
+    $petiPendientesPagar       = $this->d['petiPendientesPagar'];
+    $petiPendientesAprobar     = $this->d['petiPendientesAprobar'];
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

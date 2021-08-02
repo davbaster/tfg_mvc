@@ -1,7 +1,9 @@
 <?php
 
+require_once 'models/joinpagospeticionesmodel.php';
 
-class Expenses extends SessionController{ 
+
+class Pagos extends SessionController{ 
 
 
     private $user;
@@ -16,7 +18,7 @@ class Expenses extends SessionController{
 
     //muestra la vista
     function render(){
-        error_log("Gastos::RENDER() ");
+        error_log("Pagos::RENDER() ");
 
         $this->view->render('pagos/index', [
             'user' => $this->user,
@@ -102,7 +104,7 @@ class Expenses extends SessionController{
 
     // crea una lista con las peticiones de Pago donde hay pagos
     // getCategoryList()
-    private function getPeticionPagoList(){
+    private function getPeticionesPagoList(){
         $res = [];
         $joinModel = new JoinPagosPeticionesModel();
         $peticiones = $joinModel->getAll($this->user->getId());

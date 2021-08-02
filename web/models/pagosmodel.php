@@ -102,6 +102,7 @@ class PagosModel extends Model implements IModel {
         }
     }
 
+    
 
     public function delete($id){
         try{
@@ -151,6 +152,45 @@ class PagosModel extends Model implements IModel {
     }
 
 
+
+    //saca de la base de datos todos los pagos que esten pendientes de pago
+    //retorna arreglo de pagos pendientes
+    public function getPagosPendientes(){
+
+        $items = [];//arreglo de objetos de tipo pago
+
+        //$aprobado = 1;
+        $estadoPago = "pending";
+
+        try{
+            
+            $query = $this->prepare('SELECT * FROM pagos WHERE estado_pago = :estadopago');
+            //$query = $this->prepare('SELECT * FROM pagos WHERE id = :id');
+            $query->execute(['estadopago' => $estadoPago]);
+
+            //mientras que exista un objeto no null
+            while($p = $query->fetch(PDO::FETCH_ASSOC)){
+                $item = new PagosModel();
+                //rellena objeto con informacion
+                $item->from($p); 
+                
+                array_push($items, $item);
+            }
+
+            return $items;
+
+        }catch(PDOException $e){
+            return false;
+        }
+    }
+
+
+
+
+
+    // *********** funciones que se pueden mover a common *****************
+
+
     //Lista todos los pagos hechos a un usuario
     public function getAllByUserId($userid){
         $items = [];//listado de pagos
@@ -173,6 +213,8 @@ class PagosModel extends Model implements IModel {
             echo $e;
         }
     }
+
+
 
     //$n es el limite de elementos a listar
     public function getByUserIdAndLimit($userid, $n){
@@ -301,8 +343,9 @@ class PagosModel extends Model implements IModel {
     //Puede contar los pagos por planilla este mes
     //$categoryid podria ser el idContratista, para poder contar los pagos que se hizo por contratista en el mes
     //$categoryid podria ser el idPlanilla, para poder contar los pagos que se hicieron a una planilla pagada este mes
+    //userID tambien se podria usar para ver los pagos hechos a un usuario en el mes
     //getNumberOfPaymentsByCategoryThisMonth
-    function getNumberOfPaymentsByCategoryThisMonth($peticionPagoId, $userId){
+    function getNumberOfPaymentsByUserThisMonth($peticionPagoId, $userId){
         try{
             $total = 0;
             $year = date('Y');

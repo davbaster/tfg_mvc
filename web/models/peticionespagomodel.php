@@ -8,10 +8,10 @@ class PeticionesPagoModel extends Model implements IModel {
     private $fechaCreacion;//fecha en que se crea la peticion de pago
     private $idContrato; //TODO se va a usar si se crea modulo contratos
     private $monto;
-    private $estadoPago; //pagado, pendiente de pago, pago parcial = pendiente //TODO revisar si esta nomencleatura es la mejor
+    private $estado; //pending, parcial, pagado //TODO revisar si esta nomencleatura es la mejor
     private $aprobado; //true or false , aprobado por un admin para ser pagado
     
-    private $pagos;//array que almacena los ids de pagos hechos //TODO ponerlo en la DB
+    private $pagos;//array que almacena los ids de pagos hechos //TODO ponerlo en la DB, revisar si esta nomencleatura es la mejor
     
     private $listaUsuariosPagar;//TODO lista de peticiones de pago a trabajadores que estan incluidas en la peticion de pago (planilla)
                                 //cuando se aprueba la peticion de pago, todas ellas se aprueban automaticamente
@@ -24,15 +24,15 @@ class PeticionesPagoModel extends Model implements IModel {
 
     public function save(){
         try{
-            $query = $this->prepare('INSERT INTO peticiones_pago (id, cedula, fecha_creacion, id_contrato, monto, estado_pago, aprobado, detalles) 
-                                    VALUES(:id,:cedula, :fechaCreacion, :idContrato, :monto, :estadoPago, :aprobado, :detalles)');
+            $query = $this->prepare('INSERT INTO peticiones_pago (id, cedula, fecha_creacion, id_contrato, monto, estado_pago, estado, detalles) 
+                                    VALUES(:id,:cedula, :fechaCreacion, :idContrato, :monto, :estadoPago, :estado, :detalles)');
             $query->execute([
                 'id' => $this->id,
                 'cedula' => $this->cedula, 
                 'fechaCreacion' => $this->fechaCreacion,
                 'idContrato' => $this->idContrato,
                 'monto' => $this->monto,
-                'estadoPago' => $this->estadoPago,
+                'estado' => $this->estado,
                 'aprobado' => $this->aprobado,
                 'detalles' => $this->detalles
             ]);
@@ -107,7 +107,7 @@ class PeticionesPagoModel extends Model implements IModel {
                                                     id_contrato = :idContrato, 
                                                     monto = :monto, 
                                                     estado_pago = :estadoPago, 
-                                                    aprobado = :aprobado,  
+                                                    estado = :estado,  
                                                     detalles = :detalles WHERE id = :id');
             $query->execute([
                 'id' => $this->id,
@@ -115,7 +115,7 @@ class PeticionesPagoModel extends Model implements IModel {
                 'fechaCreacion' => $this->fechaCreacion,
                 'idContrato' => $this->idContrato,
                 'monto' => $this->monto,
-                'estadoPago' => $this->estadoPago,
+                'estado' => $this->estado,
                 'aprobado' => $this->aprobado,
                 'detalles' => $this->detalles
             ]);
@@ -137,7 +137,7 @@ class PeticionesPagoModel extends Model implements IModel {
         $this->setIdContrato        ( $array['idContrato'] ) ;
         $this->setMonto             ( $array['monto'] ) ;
         $this->setEstadoPago        ($array['estadoPago'] ) ;
-        $this->setAprobado          ( $array['aprobado'] ) ;
+        $this->setEstado        ( $array['estado'] ) ;
         $this->setDetalles          ( $array['detalles'] ) ;
 
     }
@@ -163,6 +163,71 @@ class PeticionesPagoModel extends Model implements IModel {
     }
 
 
+    //saca de la base de datos todos las peticiones de pagos que esten pendientes de aprobacion
+    //retorna arreglo de pagos pendientes
+    public function getPeticionesPendientesAprobacion(){
+
+        $items = [];//arreglo de objetos de tipo pago
+
+        $estado = "open";//open, aprobado, denegado
+        $estadoPago = "pending"; //pending, parcial, pagado
+
+        try{
+            
+            $query = $this->prepare('SELECT * FROM peticiones_pagos WHERE estado = :estado');
+            //$query = $this->prepare('SELECT * FROM pagos WHERE id = :id');
+            $query->execute([ 'estado' => $estado]);
+
+            //mientras que exista un objeto no null
+            while($p = $query->fetch(PDO::FETCH_ASSOC)){
+                $item = new PeticionesPagoModel();
+                //rellena objeto con informacion
+                $item->from($p); 
+                
+                array_push($items, $item);
+            }
+
+            return $items;
+
+        }catch(PDOException $e){
+            return false;
+        }
+    }
+
+
+    //saca de la base de datos todos las peticiones de pagos que esten pendientes de pago
+    //retorna arreglo de peticiones de pago pendientes
+    public function getPeticionesPendientesPago(){
+
+        $items = [];//arreglo de objetos de tipo pago
+
+        $estado = "aprobado";//open, aprobado, denegado
+        $estadoPago = "pending"; //pending, pagado
+
+        try{
+            
+            $query = $this->prepare('SELECT * FROM peticiones_pagos WHERE estado = :estado AND estado_pago = :estadopago');
+            //$query = $this->prepare('SELECT * FROM pagos WHERE id = :id');
+            $query->execute([ 'estado' => $estado,
+                            'estadopago' => $estadoPago]);
+
+            //mientras que exista un objeto no null
+            while($p = $query->fetch(PDO::FETCH_ASSOC)){
+                $item = new PeticionesPagoModel();
+                //rellena objeto con informacion
+                $item->from($p); 
+                
+                array_push($items, $item);
+            }
+
+            return $items;
+
+        }catch(PDOException $e){
+            return false;
+        }
+    }
+
+
 
     //setters
 
@@ -172,7 +237,7 @@ class PeticionesPagoModel extends Model implements IModel {
     public function setIdContrato($idContrato){$this->idContrato = $idContrato;}
     public function setMonto($monto){$this->monto = $monto;}
     public function setEstadoPago($estadoPago){$this->estadoPago = $estadoPago;}
-    public function setAprobado($aprobado){$this->aprobado = $aprobado;}
+    public function setEstado($estado){$this->estado = $estado;}
     public function setDetalles($detalles){$this->detalles = $detalles;}
 
     public function setListaUsuariosPagar($listaUsuariosPagar){$this->listaUsuariosPagar = $listaUsuariosPagar;}//TODO guarda cada uno de los pagos a trabajadores, 
@@ -188,7 +253,7 @@ class PeticionesPagoModel extends Model implements IModel {
     public function getIdContrato(){ return $this->idContrato;}
     public function getMonto(){ return $this->monto;}
     public function getEstadoPago(){ return $this->estadoPago;}
-    public function getAprobado(){ return $this->aprobado;}
+    public function getEstado(){ return $this->estado;}
     public function getDetalles(){ return $this->detalles;}
 
     public function getListaUsuariosPagar(){ return $this->listaUsuariosPagar;} 

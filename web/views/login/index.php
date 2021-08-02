@@ -16,12 +16,12 @@
             <h2>Iniciar sesión</h2>
 
             <p>
-                <label for="username">Username</label>
-                <input type="text" name="username" id="username" autocomplete="off">
+                <label for="cedula">Cedula</label>
+                <input type="text" name="cedula" id="cedula" autocomplete="off">
             </p>
             <p>
-                <label for="password">password</label>
-                <input type="password" name="password" id="password" autocomplete="off">
+                <label for="password">Clave</label>
+                <input type="password" name="contrasena" id="contrasena" autocomplete="off">
             </p>
             <p>
                 <input type="submit" value="Iniciar sesión" />
