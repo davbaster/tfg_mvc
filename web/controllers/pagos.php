@@ -1,6 +1,7 @@
 <?php
 
 require_once 'models/joinpagospeticionesmodel.php';
+require_once 'models/peticionespagomodel.php';
 
 
 class Pagos extends SessionController{ 
@@ -58,7 +59,7 @@ class Pagos extends SessionController{
 
      // carga vista para nuevas peticion pago UI
      function create(){
-        $peticionPago = new PeticionModel();
+        $peticionPago = new PeticionesPagoModel();
         $this->view->render('pagos/create', [
             "peticionPago" => $peticionPago->getAll(),
             "user" => $this->user
@@ -118,22 +119,6 @@ class Pagos extends SessionController{
     }
 
 
-    // crea una lista con los colores dependiendo de las categorias
-    //color esta en tabla peticiones_pago
-    //color podria se contrato, contratista
-    private function getCategoryColorList(){
-        $res = [];
-        $joinModel = new JoinPagosPeticionesModel();
-        $peticiones = $joinModel->getAll($this->user->getId());
-
-        foreach ($peticiones as $p) {
-            array_push($res, $p->getColor());
-        }
-        $res = array_unique($res);
-        $res = array_values(array_unique($res));
-
-        return $res;
-    }
 
 
     // devuelve todos los elementos de un arreglo como si fuera un JSON para las llamadas AJAX
@@ -154,6 +139,7 @@ class Pagos extends SessionController{
     
     //getExpensesJSON
     function getPagosJSON(){
+        headder('Access-Control-Allow-Origin: http://127.0.0.1:41062');
         header('Content-Type: application/json');
 
         $res = [];

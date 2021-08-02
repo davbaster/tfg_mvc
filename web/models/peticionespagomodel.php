@@ -9,11 +9,11 @@ class PeticionesPagoModel extends Model implements IModel {
     private $idContrato; //TODO se va a usar si se crea modulo contratos
     private $monto;
     private $estado; //pending, parcial, pagado //TODO revisar si esta nomencleatura es la mejor
-    private $aprobado; //true or false , aprobado por un admin para ser pagado
+   
     
     private $pagos;//array que almacena los ids de pagos hechos //TODO ponerlo en la DB, revisar si esta nomencleatura es la mejor
     
-    private $listaUsuariosPagar;//TODO lista de peticiones de pago a trabajadores que estan incluidas en la peticion de pago (planilla)
+    //private $listaUsuariosPagar;//TODO lista de peticiones de pago a trabajadores que estan incluidas en la peticion de pago (planilla)
                                 //cuando se aprueba la peticion de pago, todas ellas se aprueban automaticamente
     private $detalles;//horas trabajadas por usuario, detalles adicionales
 
@@ -133,11 +133,11 @@ class PeticionesPagoModel extends Model implements IModel {
 
         $this->setId                ($array['id']) ;
         $this->setCedula            ($array['cedula'] ) ;
-        $this->setFechaCreacion     ( $array['fechaCreacion'] ) ;
-        $this->setIdContrato        ( $array['idContrato'] ) ;
+        $this->setFechaCreacion     ( $array['fecha_creacion'] ) ;
+        $this->setIdContrato        ( $array['id_contrato'] ) ;
         $this->setMonto             ( $array['monto'] ) ;
-        $this->setEstadoPago        ($array['estadoPago'] ) ;
-        $this->setEstado        ( $array['estado'] ) ;
+        $this->setEstadoPago        ($array['estado_pago'] ) ;
+        $this->setEstado            ( $array['estado'] ) ;
         $this->setDetalles          ( $array['detalles'] ) ;
 
     }
@@ -170,11 +170,11 @@ class PeticionesPagoModel extends Model implements IModel {
         $items = [];//arreglo de objetos de tipo pago
 
         $estado = "open";//open, aprobado, denegado
-        $estadoPago = "pending"; //pending, parcial, pagado
+        //$estadoPago = "pending"; //pending, parcial, pagado
 
         try{
             
-            $query = $this->prepare('SELECT * FROM peticiones_pagos WHERE estado = :estado');
+            $query = $this->prepare('SELECT * FROM peticiones_pago WHERE estado = :estado');
             //$query = $this->prepare('SELECT * FROM pagos WHERE id = :id');
             $query->execute([ 'estado' => $estado]);
 
@@ -206,7 +206,7 @@ class PeticionesPagoModel extends Model implements IModel {
 
         try{
             
-            $query = $this->prepare('SELECT * FROM peticiones_pagos WHERE estado = :estado AND estado_pago = :estadopago');
+            $query = $this->prepare('SELECT * FROM peticiones_pago WHERE estado = :estado AND estado_pago = :estadopago');
             //$query = $this->prepare('SELECT * FROM pagos WHERE id = :id');
             $query->execute([ 'estado' => $estado,
                             'estadopago' => $estadoPago]);

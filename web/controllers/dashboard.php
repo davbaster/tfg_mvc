@@ -2,6 +2,7 @@
 
 require_once 'models/pagosmodel.php';
 require_once 'models/peticionespagomodel.php';
+require_once 'models/joinpagospeticionesmodel.php';
 
 class Dashboard extends SessionController{
 
@@ -18,30 +19,29 @@ class Dashboard extends SessionController{
     //
     function render(){
         error_log("Dashboard::RENDER() ");
-        // $pagosModel             = new PagosModel();
-        // $pagos                  = $this->getPagos(5);
-        // $totalThisMonth         = $pagosModel->getTotalAmountThisMonth($this->user->getId());
-        // $maxExpensesThisMonth   = $pagosModel->getMaxPaymentThisMonth($this->user->getId());
-        // $peticionesPagos        = $this->getPeticionesPagos();
 
 
-        $pagosModel             = new PagosModel();
-        $pagosPendientes        = $pagosModel->getPagosPendientes();
+        //$pagosModel             = new PagosModel();
+        //$pagosPendientes        = $pagosModel->getPagosPendientes();
 
         $peticionesPagoModel    = new PeticionesPagoModel();
-        $petiPendientesPagar    = $peticionesPagoModel->getPeticionesPendientesPago();//planillas (peticiones pago) aprobadas y pendientes de pago
         $petiPendientesAprobar  = $peticionesPagoModel->getPeticionesPendientesAprobacion();//planillas (peticiones pago) pendientes de aprobar
+        $petiPendientesPagar    = $peticionesPagoModel->getPeticionesPendientesPago();//planillas (peticiones pago) aprobadas y pendientes de pago
 
+        //$joinPagosPeticionesModel = new JoinPagosPeticionesModel();
+        //$pagosPendientes          = $joinPagosPeticionesModel->getAllPagosPendientes();
+        $pagosPendientes            = $this->getPagosPorCancelar();
 
-
-
+        $pagosRecientes             = $this->getPagosRecientes();
         
 
         $this->view->render('dashboard/index', [
             'user'                      => $this->user,
             'pagosPendientes'           => $pagosPendientes,
             'petiPendientesPagar'       => $petiPendientesPagar,
-            'petiPendientesAprobar'     => $petiPendientesAprobar
+            'petiPendientesAprobar'     => $petiPendientesAprobar,
+            'pagosRecientes'            => $pagosRecientes,
+            'petiRecientes'             => $petiRecientes
             
         ]);
     }
@@ -56,43 +56,59 @@ class Dashboard extends SessionController{
     }
 
 
-    //getCategories
-    function getPeticionesPagos(){
+    //obtine los pagos con estado de pending ,
+    //getPetiPagosPorAprobar
+    function getPagosPorCancelar(){
         $res = [];
-        $peticionesPagoModel = new PeticionesPagoModel();
-        $pagosModel = new PagosModel();
+        $joinPagosPeticionesModel = new JoinPagosPeticionesModel();
+        $pagosPendientes          = $joinPagosPeticionesModel->getAllPagosPendientes();
 
-        $peticiones = $peticionesPagoModel->getAll();
+        
+        foreach ($pagosPendientes as $p) {
+            $descripcion = [];
+ 
+            $descripcion['cedula'] = $p->getPagoId();
+            $descripcion['nombre'] = $p->getNombre();
+            $descripcion['apellido1'] = $p->getApellido();
+            $descripcion['monto'] = $p->getAmount();
+            $descripcion['planilla'] = $p->getPeticionPagoId();
+            $descripcion['fecha'] = $p->getDate();
 
-        foreach ($peticiones as $p) {
-            $peticionesArray = [];
-            //obtenemos la suma de amount de expenses por categoria
-            $total = $pagosModel->getTotalByCategoryThisMonth($p->getId(), $this->user->getId());
-            // obtenemos el número de expenses por categoria por mes
-            $numberOfPagos = $pagosModel->getNumberOfExpensesByCategoryThisMonth($p->getId(), $this->user->getId());
-            
-            if($numberOfPagos > 0){
-                $peticionesArray['total'] = $total;
-                $peticionesArray['count'] = $numberOfPagos;
-                $peticionesArray['peticion'] = $p;
-                array_push($res, $peticionesArray);
-            }
+            array_push($res, $descripcion); //va llenando un array $res con otro array $descripcion
+
             
         }
         return $res;
     }
 
-    //getExpenses
-    // public function getPagos(){
 
 
+    //pagos recientes
+    function getPagosRecientes(){
+        $res = [];
+        $joinPagosPeticionesModel = new JoinPagosPeticionesModel();
+        $pagosRecientes          = $joinPagosPeticionesModel->getPagosRecientes();
 
-    // }
+        
+        foreach ($pagosRecientes as $p) {
+            $descripcion = [];
+ 
+            $descripcion['cedula'] = $p->getPagoId();
+            $descripcion['nombre'] = $p->getNombre();
+            $descripcion['apellido1'] = $p->getApellido();
+            $descripcion['monto'] = $p->getAmount();
+            $descripcion['planilla'] = $p->getPeticionPagoId();
+            $descripcion['fecha'] = $p->getDate();
 
-    //getPlanillas
-    public function getCategories(){
+            array_push($res, $descripcion); //va llenando un array $res con otro array $descripcion
 
+            
+        }
+        return $res;
     }
+
+
+
 
 
 }

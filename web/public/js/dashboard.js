@@ -37,7 +37,7 @@ btnExpense.addEventListener('click', async e =>{
 });
 
 async function getContent(){
-  const html = await fetch('http://localhost:41062/www/admin/pagos/create').then(res => res.text());
+  const html = await fetch('http://localhost:41062/www/pagos/create').then(res => res.text());
   return html;   
 }
 
@@ -45,7 +45,7 @@ google.charts.load('current', {'packages':['bar']});
       google.charts.setOnLoadCallback(drawChart);
 
       async function drawChart() {
-        const http = await fetch('http://localhost:41062/www/admin/pagos/getPagosJSON')
+        const http = await fetch('http://localhost:41062/www/pagos/getPagosJSON')
         .then(json => json.json())
         .then(res => res);
 

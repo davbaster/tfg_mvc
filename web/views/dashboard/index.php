@@ -1,9 +1,14 @@
 <?php
 
+    require_once 'models/pagosmodel.php';
+    require_once 'models/peticionespagomodel.php';
+
     $user                      = $this->d['user'];
     $pagosPendientes           = $this->d['pagosPendientes'];
     $petiPendientesPagar       = $this->d['petiPendientesPagar'];
     $petiPendientesAprobar     = $this->d['petiPendientesAprobar'];
+    $pagosRecientes            = $this->d['pagosRecientes'];
+    $petiRecientes            = $this->d['petiRecientes'];
 
 ?>
 <html lang="en">
@@ -108,9 +113,53 @@
                 </div>
 
                 <div id="expenses-category">
-                    <h2>Gastos del mes por categoria</h2>
+                    <h2>Planillas pendientes de aprobacion</h2>
                     <div id="categories-container">
-                        
+                        <?php
+                            //peticionPago pagada mas alta en el mes
+                            if($petiPendientesAprobar == NULL){
+                                echo 'No hay Planillas que aprobar.';
+                            }else{
+                                    foreach($petiPendientesAprobar as $p){ ?>
+
+                                        <div class="card w-30 bs-1" style="background-color: coral" >
+                                            <div class="content category-name">
+                                                <?php echo $p->getFechaCreacion(); ?>
+                                            </div>
+                                            <div class="title category-total">$<?php echo $p->getMonto(); ?></div>
+                                        </div>
+
+
+
+                                    <?php }?>
+                        <?php }?>
+                    </div>
+                </div>
+
+                <div id="expenses-category">
+                    <h2>Pagos pendientes</h2>
+                    <div id="categories-container">
+                        <?php
+                            //peticionPago pagada mas alta en el mes
+                            if($pagosPendientes == NULL){
+                                echo 'No hay pagos por hacer.';
+                            }else{
+                                    foreach($pagosPendientes as $p){ ?>
+
+                                        <div class="card w-30 bs-1" style="background-color: coral" >
+                                            <div class="content category-name">
+                                                <?php echo $p['fecha']; ?>
+                                            </div>
+                                            <div class="content category-name">
+                                                <?php echo $p['nombre'] . ' ' . $p['apellido1']; ?>
+                                            </div>
+                                            <div class="title category-total">$<?php echo $p['monto']; ?></div>
+                                        </div>
+
+
+
+                                    <?php }?>
+                        <?php }?>
                     </div>
                 </div>
             </div>
@@ -128,7 +177,27 @@
                     </section>
 
                     <section id="expenses-recents">
-                    <h2>Registros más recientes</h2>
+                    <h2>Pagos recientes</h2>
+                    <?php
+                        if($pagosRecientes == NULL){
+                            echo 'No hay pagos recientes.';
+                        }else{
+                                foreach($pagosRecientes as $p){ ?>
+
+                                    <div class="preview-expense">
+                                        <div class="left">
+                                            <div class="expense-date"><?php echo $p['fecha']; ?></div>
+                                            <div class="expense-date"><?php echo $p['nombre'] . ' ' . $p['apellido1']; ?></div>
+                                        </div>
+                                        <div class="right">
+                                            <div class="expense-amount">$<?php echo $p['monto']; ?></div>
+                                        </div>
+                                    </div>
+
+
+
+                                <?php }?>
+                        <?php }?>
                     
                     </section>
                 </div>
