@@ -50,12 +50,12 @@ class User extends SessionController{
 
     //
     function updateName(){
-        if(!$this->existPOST(['nombre'])){
+        if(!$this->existPOST(['name'])){
             $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATENAME]);
             return;
         }
 
-        $name = $this->getPost('nombre');//buscamos por nombre
+        $name = $this->getPost('name');//buscamos por nombre
 
         if(empty($name) || $name == NULL){
             $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATENAME]);
@@ -113,13 +113,14 @@ class User extends SessionController{
 
     //
     function updatePhoto(){
+        //CAMBIOS: cambie la variable foto a photo
         error_log("USERCONTROLLER::updatePhoto() started");
 
-        if(!isset($_FILES['foto'])){//si no existe
+        if(!isset($_FILES['photo'])){//si no existe
             $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPHOTO]);
             return;
         }
-        $photo = $_FILES['foto'];
+        $photo = $_FILES['photo'];
 
         $target_dir = "public/img/photos/";
         $extarr = explode('.',$photo["name"]);//divide el nombre en el punto en un arreglo

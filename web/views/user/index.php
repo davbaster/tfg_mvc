@@ -1,3 +1,6 @@
+<?php
+    $user = $this->d['user'];
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -32,20 +35,25 @@
             <div id="user-section-container">
                 
                 <section id="info-user-container">
-                    <form action=<?php echo constant('URL'). '/user/updateNombre' ?> method="POST">
+                    <form action=<?php echo constant('URL'). '/user/updateName' ?> method="POST">
                         <div class="section">
                             <label for="name">Nombre</label>
-                            <input type="text" name="name" id="name" autocomplete="off" required value="">
+                            <input type="text" name="name" id="name" autocomplete="off" required value="<?php echo $user->getNombre() ?>">
                             <div><input type="submit" value="Cambiar nombre" /></div>
                         </div>
                     </form>
 
-                    <form action="<?php echo constant('URL'). '/user/updateFoto' ?>" method="POST" enctype="multipart/form-data">
+                    <form action="<?php echo constant('URL'). '/user/updatePhoto' ?>" method="POST" enctype="multipart/form-data">
                         <div class="section">
                             <label for="photo">Foto de perfil</label>
+                            <?php
+                                if(!empty($user->getFoto())){
+                            ?>
 
-                                <img src="<?php echo constant('URL') ?>/public/img/photos/" width="50" height="50" />
-                            
+                                <img src="<?php echo constant('URL') ?>/public/img/photos/<?php echo $user->getFoto() ?>" width="50" height="50" />
+                            <?php
+                                }
+                            ?>
                             <input type="file" name="photo" id="photo" autocomplete="off" required>
                             <div><input type="submit" value="Cambiar foto de perfil" /></div>
                         </div>

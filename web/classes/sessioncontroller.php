@@ -165,7 +165,7 @@ class SessionController extends Controller {
 
         // para cada sitio entonces
         //Recordar que cada form es visto como un sitio, aunque sea un popup form
-        //entonces se le tiene que poner en el access.json
+        //entonces se le tiene que poner en el access.json con sus respectivos permisos
         for($i = 0; $i < sizeof($this->sites); $i++){
 
             // verifica si el url actual tiene nivel accesso publico

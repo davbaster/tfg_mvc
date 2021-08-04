@@ -170,10 +170,10 @@
                         <h2>Operaciones</h2>  
                         
                         <button class="btn-main" id="new-expense">
-                            <i class="material-icons"></i>
-                            <span>Nueva Planilla</span>
+                            <i class="material-icons">add</i>
+                            <span>Nuevo Pago</span>
                         </button>
-                        <a href="<?php echo constant('URL'); ?>user#budget-user-container">Listar Planilla<i class="material-icons">keyboard_arrow_right</i></a>
+                        <a href="<?php echo constant('URL'); ?>/user#budget-user-container">Definir Planilla<i class="material-icons">keyboard_arrow_right</i></a>
                     </section>
 
                     <section id="expenses-recents">
