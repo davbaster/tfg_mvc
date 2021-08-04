@@ -139,7 +139,7 @@ class SessionController extends Controller {
         $this->user = new UserModel();
         // obtenemos los datos del usuario desde la BD
         $this->user->get($idCedula);
-        error_log('SESSIONCONTROLLER::getUserSessionData -> ' . $this->user->getName());
+        error_log('SESSIONCONTROLLER::getUserSessionData -> ' . $this->user->getNombre());
         // retornamos el usuario con la informacion extraida desde la BD
         return $this->user;
     }
@@ -164,6 +164,8 @@ class SessionController extends Controller {
         $currentURL = preg_replace('/\?.*/', "", $currentURL); 
 
         // para cada sitio entonces
+        //Recordar que cada form es visto como un sitio, aunque sea un popup form
+        //entonces se le tiene que poner en el access.json
         for($i = 0; $i < sizeof($this->sites); $i++){
 
             // verifica si el url actual tiene nivel accesso publico

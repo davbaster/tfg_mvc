@@ -31,9 +31,13 @@
             "role":"admin"
         },
         {
-            "site": "planillas",
+            "site": "peticionespago",
             "access": "private",
             "role":"user"
+        },{
+            "site": "peticionespago",
+            "access": "private",
+            "role":"admin"
         },
         {
             "site": "reportes",
@@ -42,6 +46,11 @@
         },
         {
             "site": "user",
+            "access": "private",
+            "role":"admin"
+        },
+        {
+            "site": "create",
             "access": "private",
             "role":"admin"
         }
