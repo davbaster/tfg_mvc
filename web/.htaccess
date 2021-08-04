@@ -4,3 +4,14 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-l
 #redirecciona cualquier url a index. Cada uno de parametros despues .php van a estar referenciados a traves del parametro url
 RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
+
+#enable CORS for all sites "*" 
+#https://stackoverflow.com/questions/13421463/htaccess-access-control-allow-origin
+#<FilesMatch "\.(js)$"> //if enabled,  allows only js files
+
+    <IfModule mod_headers.c>
+        Header set Access-Control-Allow-Origin "*"
+    </IfModule>
+
+
+#</FilesMatch>

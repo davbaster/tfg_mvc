@@ -228,6 +228,42 @@ class PeticionesPagoModel extends Model implements IModel {
     }
 
 
+     //getExpensesJSON
+     function getPagosJSON(){
+
+        header('Content-Type: application/json');
+
+        $res = [];
+        $peticionesPagoIds     = $this->getPeticionesPagoIds();//esta en esta misma clase, linea 67
+        $peticionPagoNames  = $this->getPeticionPagoList(); //linea 105
+        $categoryColors = $this->getCategoryColorList();
+
+        //acomodando informacion para google chart
+        array_unshift($peticionPagoNames, 'mes');
+        array_unshift($categoryColors, 'categorias');
+        /* array_unshift($categoryNames, 'categorias');
+        array_unshift($categoryColors, NULL); */
+
+        $months = $this->getDateList();
+
+        //itera entre los ids y los meses para acomodar los pagos
+        //crea matriz
+        for($i = 0; $i < count($months); $i++){
+            $item = array($months[$i]);
+            for($j = 0; $j < count($peticionesPagoIds); $j++){
+                $total = $this->getTotalByMonthAndCategory( $months[$i], $peticionesPagoIds[$j]);
+                array_push( $item, $total );
+            }   
+            array_push($res, $item);
+        }
+        
+        array_unshift($res, $peticionPagoNames);
+        array_unshift($res, $categoryColors);
+        
+        echo json_encode($res);
+    }
+
+
 
     //setters
 

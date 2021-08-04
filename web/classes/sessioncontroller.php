@@ -24,6 +24,20 @@ class SessionController extends Controller {
         $this->init();
     }
 
+    //getters
+    public function getUserSession(){
+        return $this->userSession;
+    }
+
+    public function getUsername(){
+        return $this->username;
+    }
+
+    public function getUserId(){
+        return $this->userid;
+    }
+
+
     // crea una nueva session
     // le asigna un role a la sesion
     function init(){
@@ -63,13 +77,16 @@ class SessionController extends Controller {
             if($this->isPublic()){
                 //Esto se puede quitar si siempre queremos que el usuario se tenga que loguear.
                 // manda al usuario a su dashboard
+                error_log( "SessionController::validateSession() => sitio público, redirige al main de cada rol" );
                 $this->redirectDefaultSiteByRole($role);
             }else{
                 // si esta autorizado
                 if($this->isAuthorized($role) ){
                     // lo dejo pasar
+                    error_log( "SessionController::validateSession() => autorizado, lo deja pasar" );
 
                 }else{
+                    error_log( "SessionController::validateSession() => no autorizado, redirige al main de cada rol" );
                     // si no esta autorizado
                     // lo redirijo a su pagina default (El Dashboard)
                     $this->redirectDefaultSiteByRole($role);
@@ -78,12 +95,15 @@ class SessionController extends Controller {
             }
         }else{
             // no existe la session
+            //se valida si el accesso es publico o no
             if($this->isPublic() ){
+                error_log('SessionController::validateSession() public page');
                 // pagina publica
                 // no pasa nada, lo deja entrar
             }else{
                 // pagina  es privada
                 // redirige al usuario al index (pagina login )
+                error_log('SessionController::validateSession() redirect al login');
                 header('Location: ' . constant('URL') . '/' . '');
 
             }
@@ -124,6 +144,16 @@ class SessionController extends Controller {
         return $this->user;
     }
 
+
+    // Lo utiliza Controller::login->authenticate
+    function initialize($user){
+    
+        //error_log('SessionController:initialize -> cedula : '. $user->getCedula() );//DEBUGGING: Para revisar datos del objeto
+        $this->session->setCurrentUser($user->getCedula());
+        $this->authorizeAccess($user->getRol());
+    }
+
+
     // verifica si la pagina es publica
     function isPublic(){
 
@@ -149,19 +179,6 @@ class SessionController extends Controller {
 
     }
 
-
-    //convierte el url en un arreglo y devuelve el string despues del http
-    function getCurrentPage(){
-        $actualLink = trim("$_SERVER[REQUEST_URI]");
-        // divide el url en partes cada vez que se encuentra /
-        $url = explode('/', $actualLink);
-        error_log('SESSIONCONTROLLER::getCurrentPage -> ' . $url[2]);
-
-        // regresa despues del http
-        return $url[2];
-    }
-
-
     // redirige al usuario a su pagina por defecto dependiendo del rol, si ya tiene una session abierta
     // Si yo siempre quiero que se tenga que loguear, creo que no habria que llamar el metodo
     //POSIBLE ERROR: si estoy en un sitio autorizado para mi rol, porque me va a dirigir al sitio por defecto para mi rol?
@@ -173,14 +190,15 @@ class SessionController extends Controller {
             if($this->sites[$i]['role'] == $role){
                 //dado role user
                 //            /www/dashboard
-                //$url = '/www/' . $this->sites[$i]['site'];
-                $url = '/' . $this->sites[$i]['site'];
+                $url = '/www/' . $this->sites[$i]['site'];
+                //$url = '/' . $this->sites[$i]['site'];
                 break;
             }
         }
         // voy a redirigir a
         error_log('SESSIONCONTROLLER::redirectDefaultSiteByRole -> ' . constant('URL') . $url );
-        header('location:' . constant('URL') . $url );
+        //header('location:' . constant('URL') . $url );//TODO si despues de terminada la app, se puede borrar esta linea
+        header('location:' . $url );
 
     }
 
@@ -210,20 +228,25 @@ class SessionController extends Controller {
 
     }
 
-    // Lo utiliza Controller::login->authenticate
-    function initialize($user){
-        
-        //error_log('SessionController:initialize -> cedula : '. $user->getCedula() );//DEBUGGING: Para revisar datos del objeto
-        $this->session->setCurrentUser($user->getCedula());
-        $this->authorizeAccess($user->getRol());
+
+    //convierte el url en un arreglo y devuelve el string despues del http
+    function getCurrentPage(){
+        $actualLink = trim("$_SERVER[REQUEST_URI]");
+        // divide el url en partes cada vez que se encuentra /
+        $url = explode('/', $actualLink);
+        error_log("sessionController::getCurrentPage(): actualLink =>" . $actualLink . ", url => " . $url[2]);
+
+        // regresa despues del http
+        return $url[2];
     }
 
 
+    
     // devuelve al usuario a su pagina (dashboard) por defecto
     // dependiendo de su role
     function authorizeAccess($rol){
 
-        //error_log('SessionController:authorizeAccess -> rol : '. $rol );//DEBUGGING: Para revisar datos del objeto
+        error_log('SessionController:authorizeAccess -> rol : '. $rol );//DEBUGGING: Para revisar datos del objeto
 
         switch ($rol) {
             case 'user':
@@ -232,7 +255,9 @@ class SessionController extends Controller {
 
             case 'admin':
                 $this->redirect($this->defaultSites['admin'], []);
+                
                 break;
+            default:
             
         }
     }

@@ -2,10 +2,10 @@
 
 require_once 'models/joinpagospeticionesmodel.php';
 require_once 'models/peticionespagomodel.php';
-require_once 'models/pagomodel.php';
+require_once 'models/pagosmodel.php';
 
 
-class Pagos extends SessionController{ 
+class PeticionesPago extends SessionController{ 
 
 
     private $user;
@@ -14,33 +14,34 @@ class Pagos extends SessionController{
         parent::__construct();
 
         $this->user = $this->getUserSessionData();
-        error_log("Pagos::constructor() ");
+        error_log("PeticionesPagos::constructor() ");
     }
 
 
     //muestra la vista
     function render(){
-        error_log("Pagos::RENDER() ");
+        error_log("PeticionesPagos::RENDER() ");
 
-        $this->view->render('pagos/index', [
+        $this->view->render('peticionespago/index', [
             'user' => $this->user,
-            'dates' => $this->getDateList(),
-            'peticionesPago' => $this->getPeticionesPagoList()//peticiones_pago
+            'dates' => $this->getDateList(),//FIXME se le tiene que mandar dates para algo?
+            'peticionesPago' => $this->getPeticionesPagoList()//peticiones_pago//TODO hay que revisar si esta utilizando el metodo adecuado,
+                                                                               //TODO este metodo deberia de pasar la informacion como un array no objetos
             //'categories' => $this->getCategoryList()//BORRAR si no es necesario
         ]);
     }
 
 
-    //
-    function newPago(){
+    //FIXME arreglar metodo, los campos del arreglo de existPOST son incorrectos
+    function newPeticionPago(){
         error_log('Pagos::newPago()');
         if(!$this->existPOST(['title', 'amount', 'peticion_pago', 'date'])){//si no existe el post con los parametros
-            $this->redirect('dashboard', ['error' => Errors::ERROR_PAGOS_NEWPAGO_EMPTY]);
+            $this->redirect('dashboard', ['error' => Errors::ERROR_PETICIONPAGOS_NEWPETICION_EMPTY]);//TODO agregar error al errormessages.php
             return;
         }
 
         if($this->user == NULL){//valida session no esta vacia
-            $this->redirect('dashboard', ['error' => Errors::ERROR_PAGOS_NEWPAGO]);
+            $this->redirect('dashboard', ['error' => Errors::ERROR_PETICIONPAGOS_NEWPETICION]);//TODO agregar error al errormessages.php
             return;
         }
 
@@ -54,20 +55,38 @@ class Pagos extends SessionController{
         $pago->setUserId($this->user->getId());
 
         $pago->save();
-        $this->redirect('dashboard', ['success' => Success::SUCCESS_PAGOS_NEWPAGO]);
+        $this->redirect('dashboard', ['success' => Success::SUCCESS_PETICIONPAGOS_NEWPETICION]);//TODO agregar error al errormessages.php
     }
 
 
      // carga vista para nuevas peticion pago UI
      function create(){
-        $peticionPago = new PeticionesPagoModel();
-        $this->view->render('pagos/create', [
-            "peticionPago" => $peticionPago->getAll(),
+        $peticionModel = new PeticionesPagoModel();
+        $this->view->render('peticionespago/create', [
+            "peticionPago" => $peticionModel->getAll(), //este metodo trae todas las peticiones de pago como objetos, 
+                                                       //TODO deberia utilizar metodo que traiga las peticiones pendientes de pago y como un arreglo de datos
             "user" => $this->user
         ]);
-    } 
+    }
+    
+        //TODO borrar que?
+        function delete($params){
+            error_log("Pagos::delete()");
+            
+            if($params === NULL) $this->redirect('pagos', ['error' => Errors::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);//TODO agregar error al errormessages.php
+            $id = $params[0];
+            error_log("Pagos::delete() id = " . $id);
+            $res = $this->model->delete($id);
+    
+            if($res){//SI RES tiene un resultado
+                $this->redirect('pagos', ['success' => Success::SUCCESS_PETICIONPAGOS_DELETE]);//TODO agregar error al errormessages.php
+            }else{
+                $this->redirect('pagos', ['error' => Errors::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);//TODO agregar error al errormessages.php
+            }
+        }
 
-    //
+
+    //TODO revisar si metodo funciona, o hay otro metodo que ya hace lo que tiene que hacer este.
     function getPeticionesPagoIds(){
         $joinModel = new JoinPagosPeticionesModel();
         $peticiones = $joinModel->getAll($this->user->getId());//lista las peticiones de pago por id de user
@@ -82,8 +101,8 @@ class Pagos extends SessionController{
         return $res; //res contine un arreglo con IDs de peticiones de pago
     }
 
-
-     // crea una lista con los meses donde hay pagos
+     //TODO revisar si hace lo que tiene que hacer
+     // crea una lista con los meses donde hay peticiones de pago (Planillas)
      private function getDateList(){
         $months = [];
         $res = [];
@@ -104,6 +123,7 @@ class Pagos extends SessionController{
     }
 
 
+    //TODO revisar si este metodo debe de existir y si hay otro que hace la misma funcionalidad
     // crea una lista con las peticiones de Pago donde hay pagos
     // getCategoryList()
     private function getPeticionesPagoList(){
@@ -139,41 +159,42 @@ class Pagos extends SessionController{
     }
     
     // //getExpensesJSON
-    // function getPagosJSON(){
+    function getPeticionesPagoJSON(){
 
-    //     header('Content-Type: application/json');
+        header('Content-Type: application/json');
 
-    //     $res = [];
-    //     $peticionesPagoIds     = $this->getPeticionesPagoIds();//esta en esta misma clase, linea 67
-    //     $peticionPagoNames  = $this->getPeticionPagoList(); //linea 105
-    //     $categoryColors = $this->getCategoryColorList();
+        $res = [];
+        $peticionesPagoIds     = $this->getPeticionesPagoIds();//esta en esta misma clase, linea 67
+        $peticionPagoNames  = $this->getPeticionPagoList(); //linea 105
+        $categoryColors = $this->getCategoryColorList();
 
-    //     //acomodando informacion para google chart
-    //     array_unshift($peticionPagoNames, 'mes');
-    //     array_unshift($categoryColors, 'categorias');
-    //     /* array_unshift($categoryNames, 'categorias');
-    //     array_unshift($categoryColors, NULL); */
+        //acomodando informacion para google chart
+        array_unshift($peticionPagoNames, 'mes');
+        array_unshift($categoryColors, 'categorias');
+        /* array_unshift($categoryNames, 'categorias');
+        array_unshift($categoryColors, NULL); */
 
-    //     $months = $this->getDateList();
+        $months = $this->getDateList();
 
-    //     //itera entre los ids y los meses para acomodar los pagos
-    //     //crea matriz
-    //     for($i = 0; $i < count($months); $i++){
-    //         $item = array($months[$i]);
-    //         for($j = 0; $j < count($peticionesPagoIds); $j++){
-    //             $total = $this->getTotalByMonthAndCategory( $months[$i], $peticionesPagoIds[$j]);
-    //             array_push( $item, $total );
-    //         }   
-    //         array_push($res, $item);
-    //     }
+        //itera entre los ids y los meses para acomodar los pagos
+        //crea matriz
+        for($i = 0; $i < count($months); $i++){
+            $item = array($months[$i]);
+            for($j = 0; $j < count($peticionesPagoIds); $j++){
+                $total = $this->getTotalByMonthAndCategory( $months[$i], $peticionesPagoIds[$j]);
+                array_push( $item, $total );
+            }   
+            array_push($res, $item);
+        }
         
-    //     array_unshift($res, $peticionPagoNames);
-    //     array_unshift($res, $categoryColors);
+        array_unshift($res, $peticionPagoNames);
+        array_unshift($res, $categoryColors);
         
-    //     echo json_encode($res);
-    // }
+        echo json_encode($res);
+    }
 
 
+    //TODO revisar si se necesita este metodo o si solo para pagos
     //getTotalByMonthAndCategory
     //devuelve el total pagado segun el id de una peticion de pago
     function getTotalByMonthAndCategory($date, $peticionPagoId){
@@ -187,21 +208,7 @@ class Pagos extends SessionController{
     }
 
 
-    //
-    function delete($params){
-        error_log("Pagos::delete()");
-        
-        if($params === NULL) $this->redirect('pagos', ['error' => Errors::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);
-        $id = $params[0];
-        error_log("Pagos::delete() id = " . $id);
-        $res = $this->model->delete($id);
 
-        if($res){//SI RES tiene un resultado
-            $this->redirect('pagos', ['success' => Success::SUCCESS_PAGOS_DELETE]);
-        }else{
-            $this->redirect('pagos', ['error' => Errors::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);
-        }
-    }
 
 }
 

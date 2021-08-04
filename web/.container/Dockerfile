@@ -53,8 +53,8 @@ RUN chown -R www-data:www-data /var/www/html/
 #giving write permissions to folder - use when production
 #RUN chown -R www-data:www-data /www/public/
 
-#apache complements
-RUN a2enmod rewrite
+#apache complements 
+RUN a2enmod rewrite headers
 
 # Starts apache server
 CMD ["apache2-foreground"]

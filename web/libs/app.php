@@ -61,7 +61,8 @@
 
                             for($i = 0; $i < $nparam; $i++){
                                 // +2 para brincarse el nombre del controlador, y el metodo
-                                array_push($nparams, $url[$i] + 2);
+                                //array_push($nparams, $url[$i] + 2);
+                                array_push($nparams, $url[$i + 2]);
                             }
                             //mandando a llamar el metodo enviando parametros
                             $controller->{$url[1]}($nparams);  
@@ -74,7 +75,7 @@
                     }else{
                         // error, no existe el metodo
                         $controller = new Errores();
-                        $controller->render();
+                        //$controller->render(); //TODO ver si no se esta utilizando y borrar
                     }
 
                 }else{
@@ -88,7 +89,7 @@
                 // no existe archivo, despliega error
                 //metodo por defecto
                 $controller = new Errores();
-                $controller->render();
+                //$controller->render();//TODO ver si no se esta utilizando y borrar
             }
 
 

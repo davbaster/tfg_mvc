@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="public/css/default.css">
 <link rel="stylesheet" href="public/css/dashboard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 
 <div id="header">

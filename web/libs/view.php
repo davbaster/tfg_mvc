@@ -33,26 +33,51 @@
 
         // funcion que maneja los errores
         private function handleError(){
-            $hash = $_GET['error'];
-            $error = new ErrorMessages();
+            // $hash = $_GET['error'];
+            // $error = new ErrorMessages();
 
-            // valida si existe la clave que viene en la url
-            if($error->existKey($hash)){
-                $this->d['error'] = $error->get($hash);
+            // // valida si existe la clave que viene en la url
+            // if($error->existKey($hash)){
+            //     $this->d['error'] = $error->get($hash);
 
+            // }
+
+            if(isset($_GET['error'])){
+                $hash = $_GET['error'];
+                $errors = new ErrorMessages();
+    
+                if($errors->existKey($hash)){
+                    error_log('View::handleError() existsKey =>' . $errors->get($hash));
+                    $this->d['error'] = $errors->get($hash);
+                }else{
+                    $this->d['error'] = NULL;
+                }
             }
+
         }
 
 
         // funcion que maneja los exitos
         private function handleSuccess(){
-            $hash = $_GET['success'];
-            $success = new SuccessMessages();
+            // $hash = $_GET['success'];
+            // $success = new SuccessMessages();
 
-            // valida si existe la clave que viene en la url
-            if($success->existKey($hash)){
-                $this->d['success'] = $success->get($hash);
+            // // valida si existe la clave que viene en la url
+            // if($success->existKey($hash)){
+            //     $this->d['success'] = $success->get($hash);
 
+            // }
+
+            if(isset($_GET['success'])){
+                $hash = $_GET['success'];
+                $success = new SuccessMessages();
+    
+                if($success->existKey($hash)){
+                    error_log('View::handleError() existsKey =>' . $success->existKey($hash));
+                    $this->d['success'] = $success->get($hash);
+                }else{
+                    $this->d['success'] = NULL;
+                }
             }
         }
 

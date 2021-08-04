@@ -1,7 +1,7 @@
 
 const btnExpense = document.querySelector('#new-expense');
 
-btnExpense.addEventListener('click', async e =>{
+btnExpense.addEventListener('click', async () =>{
   const background = document.createElement('div');
   const panel = document.createElement('div');
   const titlebar = document.createElement('div');
@@ -36,34 +36,35 @@ btnExpense.addEventListener('click', async e =>{
   
 });
 
+// FIXME no esta llegando el llamado al servidor
 async function getContent(){
-  const html = await fetch('http://localhost:41062/www/pagos/create').then(res => res.text());
+  const html = await fetch('http://127.0.0.1:41062/www/peticionespago/create').then(res => res.text());
   return html;   
 }
 
-google.charts.load('current', {'packages':['bar']});
-      google.charts.setOnLoadCallback(drawChart);
+// google.charts.load('current', {'packages':['bar']});
+//       google.charts.setOnLoadCallback(drawChart);
 
-      async function drawChart() {
-        const http = await fetch('http://localhost:41062/www/pagos/getPagosJSON')
-        .then(json => json.json())
-        .then(res => res);
+//       async function drawChart() {
+//         const http = await fetch('http://127.0.0.1:41062/www/peticionespago/getPeticionesPagoJSON')
+//         .then(json => json.json())
+//         .then(res => res);
 
-        let expenses = [...http];
-        expenses.shift();
-        console.log(expenses);
+//         let expenses = [...http];
+//         expenses.shift();
+//         console.log(expenses);
 
-        let colors = [...http][0];
-        colors.shift();
+//         let colors = [...http][0];
+//         colors.shift();
         
 
-        var data = google.visualization.arrayToDataTable(expenses);
+//         var data = google.visualization.arrayToDataTable(expenses);
 
-        var options = {
-          colors: colors
-        };
+//         var options = {
+//           colors: colors
+//         };
 
-        var chart = new google.charts.Bar(document.getElementById('chart'));
+//         var chart = new google.charts.Bar(document.getElementById('chart'));
 
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-      }
+//         chart.draw(data, google.charts.Bar.convertOptions(options));
+//       }

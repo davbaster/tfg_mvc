@@ -16,7 +16,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planillas - Principal</title>
-    <link rel="stylesheet" href="public/bootstrap/css/bootstrap.mini.css">
+    <!-- <link rel="stylesheet" href="public/bootstrap/css/bootstrap.mini.css"> -->
 </head>
 <body>
     <?php require 'header.php'; ?>
@@ -170,10 +170,10 @@
                         <h2>Operaciones</h2>  
                         
                         <button class="btn-main" id="new-expense">
-                            <i class="material-icons">add</i>
-                            <span>Registrar nuevo gasto</span>
+                            <i class="material-icons"></i>
+                            <span>Nueva Planilla</span>
                         </button>
-                        <a href="<?php echo constant('URL'); ?>user#budget-user-container">Definir presupuesto<i class="material-icons">keyboard_arrow_right</i></a>
+                        <a href="<?php echo constant('URL'); ?>user#budget-user-container">Listar Planilla<i class="material-icons">keyboard_arrow_right</i></a>
                     </section>
 
                     <section id="expenses-recents">
@@ -207,7 +207,7 @@
         </div>
 
     </div>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
     <script src="public/js/dashboard.js"></script>
     
 </body>
