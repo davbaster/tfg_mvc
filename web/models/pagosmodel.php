@@ -6,7 +6,9 @@ class PagosModel extends Model implements IModel {
 
     //************ */
     private $id;
-    private $estadoPago; //pending, pagado
+    private $estadoPago; //pending = ya se mando para autorizar, y esta autorizado. No se le puede agregar mas pagos,
+                         //open = todavia se le puede agregar pagos
+                         //pagado, 
     private $peticionPagoId;
     private $amount;
     private $date; //fecha pago

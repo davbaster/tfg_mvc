@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="<?php echo constant('URL') ?>/public/css/user.css">
 </head>
 <body>
-    <?php require_once 'views/dashboard/header.php'; ?>
+    <?php require_once 'views/header.php'; ?>
 
     <div id="main-container">
 

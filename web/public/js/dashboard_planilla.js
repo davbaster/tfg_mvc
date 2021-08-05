@@ -1,5 +1,5 @@
 
-const btnExpense = document.querySelector('#new-expense');
+const btnExpense = document.querySelector('#new-peticion-pago');
 
 btnExpense.addEventListener('click', async () =>{
   const background = document.createElement('div');
@@ -38,33 +38,7 @@ btnExpense.addEventListener('click', async () =>{
 
 // FIXME no esta llegando el llamado al servidor
 async function getContent(){
-  const html = await fetch('http://127.0.0.1:41062/www/peticionespago/create').then(res => res.text());
+  const html = await fetch('http://127.0.0.1:41062/www/peticionespago/viewPeticion').then(res => res.text());
   return html;   
 }
 
-// google.charts.load('current', {'packages':['bar']});
-//       google.charts.setOnLoadCallback(drawChart);
-
-//       async function drawChart() {
-//         const http = await fetch('http://127.0.0.1:41062/www/peticionespago/getPeticionesPagoJSON')
-//         .then(json => json.json())
-//         .then(res => res);
-
-//         let expenses = [...http];
-//         expenses.shift();
-//         console.log(expenses);
-
-//         let colors = [...http][0];
-//         colors.shift();
-        
-
-//         var data = google.visualization.arrayToDataTable(expenses);
-
-//         var options = {
-//           colors: colors
-//         };
-
-//         var chart = new google.charts.Bar(document.getElementById('chart'));
-
-//         chart.draw(data, google.charts.Bar.convertOptions(options));
-//       }

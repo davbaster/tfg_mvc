@@ -169,7 +169,7 @@
                     <section class="operations-container">
                         <h2>Operaciones</h2>  
                         
-                        <button class="btn-main" id="new-expense">
+                        <button class="btn-main" id="new-pago">
                             <i class="material-icons">add</i>
                             <span>Nuevo Pago</span>
                         </button>
@@ -208,7 +208,8 @@
 
     </div>
     <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
-    <script src="public/js/dashboard.js"></script>
+    <script src="public/js/dashboard_pago.js"></script>
+    <script src="public/js/dashboard_planilla.js"></script>
     
 </body>
 </html>
