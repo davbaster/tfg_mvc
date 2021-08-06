@@ -18,6 +18,10 @@ class ErrorMessages{
     const ERROR_ADMIN_NEWPETICIONPAGO_EXISTS = "e0012";
     const ERROR_PAGOS_NEWPAGO = "e0013";
     const ERROR_PAGOS_NEWPAGO_EMPTY = "e0014";
+    const ERROR_PETICIONPAGOS_NEWPETICION = "e0015";
+    const ERROR_PETICIONPAGOS_NEWPETICION_EMPTY = "e0016";
+   
+
     private $errorList = [];
 
     public function __construct(){
@@ -37,7 +41,10 @@ class ErrorMessages{
             ErrorMessages::ERROR_USER_UPDATENAME => 'No se pudo procesar la solicitud. No se pudo actualizar el nombre.',
             ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS => 'No se pudo crear la peticion de pago.',
             ErrorMessages::ERROR_PAGOS_NEWPAGO => 'No se pudo crear el pago. ',
-            ErrorMessages::ERROR_PAGOS_NEWPAGO_EMPTY => 'No se pudo crear el pago. No hay informacion'
+            ErrorMessages::ERROR_PAGOS_NEWPAGO_EMPTY => 'No se pudo crear el pago. No hay informacion',
+            ErrorMessages::ERROR_PETICIONPAGOS_NEWPETICION => 'No se pudo crear el la peticion de pago. ',
+            ErrorMessages::ERROR_PETICIONPAGOS_NEWPETICION_EMPTY => 'No se pudo crear la peticion de pago. No hay informacion',
+            ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS => 'No se pudo crear la peticion de pago. Ya existe una con ese nombre'
         ];
 
     }

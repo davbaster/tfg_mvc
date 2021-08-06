@@ -7,6 +7,8 @@
     <ul>
         <li><a href="">Home</a></li>
         <li><a href="peticionespago">Planillas</a></li>
+        <!-- <li><a href="<?php //echo constant('URL'); ?>/user">Configuracion</a></li> -->
+        <li><a href="user">Configuracion</a></li>
         <li><a href="logout">Salir</a></li>
     </ul>
     <div id="profile-container">

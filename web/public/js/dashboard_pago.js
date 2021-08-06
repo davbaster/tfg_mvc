@@ -1,7 +1,8 @@
 
-const btnExpense = document.querySelector('#new-pago');
+const btnPago = document.querySelector('#new-pago');
 
-btnExpense.addEventListener('click', async () =>{
+btnPago.addEventListener('click', async () =>{
+  event.preventDefault();
   const background = document.createElement('div');
   const panel = document.createElement('div');
   const titlebar = document.createElement('div');
@@ -31,13 +32,13 @@ btnExpense.addEventListener('click', async () =>{
   });
 
   
-  const html = await getContent();
+  const html = await getContentPago();
   ajaxcontent.innerHTML+= html;
   
 });
 
 // FIXME no esta llegando el llamado al servidor
-async function getContent(){
+async function getContentPago(){
   const html = await fetch('http://127.0.0.1:41062/www/peticionespago/viewPago').then(res => res.text());
   return html;   
 }

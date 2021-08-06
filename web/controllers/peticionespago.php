@@ -58,62 +58,37 @@ class PeticionesPago extends SessionController{
     function viewPeticion(){
         $peticionModel = new PeticionesPagoModel();
         $this->view->render('peticionespago/agregarpeticionpago', [
-            "peticionespago" => $peticionModel->getAll(), //este metodo trae todas las peticiones de pago como objetos, 
+           // "peticionespago" => $peticionModel->getAll(), //este metodo trae todas las peticiones de pago como objetos, 
                                                         //TODO deberia utilizar metodo que traiga las peticiones pendientes de pago y como un arreglo de datos
             "user" => $this->user
         ]);
     }
 
-    //FIXME arreglar metodo, los campos del arreglo de existPOST son incorrectos
-    function newPago(){
-        error_log('Pagos::newPago()');
-        if(!$this->existPOST(['title', 'amount', 'peticion_pago', 'date'])){//si no existe el post con los parametros
-            $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGOS_NEWPETICION_EMPTY]);//TODO agregar error al errormessages.php
-            return;
-        }
 
-        if($this->user == NULL){//valida session no esta vacia
-            $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGOS_NEWPETICION]);//TODO agregar error al errormessages.php
-            return;
-        }
-
-        $pago = new PagosModel();
-
-        $pago->setTitle($this->getPost('title'));
-        $pago->setAmount((float)$this->getPost('amount'));//float castea el valor a float
-        //$pago->setCategoryId($this->getPost('category'));
-        $pago->setPeticionPagoId($this->getPost('peticion_pago'));//setPeticionPagoId
-        $pago->setDate($this->getPost('date'));
-        $pago->setUserId($this->user->getId());
-
-        $pago->save();
-        $this->redirect('dashboard', ['success' => SuccessMessages::SUCCESS_PETICIONPAGOS_NEWPETICION]);//TODO agregar error al errormessages.php
-    }
-
-    //FIXME arreglar metodo, los campos del arreglo de existPOST son incorrectos
+    //Recibe los datos de la vista agregarpeticionpago.php y los guarda en un objeto peticion pago
+    //guarda la informacion de la planialla
     function newPeticionPago(){
-        error_log('Pagos::newPago()');
-        if(!$this->existPOST(['title', 'amount', 'peticion_pago', 'date'])){//si no existe el post con los parametros
-            $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGOS_NEWPETICION_EMPTY]);//TODO agregar error al errormessages.php
+        error_log('PeticionesPago::newPeticionPago()');
+        if(!$this->existPOST(['nombre_planilla','cedula', 'amount', 'detalles'])){//si no existe el post con los parametros
+            $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGOS_NEWPETICION_EMPTY]);
             return;
         }
 
         if($this->user == NULL){//valida session no esta vacia
-            $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGOS_NEWPETICION]);//TODO agregar error al errormessages.php
+            $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGOS_NEWPETICION]);
             return;
         }
 
-        $pago = new PagosModel();
+        $peticionPago = new PeticionesPagoModel();
 
-        $pago->setTitle($this->getPost('title'));
-        $pago->setAmount((float)$this->getPost('amount'));//float castea el valor a float
-        //$pago->setCategoryId($this->getPost('category'));
-        $pago->setPeticionPagoId($this->getPost('peticion_pago'));//setPeticionPagoId
-        $pago->setDate($this->getPost('date'));
-        $pago->setUserId($this->user->getId());
+        $peticionPago->setNombre($this->getPost('nombre_planilla'));
+        $peticionPago->setMonto((float)$this->getPost('amount'));//float castea el valor a float
+        $peticionPago->setCedula($this->getPost('cedula'));//setPeticionPagoId
+        $peticionPago->setEstado("open"); //open =Peticion de pago recientemete abierta
+        $peticionPago->setDetalles($this->getPost('detalles'));
 
-        $pago->save();
-        $this->redirect('dashboard', ['success' => SuccessMessages::SUCCESS_PETICIONPAGOS_NEWPETICION]);//TODO agregar error al errormessages.php
+        $peticionPago->save();
+        $this->redirect('dashboard', ['success' => SuccessMessages::SUCCESS_PETICIONPAGOS_NEWPETICION]);
     }
 
 
@@ -122,17 +97,44 @@ class PeticionesPago extends SessionController{
     function delete($params){
         error_log("Pagos::delete()");
         
-        if($params === NULL) $this->redirect('pagos', ['error' => Errors::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);//TODO agregar error al errormessages.php
+        if($params === NULL) $this->redirect('pagos', ['error' => ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);
         $id = $params[0];
         error_log("Pagos::delete() id = " . $id);
         $res = $this->model->delete($id);
 
         if($res){//SI RES tiene un resultado
-            $this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PETICIONPAGOS_DELETE]);//TODO agregar error al errormessages.php
+            $this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PETICIONPAGOS_DELETE]);
         }else{
-            $this->redirect('pagos', ['error' => ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);//TODO agregar error al errormessages.php
+            $this->redirect('pagos', ['error' => ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);
         }
     }
+
+
+        // //FIXME arreglar metodo, los campos del arreglo de existPOST son incorrectos
+    // function newPago(){
+    //     error_log('Pagos::newPago()');
+    //     if(!$this->existPOST(['title', 'amount', 'peticion_pago', 'date'])){//si no existe el post con los parametros
+    //         $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGOS_NEWPETICION_EMPTY]);//TODO agregar error al errormessages.php
+    //         return;
+    //     }
+
+    //     if($this->user == NULL){//valida session no esta vacia
+    //         $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGOS_NEWPETICION]);//TODO agregar error al errormessages.php
+    //         return;
+    //     }
+
+    //     $pago = new PagosModel();
+
+    //     $pago->setTitle($this->getPost('title'));
+    //     $pago->setAmount((float)$this->getPost('amount'));//float castea el valor a float
+    //     //$pago->setCategoryId($this->getPost('category'));
+    //     $pago->setPeticionPagoId($this->getPost('peticion_pago'));//setPeticionPagoId
+    //     $pago->setDate($this->getPost('date'));
+    //     $pago->setUserId($this->user->getId());
+
+    //     $pago->save();
+    //     $this->redirect('dashboard', ['success' => SuccessMessages::SUCCESS_PETICIONPAGOS_NEWPETICION]);//TODO agregar error al errormessages.php
+    // }
 
 
     //TODO revisar si metodo funciona, o hay otro metodo que ya hace lo que tiene que hacer este.

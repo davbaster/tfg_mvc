@@ -173,7 +173,9 @@
                             <i class="material-icons">add</i>
                             <span>Nuevo Pago</span>
                         </button>
-                        <a href="<?php echo constant('URL'); ?>/user#budget-user-container">Definir Planilla<i class="material-icons">keyboard_arrow_right</i></a>
+                        <!-- <a href="<?php //echo constant('URL'); ?>/user#budget-user-container">Definir Planilla<i class="material-icons">keyboard_arrow_right</i></a> -->
+                        <a href="" class="btn-peticion" id="new-peticion-pago">Definir Planilla<i class="material-icons">keyboard_arrow_right</i></a>
+                        
                     </section>
 
                     <section id="expenses-recents">

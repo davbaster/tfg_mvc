@@ -69,7 +69,7 @@
     <div class="section">
         <label for="detalles">Detalles</label>
         <!-- <div><input type="textarea" name="detalles" autocomplete="off" required></div> -->
-        <textarea id="detalles" name="detalles" rows="4" cols="25"></textarea>
+        <textarea id="detalles" name="detalles" rows="4" cols="39"></textarea>
     </div>
 
     <div class="center">

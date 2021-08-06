@@ -10,6 +10,9 @@ class SuccessMessages{
     const SUCCESS_USER_UPDATENAME = "s5022";
     const SUCCESS_ADMIN_NEWPETICIONPAGO = "s5023"; 
     const SUCCESS_PAGOS_NEWPAGO = "s5024"; 
+    const SUCCESS_PETICIONPAGOS_NEWPETICION = "s5025";
+    const SUCCESS_PETICIONPAGOS_DELETE = "s5026";
+
 
     private $successList = [];
 
@@ -21,7 +24,9 @@ class SuccessMessages{
             SuccessMessages::SUCCESS_USER_UPDATEPHOTO => 'Foto actualizada correctamente',
             SuccessMessages::SUCCESS_USER_UPDATENAME => 'Nombre actualizado correctamente',
             SuccessMessages::SUCCESS_ADMIN_NEWPETICIONPAGO => 'Peticion de pago creada satisfactoriamente',
-            SuccessMessages::SUCCESS_PAGOS_NEWPAGO => 'Pago creado satisfactoriamente'
+            SuccessMessages::SUCCESS_PAGOS_NEWPAGO => 'Pago creado satisfactoriamente',
+            SuccessMessages::SUCCESS_PETICIONPAGOS_NEWPETICION => 'Nueva peticion de pago creada satisfactoriamente',
+            SuccessMessages::SUCCESS_PETICIONPAGOS_DELETE => 'Peticion de pago borrada satisfactoriamente'
         ];
     }
 

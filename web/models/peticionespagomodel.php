@@ -4,7 +4,7 @@ class PeticionesPagoModel extends Model implements IModel {
 
 
     private $id; //id de peticionPago
-    private $nombre; //nombre significativo para el usuario para que identifique la planilla.
+    private $nombre; //nombre del significativo para el usuario para que identifique la planilla.
     private $cedula; //usuario con rol de contratista, usuario que creo la peticion de pago
     private $fechaCreacion;//fecha en que se crea la peticion de pago
     private $idContrato; //TODO se va a usar si se crea modulo contratos

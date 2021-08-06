@@ -1,7 +1,9 @@
 
-const btnExpense = document.querySelector('#new-peticion-pago');
+const btnPeticion = document.querySelector('#new-peticion-pago');
 
-btnExpense.addEventListener('click', async () =>{
+btnPeticion.addEventListener('click', async () =>{
+  event.preventDefault();
+  
   const background = document.createElement('div');
   const panel = document.createElement('div');
   const titlebar = document.createElement('div');
