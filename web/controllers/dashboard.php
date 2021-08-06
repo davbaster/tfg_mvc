@@ -72,7 +72,9 @@ class Dashboard extends SessionController{
             $descripcion['apellido1'] = $p->getApellido();
             $descripcion['monto'] = $p->getAmount();
             $descripcion['planilla'] = $p->getPeticionPagoId();
-            $descripcion['fecha'] = $p->getDate();
+            $descripcion['fecha'] = $p->getFechaCreacion();
+            $descripcion['fechaPago'] = $p->getFechaPago();
+            $descripcion['detalles'] = $p->getDetalles();
 
             array_push($res, $descripcion); //va llenando un array $res con otro array $descripcion
 
@@ -98,7 +100,9 @@ class Dashboard extends SessionController{
             $descripcion['apellido1'] = $p->getApellido();
             $descripcion['monto'] = $p->getAmount();
             $descripcion['planilla'] = $p->getPeticionPagoId();
-            $descripcion['fecha'] = $p->getDate();
+            $descripcion['fecha'] = $p->getFechaCreacion();
+            $descripcion['fechaPago'] = $p->getFechaPago();
+            $descripcion['detalles'] = $p->getDetalles();
 
             array_push($res, $descripcion); //va llenando un array $res con otro array $descripcion
 

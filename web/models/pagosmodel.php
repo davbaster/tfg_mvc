@@ -1,18 +1,23 @@
 <?php
 
+
+
 class PagosModel extends Model implements IModel {
 
 
 
     //************ */
     private $id;
-    private $estadoPago; //pending = ya se mando para autorizar, y esta autorizado. No se le puede agregar mas pagos,
-                         //open = todavia se le puede agregar pagos
+    private $estadoPago; //open = acabado de crear, no se puede pagar hasta que pase a pending
+                         //pending = ya se mando para autorizar, y esta autorizado. Esta esperando que se pague
+                         //parcial??? se le hizo un adelanto //TODO verificar si es factible, o se crea la tabla adelantos                         
                          //pagado, 
     private $peticionPagoId;
     private $amount;
-    private $date; //fecha pago
+    private $fechaCreacion; 
+    private $fechaPago; 
     private $cedula; //id del usuario al que se le pago
+    private $detalles;
    
     //TODO deberian haber adelantos?? o es mejor que haya un objeto adelanto que cuando se crea un pago busque adelantos y los liste
     //TODO deberian haber rebajos?? ose tiene que manejar en otra parte?
@@ -23,33 +28,67 @@ class PagosModel extends Model implements IModel {
     public function setEstadoPago($estadoPago){ $this->estadoPago = $estadoPago; }
     public function setPeticionPagoId($peticionPagoId){ $this->peticionPagoId = $peticionPagoId; }//setPeticionPagoId
     public function setAmount($amount){ $this->amount = $amount; }
-    public function setDate($date){ $this->date = $date; }
+    public function setFechaCreacion($fechaCreacion){ $this->fechaCreacion = $fechaCreacion; }
+    public function setFechaPago($fechaPago){ $this->fechaPago = $fechaPago; }
     public function setCedula($cedula){ $this->cedula = $cedula; }
+    public function setDetalles($detalles){ $this->detalles = $detalles; }
 
     //getters
     public function getId(){ return $this->id;}
     public function getEstadoPago(){ return $this->estadoPago; }
     public function getPeticionPagoId(){ return $this->peticionPagoId; } //setPeticionPagoId
     public function getAmount(){ return $this->amount; }
-    public function getDate(){ return $this->date; }
+    public function getFechaCreacion(){ return $this->fechaCreacion; }
+    public function getFechaPago(){ return $this->fechaPago; }
     public function getCedula(){ return $this->cedula; }
+    public function getDetalles(){ return $this->detalles; }
 
 
     public function __construct(){
         parent::__construct();
 
+        $this->id ='';
+        $this->estadoPago ='';
+        $this->peticionPagoId ='';
+        $this->amount ='';
+        $this->fechaCreacion ='';
+        $this->fechaPago ='';
+        $this->cedula ='';
+        $this->detalles ='';
+
+
     }
 
-
+    //recordar si las queries dan errores extranos de que el count de parametros es incorrecto, es posible que haya que inicializar 
+    //las variables en el constructor
     public function save(){
         try{
-            $query = $this->prepare('INSERT INTO pagos (estado_pago, peticion_pago_id, amount,date, cedula) VALUES(:estadoPago, :peticionPagoId,:amount, :d, :user)');
+            // $query = $this->prepare('INSERT INTO pagos (estado_pago, 
+            //                                             peticion_pago_id, 
+            //                                             amount,
+            //                                             fecha_pago, 
+            //                                             cedula, 
+            //                                             detalles) 
+            //                                             VALUES(:estadoPago,
+            //                                                 :peticionPagoId,
+            //                                                 :amount,
+            //                                                 :p, 
+            //                                                 :user, 
+            //                                                 detalles)');
+
+            $query= $this->prepare("INSERT INTO pagos(estado_pago, peticion_pago_id, amount,fecha_pago, cedula, detalles) 
+                                        VALUES (:estadoPago,:peticionPagoId,:amount,:fechaPago,:user,:detalles)");
+
+
             $query->execute([
+                // 'id' => $this->id,
                 'estadoPago' => $this->estadoPago, 
                 'peticionPagoId' => $this->peticionPagoId, 
                 'amount' => $this->amount, 
-                'd' => $this->date,
-                'user' => $this->cedula
+                // 'd' => $this->fechaCreacion,
+                'fechaPago' => $this->fechaPago,
+                'user' => $this->cedula,
+                'detalles' => $this->detalles
 
             ]);
 
@@ -59,6 +98,7 @@ class PagosModel extends Model implements IModel {
             //sino
             return false;
         }catch(PDOException $e){
+            error_log("PagosModel::save: " . $e);
             return false;
         }
     }
@@ -83,6 +123,7 @@ class PagosModel extends Model implements IModel {
             return $items;
 
         }catch(PDOException $e){
+            error_log("PagosModel::getAll: " . $e);
             echo $e;
         }
     }
@@ -100,6 +141,7 @@ class PagosModel extends Model implements IModel {
 
             return $this;
         }catch(PDOException $e){
+            error_log("PagosModel::get: " . $e);
             return false;
         }
     }
@@ -112,7 +154,8 @@ class PagosModel extends Model implements IModel {
             $query->execute([ 'id' => $id]);
             return true;
         }catch(PDOException $e){
-            echo $e;
+            //echo $e;
+            error_log("PagosModel::delete: " . $e);
             return false;
         }
     }
@@ -124,8 +167,10 @@ class PagosModel extends Model implements IModel {
                                     estado_pago = :estadoPago, 
                                     peticion_pago_id = :peticionPagoId, 
                                     amount = :amount,  
-                                    date = :d, 
-                                    cedula = :user 
+                                    fecha_creacion = :d, 
+                                    fecha_pago = :p, 
+                                    cedula = :user,
+                                    detalles = :detalles,
                                     WHERE id = :id');
 
             $query->execute([
@@ -133,12 +178,15 @@ class PagosModel extends Model implements IModel {
                 'estadoPago' => $this->estadoPago, 
                 'peticionPagoId' => $this->peticionPagoId, 
                 'amount' => $this->amount, 
-                'd' => $this->date,
-                'user' => $this->cedula
+                'd' => $this->fechaCreacion,
+                'p' => $this->fechaCreacion,
+                'user' => $this->cedula,
+                'detalles' => $this->detalles
             ]);
             return true;
         }catch(PDOException $e){
-            echo $e;
+            //echo $e;
+            error_log("PagosModel::update: " . $e);
             return false;
         }
     }
@@ -149,8 +197,10 @@ class PagosModel extends Model implements IModel {
         $this->estadoPago = $array['estadoPago'];
         $this->peticionPagoId = $array['peticion_pago_id'];
         $this->amount = $array['amount'];
-        $this->date = $array['date'];
+        $this->fechaCreacion = $array['fecha_creacion'];
+        $this->fechaPago = $array['fecha_pago'];
         $this->cedula = $array['cedula'];
+        $this->detalles = $array['detalles'];
     }
 
 
@@ -222,7 +272,7 @@ class PagosModel extends Model implements IModel {
     public function getByUserIdAndLimit($cedula, $n){
         $items = [];
         try{
-            $query = $this->prepare('SELECT * FROM pagos WHERE cedula = :cedula ORDER BY pagos.date DESC LIMIT 0, :n ');
+            $query = $this->prepare('SELECT * FROM pagos WHERE cedula = :cedula ORDER BY pagos.fechaCreacion DESC LIMIT 0, :n ');
             $query->execute([ 'n' => $n, 'cedula' => $cedula]);
             while($p = $query->fetch(PDO::FETCH_ASSOC)){
                 $item = new PagosModel();

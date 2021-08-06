@@ -91,7 +91,7 @@ class UserModel extends Model implements IModel {
                 //$nuevoUsuario->setContrasena($user['contrasena']);//esta volviendo a hashear la contrasena
                 $this->setContrasenaSinHash($user['contrasena']);
                 $nuevoUsuario->setRol($user['rol']);
-                $nuevoUsuario->setRol($user['foto']);
+                $nuevoUsuario->setFoto($user['foto']);
 
                 // guarda el usuario en el array $items
                 array_push($items, $nuevoUsuario);

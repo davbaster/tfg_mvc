@@ -2,7 +2,7 @@
 
 require_once 'models/joinpagospeticionesmodel.php';
 require_once 'models/peticionespagomodel.php';
-require_once 'models/pagomodel.php';
+require_once 'models/pagosmodel.php';
 
 
 class Pagos extends SessionController{ 
@@ -34,27 +34,28 @@ class Pagos extends SessionController{
     //
     function newPago(){
         error_log('Pagos::newPago()');
-        if(!$this->existPOST(['title', 'amount', 'peticion_pago', 'date'])){//si no existe el post con los parametros
-            $this->redirect('dashboard', ['error' => Errors::ERROR_PAGOS_NEWPAGO_EMPTY]);
+        if(!$this->existPOST(['cedula', 'amount', 'peticion_pago_id', 'detalles'])){//si no existe el post con los parametros
+            $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PAGOS_NEWPAGO_EMPTY]);
             return;
         }
 
         if($this->user == NULL){//valida session no esta vacia
-            $this->redirect('dashboard', ['error' => Errors::ERROR_PAGOS_NEWPAGO]);
+            $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PAGOS_NEWPAGO]);
             return;
         }
 
         $pago = new PagosModel();
 
-        $pago->setTitle($this->getPost('title'));
+        $pago->setEstadoPago('open');
+        $pago->setCedula($this->getPost('cedula'));
         $pago->setAmount((float)$this->getPost('amount'));//float castea el valor a float
-        //$pago->setCategoryId($this->getPost('category'));
-        $pago->setPeticionPagoId($this->getPost('peticion_pago'));//setPeticionPagoId
-        $pago->setDate($this->getPost('date'));
-        $pago->setUserId($this->user->getId());
+        $pago->setFechaPago('');
+        $pago->setPeticionPagoId($this->getPost('peticion_pago_id'));//setPeticionPagoId
+        $pago->setDetalles($this->getPost('detalles'));
+        //$pago->setUserId($this->user->getId());
 
         $pago->save();
-        $this->redirect('dashboard', ['success' => Success::SUCCESS_PAGOS_NEWPAGO]);
+        $this->redirect('dashboard', ['success' => SuccessMessages::SUCCESS_PAGOS_NEWPAGO]);
     }
 
 
@@ -124,19 +125,19 @@ class Pagos extends SessionController{
 
     // devuelve todos los elementos de un arreglo como si fuera un JSON para las llamadas AJAX
     //funciona como una API simple
-    function getHistoryJSON(){
-        header('Content-Type: application/json');
-        $res = [];
-        $joinModel = new JoinPagosPeticionesModel();
-        $peticiones = $joinModel->getAll($this->user->getId());
+    // function getHistoryJSON(){
+    //     header('Content-Type: application/json');
+    //     $res = [];
+    //     $joinModel = new JoinPagosPeticionesModel();
+    //     $peticiones = $joinModel->getAll($this->user->getId());
 
-        foreach ($peticiones as $p) {
-            array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
-        }
+    //     foreach ($peticiones as $p) {
+    //         array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+    //     }
         
-        echo json_encode($res);
+    //     echo json_encode($res);
 
-    }
+    // }
     
     // //getExpensesJSON
     // function getPagosJSON(){
@@ -191,15 +192,15 @@ class Pagos extends SessionController{
     function delete($params){
         error_log("Pagos::delete()");
         
-        if($params === NULL) $this->redirect('pagos', ['error' => Errors::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);
+        if($params === NULL) $this->redirect('pagos', ['error' => ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);
         $id = $params[0];
         error_log("Pagos::delete() id = " . $id);
         $res = $this->model->delete($id);
 
         if($res){//SI RES tiene un resultado
-            $this->redirect('pagos', ['success' => Success::SUCCESS_PAGOS_DELETE]);
+            $this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PAGOS_DELETE]);
         }else{
-            $this->redirect('pagos', ['error' => Errors::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);
+            $this->redirect('pagos', ['error' => ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);
         }
     }
 

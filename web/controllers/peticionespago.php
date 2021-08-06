@@ -35,14 +35,17 @@ class PeticionesPago extends SessionController{
      // carga vista para nuevas peticion pago UI
      function viewPago(){
         $peticionModel = new PeticionesPagoModel();
-
         $peticionesPago = $peticionModel->getAll(); //este metodo trae todas las peticiones de pago como objetos, 
+
+        $user = new UserModel();
+        $usuarios = $user->getAll();
                                                      
 
         $this->view->render('peticionespago/agregarpago', [
 
             'user'                      => $this->user,
-            'peticionesPago'           => $peticionesPago
+            'peticionesPago'            => $peticionesPago,
+            'usuarios'                  => $usuarios
 
             
         ]);
@@ -65,12 +68,12 @@ class PeticionesPago extends SessionController{
     function newPago(){
         error_log('Pagos::newPago()');
         if(!$this->existPOST(['title', 'amount', 'peticion_pago', 'date'])){//si no existe el post con los parametros
-            $this->redirect('dashboard', ['error' => Errors::ERROR_PETICIONPAGOS_NEWPETICION_EMPTY]);//TODO agregar error al errormessages.php
+            $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGOS_NEWPETICION_EMPTY]);//TODO agregar error al errormessages.php
             return;
         }
 
         if($this->user == NULL){//valida session no esta vacia
-            $this->redirect('dashboard', ['error' => Errors::ERROR_PETICIONPAGOS_NEWPETICION]);//TODO agregar error al errormessages.php
+            $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGOS_NEWPETICION]);//TODO agregar error al errormessages.php
             return;
         }
 
@@ -84,19 +87,19 @@ class PeticionesPago extends SessionController{
         $pago->setUserId($this->user->getId());
 
         $pago->save();
-        $this->redirect('dashboard', ['success' => Success::SUCCESS_PETICIONPAGOS_NEWPETICION]);//TODO agregar error al errormessages.php
+        $this->redirect('dashboard', ['success' => SuccessMessages::SUCCESS_PETICIONPAGOS_NEWPETICION]);//TODO agregar error al errormessages.php
     }
 
     //FIXME arreglar metodo, los campos del arreglo de existPOST son incorrectos
     function newPeticionPago(){
         error_log('Pagos::newPago()');
         if(!$this->existPOST(['title', 'amount', 'peticion_pago', 'date'])){//si no existe el post con los parametros
-            $this->redirect('dashboard', ['error' => Errors::ERROR_PETICIONPAGOS_NEWPETICION_EMPTY]);//TODO agregar error al errormessages.php
+            $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGOS_NEWPETICION_EMPTY]);//TODO agregar error al errormessages.php
             return;
         }
 
         if($this->user == NULL){//valida session no esta vacia
-            $this->redirect('dashboard', ['error' => Errors::ERROR_PETICIONPAGOS_NEWPETICION]);//TODO agregar error al errormessages.php
+            $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGOS_NEWPETICION]);//TODO agregar error al errormessages.php
             return;
         }
 
@@ -110,7 +113,7 @@ class PeticionesPago extends SessionController{
         $pago->setUserId($this->user->getId());
 
         $pago->save();
-        $this->redirect('dashboard', ['success' => Success::SUCCESS_PETICIONPAGOS_NEWPETICION]);//TODO agregar error al errormessages.php
+        $this->redirect('dashboard', ['success' => SuccessMessages::SUCCESS_PETICIONPAGOS_NEWPETICION]);//TODO agregar error al errormessages.php
     }
 
 
@@ -125,9 +128,9 @@ class PeticionesPago extends SessionController{
         $res = $this->model->delete($id);
 
         if($res){//SI RES tiene un resultado
-            $this->redirect('pagos', ['success' => Success::SUCCESS_PETICIONPAGOS_DELETE]);//TODO agregar error al errormessages.php
+            $this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PETICIONPAGOS_DELETE]);//TODO agregar error al errormessages.php
         }else{
-            $this->redirect('pagos', ['error' => Errors::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);//TODO agregar error al errormessages.php
+            $this->redirect('pagos', ['error' => ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);//TODO agregar error al errormessages.php
         }
     }
 

@@ -8,7 +8,9 @@ class JoinPagosPeticionesModel extends Model {
     private $apellido; 
     private $amount;
     private $peticionPagoId; //planillaID
-    private $date;
+    private $fechaPago;
+    private $fechaCreacion;//fecha en que se creo el pago
+    private $detalles;
 
 
     public function __construct()
@@ -55,7 +57,9 @@ class JoinPagosPeticionesModel extends Model {
                         u.apellido1 as apellido, 
                         p.amount as adeudado, 
                         p.peticion_pago_id as planilla, 
-                        p.date as fecha
+                        p.fecha_creacion as fechaCreacion,
+                        p.fecha_pago as fechaPago,
+                        p.detalles as detalles
                     FROM pagos AS p
                     INNER JOIN users AS u ON p.cedula = u.cedula
                     INNER JOIN peticiones_pago AS p2 ON p.peticion_pago_id  = p2.id        
@@ -92,7 +96,9 @@ class JoinPagosPeticionesModel extends Model {
                              u.apellido1 as apellido, 
                              p.amount as adeudado, 
                              p.peticion_pago_id as planilla, 
-                             p.date as fecha
+                             p.fecha_creacion as fechaCreacion,
+                             p.fecha_pago as fechaPago,
+                             p.detalles as detalles
                     FROM pagos AS p
                     INNER JOIN users AS u ON p.cedula = u.cedula
                     INNER JOIN peticiones_pago AS p2 ON p.peticion_pago_id  = p2.id
@@ -130,12 +136,14 @@ class JoinPagosPeticionesModel extends Model {
                              u.apellido1 as apellido, 
                              p.amount as adeudado, 
                              p.peticion_pago_id as planilla, 
-                             p.date as fecha
+                             p.fecha_creacion as fechaCreacion,
+                             p.fecha_pago as fechaPago,
+                             p.detalles as detalles
                     FROM pagos AS p
                     INNER JOIN users AS u ON p.cedula = u.cedula
                     INNER JOIN peticiones_pago AS p2 ON p.peticion_pago_id  = p2.id
                     WHERE p.estado_pago = :estado      
-                    ORDER BY p.date 
+                    ORDER BY p.fecha_creacion 
                     DESC LIMIT :n ');
             
             
@@ -167,7 +175,9 @@ class JoinPagosPeticionesModel extends Model {
         $this->apellido = $array['apellido'];
         $this->amount = $array['adeudado'];
         $this->peticionPagoId = $array['planilla'];
-        $this->date = $array['fecha'];
+        $this->fechaCreacion = $array['fecha_creacion'];
+        $this->fechaPago = $array['fecha_Pago'];
+        $this->detalles = $array['detalles'];
     }
 
 
@@ -180,7 +190,9 @@ class JoinPagosPeticionesModel extends Model {
         $array['apellido'] = $this->apellido;
         $array['adeudado'] = $this->adeudado;
         $array['planilla'] = $this->peticionPagoId;
-        $array['fecha'] = $this->date;
+        $array['fecha_creacion'] = $this->fechaCreacion;
+        $array['fecha_pago'] = $this->fechaPago;
+        $array['detalles'] = $this->detalles;
 
         return $array;
     }
@@ -195,7 +207,9 @@ class JoinPagosPeticionesModel extends Model {
     public function getApellido(){return $this->apellido;}
     public function getAmount(){return $this->amount;}
     public function getPeticionPagoId(){return $this->peticionPagoId;}
-    public function getDate(){return $this->date;}
+    public function getFechaCreacion(){return $this->fechaCreacion;}
+    public function getFechaPago(){return $this->fechaPago;}
+    public function getDetalles(){return $this->detalles;}
 
     
 }

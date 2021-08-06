@@ -39,7 +39,7 @@ class Database {
             
             // $this->conn = new PDO($connection, $this->dbuser, $this->dbpass, $options);
             $pdo = new PDO($connection, $this->dbuser, $this->dbpass, $options);
-            error_log('Conexion a BD exitosa');
+            // error_log('Conexion a BD exitosa');
             // return $this->conn;
             return $pdo;
 

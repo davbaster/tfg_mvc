@@ -8,7 +8,8 @@ class SuccessMessages{
     const SUCCESS_USER_UPDATEPHOTO = "s5020";
     const SUCCESS_USER_UPDATEPASSWORD = "s5021";
     const SUCCESS_USER_UPDATENAME = "s5022";
-    const SUCCESS_ADMIN_NEWPETICIONPAGO = "s5023";
+    const SUCCESS_ADMIN_NEWPETICIONPAGO = "s5023"; 
+    const SUCCESS_PAGOS_NEWPAGO = "s5024"; 
 
     private $successList = [];
 
@@ -19,7 +20,8 @@ class SuccessMessages{
             SuccessMessages::SUCCESS_USER_UPDATEPASSWORD => 'Clave actualizada correctamente',
             SuccessMessages::SUCCESS_USER_UPDATEPHOTO => 'Foto actualizada correctamente',
             SuccessMessages::SUCCESS_USER_UPDATENAME => 'Nombre actualizado correctamente',
-            SuccessMessages::SUCCESS_ADMIN_NEWPETICIONPAGO => 'Peticion de pago creada satisfactoriamente'
+            SuccessMessages::SUCCESS_ADMIN_NEWPETICIONPAGO => 'Peticion de pago creada satisfactoriamente',
+            SuccessMessages::SUCCESS_PAGOS_NEWPAGO => 'Pago creado satisfactoriamente'
         ];
     }
 

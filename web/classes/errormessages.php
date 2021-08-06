@@ -16,6 +16,8 @@ class ErrorMessages{
     const ERROR_USER_UPDATEPASSWORD_THESAME = "e0010";
     const ERROR_USER_UPDATENAME = "e0011";
     const ERROR_ADMIN_NEWPETICIONPAGO_EXISTS = "e0012";
+    const ERROR_PAGOS_NEWPAGO = "e0013";
+    const ERROR_PAGOS_NEWPAGO_EMPTY = "e0014";
     private $errorList = [];
 
     public function __construct(){
@@ -33,7 +35,9 @@ class ErrorMessages{
             ErrorMessages::ERROR_USER_UPDATEPASSWORD_THESAME => 'Error al cambiar la clave. La nueva clave es igual a la anterior.',
             ErrorMessages::ERROR_USER_UPDATEPHOTO_FORMAT => 'Hubo un error. Formato de la imagen no valido.',
             ErrorMessages::ERROR_USER_UPDATENAME => 'No se pudo procesar la solicitud. No se pudo actualizar el nombre.',
-            ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS => 'No se pudo crear la peticion de pago.'
+            ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS => 'No se pudo crear la peticion de pago.',
+            ErrorMessages::ERROR_PAGOS_NEWPAGO => 'No se pudo crear el pago. ',
+            ErrorMessages::ERROR_PAGOS_NEWPAGO_EMPTY => 'No se pudo crear el pago. No hay informacion'
         ];
 
     }
