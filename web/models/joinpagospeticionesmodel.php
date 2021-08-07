@@ -66,7 +66,8 @@ class JoinPagosPeticionesModel extends Model {
         //$estado = "pending";
         try{
           //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
-            $query = $this->prepare('SELECT p.id as id_pago, 
+          //p2.cedula as contratista,//TODO agregar luego por si queremos poner el nombre del contratista
+            $query = $this->query('SELECT p.id as id_pago, 
                              p.estado_pago as estado,
                              p.cedula as cedula_empleado, 
                              u.nombre as nombre, 
@@ -78,7 +79,7 @@ class JoinPagosPeticionesModel extends Model {
                              p.detalles as detalles
                     FROM pagos AS p
                     INNER JOIN users AS u ON p.cedula = u.cedula
-                    INNER JOIN peticiones_pago AS p2 ON p.peticion_pago_id  = p2.id    
+                    -- INNER JOIN peticiones_pago AS p2 ON p.peticion_pago_id  = p2.id    
                     ORDER BY p.cedula');
             
             

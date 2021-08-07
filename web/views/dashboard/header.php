@@ -5,9 +5,10 @@
 
 <div id="header">
     <ul>
-        <li><a href="">Home</a></li>
+        <li><a href="dashboard">Home</a></li>
         <li><a href="peticionespago">Planillas</a></li>
         <li><a href="pagos">Pagos</a></li>
+        <li><a href="signup">Usuarios</a></li>
         <!-- <li><a href="<?php //echo constant('URL'); ?>/user">Configuracion</a></li> -->
         <li><a href="user">Configuracion</a></li>
         <li><a href="logout">Salir</a></li>

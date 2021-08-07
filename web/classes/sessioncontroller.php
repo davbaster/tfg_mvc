@@ -251,12 +251,12 @@ class SessionController extends Controller {
         error_log('SessionController:authorizeAccess -> rol : '. $rol );//DEBUGGING: Para revisar datos del objeto
 
         switch ($rol) {
-            case 'user':
-                $this->redirect($this->defaultSites['user'], []);
+            case 'contratista':
+                $this->redirect($this->defaultSites['contratista'], []);
                 break;
 
-            case 'admin':
-                $this->redirect($this->defaultSites['admin'], []);
+            case 'administrador':
+                $this->redirect($this->defaultSites['administrador'], []);
                 
                 break;
             default:

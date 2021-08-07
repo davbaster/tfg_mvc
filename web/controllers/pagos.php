@@ -133,6 +133,20 @@ class Pagos extends SessionController{
     function getPagosHistoryJSON(){
         header('Content-Type: application/json');
         $res = [];
+        $res['id_pago'] = 1;
+        $res['estado'] = "open";
+        $res['cedula_empleado'] = "7";
+        $res['nombre'] = "David";
+        $res['apellido'] = "Cordoba";
+        $res['adeudado'] = 2000;
+        $res['planilla'] = 1;
+        $res['fecha_creacion'] = "08/06/2021";
+        $res['fecha_pago'] = "08/06/2021";
+        $res['detalles'] = "Hola mundo";
+
+
+
+
         $joinModel = new JoinPagosPeticionesModel();
         $peticiones = $joinModel->getAllPagos();
 

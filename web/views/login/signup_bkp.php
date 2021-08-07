@@ -20,9 +20,9 @@
                                     <input type="text" name="cedula" id="cedula" class="form-control form-control-lg" placeholder="Cedula" required>
                                     <div class="invalid-feedback">Cedula es requerido!</div>
                                 </div>
-                           </div>
-                                                                       
-                           <div class="row mb-3 gx-3">
+                        </div>
+                                                                    
+                        <div class="row mb-3 gx-3">
                                 <div class="col">
                                     <input type="text" name="nombre" id="nombre" class="form-control form-control-lg" placeholder="Nombre" required>
                                     <div class="invalid-feedback">Nombre es requerido!</div>
@@ -50,7 +50,7 @@
                             <div class="invalid-feedback">Telefono es requerido</div>
                         </div>
 
-                         <div class="mb-3">
+                        <div class="mb-3">
                             <input type="text" name="direccion" id="direccion" class="form-control form-control-lg" placeholder="Direccion">
                             <div class="invalid-feedback">Ingrese una direccion</div>
                         </div>
