@@ -20,27 +20,44 @@ class JoinPagosPeticionesModel extends Model {
 
 
     //
-    // public function getAll($userId){
-    //     $items = [];
-    //     try{
-    //       //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
-    //       //$query = $this->prepare('SELECT expenses.id as expense_id, title, category_id, amount, date, id_user, categories.id, name, color  FROM expenses INNER JOIN categories WHERE expenses.category_id = categories.id AND expenses.id_user = :userid ORDER BY date');
-    //         $query = $this->prepare('SELECT pagos.id as pago_id, title, peticion_pago_id, amount, date, id_user, peticiones_pago.id, name, color  FROM pagos INNER JOIN peticiones_pago WHERE pagos.peticion_pago_id = peticiones_pago.id AND pagos.id_user = :userId ORDER BY date');
-    //         $query->execute(["userId" => $userId]);
+    public function getAll(){
+        $items = [];
+        try{
+          //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
+          //$query = $this->prepare('SELECT expenses.id as expense_id, title, category_id, amount, date, id_user, categories.id, name, color  FROM expenses INNER JOIN categories WHERE expenses.category_id = categories.id AND expenses.id_user = :userid ORDER BY date');
+            //$query = $this->prepare('SELECT pagos.id as pago_id, estado_pago, peticion_pago_id, amount, date, cedula, peticiones_pago.id FROM pagos INNER JOIN peticiones_pago WHERE pagos.peticion_pago_id = peticiones_pago.id AND pagos.id_user = :userId ORDER BY date');
+            $query = 'SELECT 
+                        p.id as id_pago, 
+                        p.cedula as cedula_empleado, 
+                        u.nombre as nombre, 
+                        u.apellido1 as apellido, 
+                        p.amount as adeudado, 
+                        p.peticion_pago_id as planilla, 
+                        p.fecha_creacion as fechaCreacion,
+                        p.fecha_pago as fechaPago,
+                        p.detalles as detalles
+                    FROM pagos AS p
+                    INNER JOIN users AS u ON p.cedula = u.cedula
+                    INNER JOIN peticiones_pago AS p2 ON p.peticion_pago_id  = p2.id        
+                    WHERE p.peticion_pago_id = p2.id 
+                    ORDER BY p.cedula';
 
-    //         //$p es un arreglo que guarda las filas del query anterior, filas de un join
-    //         while($p = $query->fetch(PDO::FETCH_ASSOC)){
-    //             $item = new JoinPagosPeticionesModel();
-    //             $item->from($p);//va rellenando el objeto del tipo JoinPagosPeticionesModel con la info de las filas guardadas en $p
-    //             array_push($items, $item);
-    //         }
+            
+            $query->execute(['']);
 
-    //         return $items;//devuelve un arreglo de objetos de JoinPagosPeticionesModel
+            //$p es un arreglo que guarda las filas del query anterior, filas de un join
+            while($p = $query->fetch(PDO::FETCH_ASSOC)){
+                $item = new JoinPagosPeticionesModel();
+                $item->from($p);//va rellenando el objeto del tipo JoinPagosPeticionesModel con la info de las filas guardadas en $p
+                array_push($items, $item);//va rellenando el objeto del tipo JoinPagosPeticionesModel con la info de las filas guardadas en $p
+            }
 
-    //     }catch(PDOException $e){
-    //         echo $e;
-    //     }
-    // }
+            return $items;//devuelve un arreglo de objetos de JoinPagosPeticionesModel
+
+        }catch(PDOException $e){
+            echo $e;
+        }
+    }
 
     //cual pago, a quien se le paga, de cual planilla,      y cual contratista,     fecha de la peticion de pago,  estado del pago.
     //pagos.id, pagos.cedula,        pagos.peticion_pago_id, peticiones_pago.cedula, peticiones_pago.date,         pagos.estado_pago

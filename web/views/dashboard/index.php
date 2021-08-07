@@ -9,6 +9,7 @@
     $petiPendientesAprobar     = $this->d['petiPendientesAprobar'];
     $pagosRecientes            = $this->d['pagosRecientes'];
     $petiRecientes            = $this->d['petiRecientes'];
+    $rol                        = $user->getRol();
 
 ?>
 <html lang="en">
@@ -30,12 +31,15 @@
                 <div id="expenses-summary">
                     <div>
                         <h2>Bienvenido <?php echo $user->getNombre() ?></h2>
+                        <span class="total-budget-text">
+                            Logueado como: <?php echo $rol ?>      
+                        </span>
                     </div>
                     <div class="cards-container">
                         <div class="card w-100">
                             <div class="total-budget">
                                 <span class="total-budget-text">
-                                    Balance General del Contrato     
+                                    Balance General de la Planilla     
                                 </span>
                             </div>
                             <div class="total-expense">
@@ -121,11 +125,21 @@
                                 echo 'No hay Planillas que aprobar.';
                             }else{
                                     foreach($petiPendientesAprobar as $p){ ?>
-
-                                        <div class="card w-30 bs-1" style="background-color: coral" >
+                                        <!-- Agregar un onClick para llamar a una funcion con popup -->
+                                        <div class="card w-30 bs-1" style="background-color: coral" id=peticionPago>
                                             <div class="content category-name">
                                                 <?php echo $p->getFechaCreacion(); ?>
                                             </div>
+                                            <div class="content category-name">
+                                                <!-- TODO poner el nombre y primer apellido  -->
+                                                <?php echo $p->getCedula(); ?>
+                                            </div>
+                                            <div class="content category-name">
+                                                <!-- TODO poner el nombre y primer apellido  -->
+                                                <input type="hidden" name="idPeticionPago" id="idPeticionPago" value="<?php echo $p->getId() ?>">
+                                            </div>
+
+                                            
                                             <div class="title category-total">$<?php echo $p->getMonto(); ?></div>
                                         </div>
 
@@ -174,7 +188,7 @@
                             <span>Nuevo Pago</span>
                         </button>
                         <!-- <a href="<?php //echo constant('URL'); ?>/user#budget-user-container">Definir Planilla<i class="material-icons">keyboard_arrow_right</i></a> -->
-                        <a href="" class="btn-peticion" id="new-peticion-pago">Definir Planilla<i class="material-icons">keyboard_arrow_right</i></a>
+                        <a href="" class="btn-peticion" id="new-peticion-pago">Crear Planilla<i class="material-icons">keyboard_arrow_right</i></a>
                         
                     </section>
 

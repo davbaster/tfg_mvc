@@ -17,7 +17,7 @@
     <div class="section" >
         <label for="cedula" value= "<?php $cedulaPeticion ?>">Codigo de usuario: <?php echo " " . $cedulaPeticion ?></label>
         
-        <input type="hidden" name="cedula" id="cedula" value="<?php $cedulaPeticion ?>">
+        <input type="hidden" name="cedula" id="cedula" value="<?php echo $cedulaPeticion ?>">
     </div>  
 
     <div class="section">

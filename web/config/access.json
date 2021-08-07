@@ -18,41 +18,46 @@
         {
             "site": "dashboard",
             "access": "private",
-            "role":"admin"
+            "role":"administrador"
+        },
+        {
+            "site": "dashboard",
+            "access": "private",
+            "role":"contratista"
         },
         {
             "site": "rebajos",
             "access": "private",
-            "role":"admin"
+            "role":"administrador"
         },
         {
             "site": "pagos",
             "access": "private",
-            "role":"admin"
+            "role":"administrador"
         },
         {
             "site": "peticionespago",
             "access": "private",
-            "role":"user"
+            "role":"administrador"
         },{
             "site": "peticionespago",
             "access": "private",
-            "role":"admin"
+            "role":"contratista"
         },
         {
             "site": "reportes",
             "access": "private",
-            "role":"admin"
+            "role":"administrador"
         },
         {
             "site": "user",
             "access": "private",
-            "role":"admin"
+            "role":"administrador"
         },
         {
-            "site": "create",
+            "site": "user",
             "access": "private",
-            "role":"admin"
+            "role":"contratista"
         }
     ],
 

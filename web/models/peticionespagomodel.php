@@ -14,7 +14,7 @@ class PeticionesPagoModel extends Model implements IModel {
                      //approved = ya se mando para autorizar, y esta autorizado esperando pago. No se le puede agregar mas pagos,
                      //parcial?? = se han hecho algunos pagos, ya no se le pueden meter mas pagos.
                      //completed = todos los pagos fueron hechos. Falta fecha pagada? 
-   
+    // private $aprobado; //true or false
     
     private $pagos;//array que almacena los ids de pagos hechos //TODO ponerlo en la DB, revisar si esta nomencleatura es la mejor
                    //podra ser un contador de numero de pagos a los cuales esta asignado??
@@ -27,29 +27,40 @@ class PeticionesPagoModel extends Model implements IModel {
 
     public function __construct(){
         parent::__construct();
+
+         $this->id = ''; 
+         $this->nombre = ''; 
+         $this->cedula = ''; 
+         $this->fechaCreacion = '';
+         $this->idContrato = ''; 
+         $this->monto = '';
+         $this->estado = ''; 
+        //  $this->estadoPago = "";
+         $this->detalles = "";
     }
 
 
     public function save(){
         //LOG: agregue variable nombre al insert INTO
         try{
-            $query = $this->prepare('INSERT INTO peticiones_pago (id, nombre, cedula, fecha_creacion, id_contrato, monto, estado_pago, estado, detalles) 
-                                    VALUES(:id,:nombre,:cedula, :fechaCreacion, :idContrato, :monto, :estadoPago, :estado, :detalles)');
+            $query = $this->prepare('INSERT INTO peticiones_pago (nombre, cedula, id_contrato, monto, estado, detalles) 
+                                    VALUES(:nombre,:cedula,  :idContrato, :monto, :estado, :detalles)');
             $query->execute([
-                'id' => $this->id,
+                // 'id' => $this->id,
                 'nombre' => $this->nombre, 
                 'cedula' => $this->cedula, 
-                'fechaCreacion' => $this->fechaCreacion,
+                // 'fechaCreacion' => $this->fechaCreacion,
                 'idContrato' => $this->idContrato,
                 'monto' => $this->monto,
+                // 'estadoPago' => $this->estadoPago,
                 'estado' => $this->estado,
-                'aprobado' => $this->aprobado,
                 'detalles' => $this->detalles
             ]);
             if($query->rowCount()) return true;
 
             return false;
         }catch(PDOException $e){
+            error_log("PeticionesPagos::save() " . $e );
             return false;
         }
     }
