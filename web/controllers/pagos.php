@@ -89,18 +89,23 @@ class Pagos extends SessionController{
         $months = [];
         $res = [];
         $joinModel = new JoinPagosPeticionesModel();
-        $peticiones = $joinModel->getAll($this->user->getId());
+        $peticiones = $joinModel->getAllPagos();
 
         foreach ($peticiones as $p) {
-            array_push($months, substr($p->getDate(),0, 7 ));//suprime desde 0 y termina en 7
+            //FIXME necesito extraer el mes de esa fecha
+            array_push($months, substr($p->getFechaCreacion(),0, 7 ));//suprime desde 0 y termina en 7
         }
         $months = array_values(array_unique($months));//devuelve solo los valores del array. unique regresa solo valores unicos
-        //mostrar los últimos 3 meses
-        if(count($months) >3){
-            array_push($res, array_pop($months));//quita un elemento de arreglo x3
-            array_push($res, array_pop($months));
-            array_push($res, array_pop($months));
+
+        foreach ($months as $month) {
+            array_push($res, $month);
         }
+        //mostrar los últimos 3 meses
+        // if(count($months) >3){
+        //     array_push($res, array_pop($months));//quita un elemento de arreglo x3
+        //     array_push($res, array_pop($months));
+        //     array_push($res, array_pop($months));
+        // }
         return $res;
     }
 
@@ -110,10 +115,10 @@ class Pagos extends SessionController{
     private function getPeticionesPagoList(){
         $res = [];
         $joinModel = new JoinPagosPeticionesModel();
-        $peticiones = $joinModel->getAll($this->user->getId());
+        $peticiones = $joinModel->getAllPeticiones();
 
         foreach ($peticiones as $p) {
-            array_push($res, $p->getNamePeticionPago());
+            array_push($res, $p->getNombre());
         }
         $res = array_values(array_unique($res));
 
@@ -125,19 +130,19 @@ class Pagos extends SessionController{
 
     // devuelve todos los elementos de un arreglo como si fuera un JSON para las llamadas AJAX
     //funciona como una API simple
-    // function getHistoryJSON(){
-    //     header('Content-Type: application/json');
-    //     $res = [];
-    //     $joinModel = new JoinPagosPeticionesModel();
-    //     $peticiones = $joinModel->getAll($this->user->getId());
+    function getPagosHistoryJSON(){
+        header('Content-Type: application/json');
+        $res = [];
+        $joinModel = new JoinPagosPeticionesModel();
+        $peticiones = $joinModel->getAllPagos();
 
-    //     foreach ($peticiones as $p) {
-    //         array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
-    //     }
+        foreach ($peticiones as $p) {
+            array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+        }
         
-    //     echo json_encode($res);
+        echo json_encode($res);
 
-    // }
+    }
     
     // //getExpensesJSON
     // function getPagosJSON(){
@@ -203,6 +208,9 @@ class Pagos extends SessionController{
             $this->redirect('pagos', ['error' => ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);
         }
     }
+
+    //TODO hacer funcion pagar
+    //cambia el estado del pago a pagado
 
 }
 

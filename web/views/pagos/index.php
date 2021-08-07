@@ -6,10 +6,11 @@
         <div id="history-container" class="container">
             
             <div id="history-options">
-                <h2>Historial de gastos</h2>
+                <h2>Historial de pagos</h2>
                 <div id="filters-container">
                     <div class="filter-container">
                         <select id="sdate" class="custom-select">
+                            <!-- va php code v11min51 -->
                             <option value="">Ver todas las fechas</option>
                             
                         </select>
@@ -17,7 +18,7 @@
 
                     <div class="filter-container">
                         <select id="scategory" class="custom-select">
-                            <option value="">Ver todas las categorias</option>
+                            <option value="">Ver todas las planillas</option>
                             
                         </select>
                     </div>
@@ -28,8 +29,9 @@
                 <table width="100%" cellpadding="0">
                     <thead>
                         <tr>
-                        <th data-sort="title" width="35%">Título</th>
-                        <th data-sort="category">Categoría</th>
+                        <th data-sort="id">ID</th>
+                        <th data-sort="title" width="35%">Trabajador</th>
+                        <th data-sort="category">Planilla</th>
                         <th data-sort="date">Fecha</th>
                         <th data-sort="amount">Cantidad</th>
                         <th>Acciones</th>
@@ -168,7 +170,7 @@
         }
 
         async function getData(){
-            data = await fetch('http://localhost:41062/www/pagos/getHistoryJSON') 
+            data = await fetch('http://localhost:41062/www/pagos/getPagosHistoryJSON') 
             .then(res =>res.json())
             .then(json => json);
             this.copydata = [...this.data];
@@ -188,11 +190,12 @@
             data.forEach(item => { 
                 //total += item.amount;
                 databody.innerHTML += `<tr>
-                        <td>${item.title}</td>
-                        <td><span class="category" style="background-color: ${item.color}">${item.name}</span></td>
-                        <td>${item.date}</td>
-                        <td>$${item.amount}</td>
-                        <td><a href="http://localhost:41062/www/pagos/delete/${item.id}">Eliminar</a></td>
+                        <td>${item.id_pago}</td>
+                        <td>${item.nombre}</td>
+                        <td>${item.planilla}</td>
+                        <td>${item.fecha_creacion}</td>
+                        <td>$${item.adeudado}</td>
+                        <td><a href="http://localhost:41062/www/pagos/pagar/${item.id}">Pagar</a></td>
                     </tr>`;
             });
         }
