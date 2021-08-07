@@ -170,12 +170,12 @@ class PagosModel extends Model implements IModel {
                                     fecha_creacion = :d, 
                                     fecha_pago = :p, 
                                     cedula = :user,
-                                    detalles = :detalles,
+                                    detalles = :detalles
                                     WHERE id = :id');
 
             $query->execute([
                 'id' => $this->id,
-                'estadoPago' => $this->estadoPago, 
+                'estadoPago' => $this->estadoPago, //FIXME estado pago esta saliendo null
                 'peticionPagoId' => $this->peticionPagoId, 
                 'amount' => $this->amount, 
                 'd' => $this->fechaCreacion,

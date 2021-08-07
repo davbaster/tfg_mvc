@@ -30,10 +30,11 @@
                     <thead>
                         <tr>
                         <th data-sort="id">ID</th>
-                        <th data-sort="title" width="35%">Trabajador</th>
+                        <th data-sort="title" width="20%">Trabajador</th>
                         <th data-sort="category">Planilla</th>
                         <th data-sort="date">Fecha</th>
                         <th data-sort="amount">Cantidad</th>
+                        <th data-sort="amount">Estado</th>
                         <th>Acciones</th>
                         </tr>
                     </thead>
@@ -170,7 +171,8 @@
         }
 
         async function getData(){
-            data = await fetch('http://localhost:41062/www/pagos/getPagosHistoryJSON') 
+            // data = await fetch('http://localhost:41062/www/pagos/getPagosHistoryJSON', {redirect: 'manual'} ) 
+            data = await fetch('http://localhost:41062/www/pagos/getPagosHistoryJSON')
             .then(res =>res.json())
             .then(json => json);
             this.copydata = [...this.data];
@@ -189,14 +191,34 @@
             databody.innerHTML = '';
             data.forEach(item => { 
                 //total += item.amount;
-                databody.innerHTML += `<tr>
+                switch (item.estado) {
+
+                    case "open":
+
+                        databody.innerHTML += `<tr>
                         <td>${item.id_pago}</td>
                         <td>${item.nombre}</td>
                         <td>${item.planilla}</td>
                         <td>${item.fecha_creacion}</td>
-                        <td>$${item.adeudado}</td>
-                        <td><a href="http://localhost:41062/www/pagos/pagar/${item.id}">Pagar</a></td>
-                    </tr>`;
+                        <td>¢${item.adeudado}</td>
+                        <td>${item.estado}</td>
+                        <td><a href="http://localhost:41062/www/pagos/pagar/${item.id_pago}">Pagar</a></td>
+                        </tr>`;
+
+                        break;
+                
+                    default:
+                        databody.innerHTML += `<tr>
+                        <td>${item.id_pago}</td>
+                        <td>${item.nombre}</td>
+                        <td>${item.planilla}</td>
+                        <td>${item.fecha_creacion}</td>
+                        <td>¢${item.adeudado}</td>
+                        <td>${item.estado}</td>
+                        
+                        </tr>`;
+                        break;
+                }
             });
         }
         

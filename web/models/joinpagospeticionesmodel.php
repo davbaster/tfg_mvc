@@ -65,31 +65,33 @@ class JoinPagosPeticionesModel extends Model {
         $items = [];
         //$estado = "pending";
         try{
-          //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
-          //p2.cedula as contratista,//TODO agregar luego por si queremos poner el nombre del contratista
-            $query = $this->query('SELECT p.id as id_pago, 
-                             p.estado_pago as estado,
-                             p.cedula as cedula_empleado, 
-                             u.nombre as nombre, 
-                             u.apellido1 as apellido, 
-                             p.amount as adeudado, 
-                             p.peticion_pago_id as planilla, 
-                             p.fecha_creacion as fechaCreacion,
-                             p.fecha_pago as fechaPago,
-                             p.detalles as detalles
-                    FROM pagos AS p
-                    INNER JOIN users AS u ON p.cedula = u.cedula
-                    -- INNER JOIN peticiones_pago AS p2 ON p.peticion_pago_id  = p2.id    
-                    ORDER BY p.cedula');
-            
-            
-            //$query->execute(["estado" => $estado]);
+                //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
+                //p2.cedula as contratista,//TODO agregar luego por si queremos poner el nombre del contratista
+                $query = $this->query('SELECT 
+                p.id as id_pago, 
+                p.cedula as cedula_empleado, 
+                u.nombre as nombre, 
+                u.apellido1 as apellido, 
+                p.amount as adeudado, 
+                p.peticion_pago_id as planilla, 
+                p.estado_pago as estado,
+                p.fecha_creacion as fechaCreacion,
+                p.fecha_pago as fechaPago,
+                p.detalles as detalles
+            FROM pagos AS p
+            INNER JOIN users AS u ON p.cedula = u.cedula
+            INNER JOIN peticiones_pago AS p2 ON p.peticion_pago_id  = p2.id        
+            WHERE p.peticion_pago_id = p2.id 
+            ORDER BY p.cedula');
+
+
+            //$query->execute(['']);
 
             //$p es un arreglo que guarda las filas del query anterior, filas de un join
             while($p = $query->fetch(PDO::FETCH_ASSOC)){
-                $item = new JoinPagosPeticionesModel();
-                $item->from($p);//va rellenando el objeto del tipo JoinPagosPeticionesModel con la info de las filas guardadas en $p
-                array_push($items, $item);
+            $item = new JoinPagosPeticionesModel();
+            $item->from($p);//va rellenando el objeto del tipo JoinPagosPeticionesModel con la info de las filas guardadas en $p
+            array_push($items, $item);//va rellenando el objeto del tipo JoinPagosPeticionesModel con la info de las filas guardadas en $p
             }
 
             return $items;//devuelve un arreglo de objetos de JoinPagosPeticionesModel
@@ -228,14 +230,14 @@ class JoinPagosPeticionesModel extends Model {
     //
     public function from($array){
         $this->pagoId = $array['id_pago'];
-        $this->estadoPago = $array['estado_pago'];
+        $this->estadoPago = $array['estado'];
         $this->cedula = $array['cedula_empleado'];
         $this->nombre = $array['nombre'];
         $this->apellido = $array['apellido'];
         $this->amount = $array['adeudado'];
         $this->peticionPagoId = $array['planilla'];
-        $this->fechaCreacion = $array['fecha_creacion'];
-        $this->fechaPago = $array['fecha_Pago'];
+        $this->fechaCreacion = $array['fechaCreacion'];
+        $this->fechaPago = $array['fechaPago'];
         $this->detalles = $array['detalles'];
     }
 
@@ -248,7 +250,7 @@ class JoinPagosPeticionesModel extends Model {
         $array['cedula_empleado'] = $this->cedula;
         $array['nombre'] = $this->nombre;
         $array['apellido'] = $this->apellido;
-        $array['adeudado'] = $this->adeudado;
+        $array['adeudado'] = $this->amount;//adeudado
         $array['planilla'] = $this->peticionPagoId;
         $array['fecha_creacion'] = $this->fechaCreacion;
         $array['fecha_pago'] = $this->fechaPago;

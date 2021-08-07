@@ -24,8 +24,8 @@ class Pagos extends SessionController{
 
         $this->view->render('pagos/index', [
             'user' => $this->user,
-            'dates' => $this->getDateList(),
-            'peticionesPago' => $this->getPeticionesPagoList()//peticiones_pago
+            // 'dates' => $this->getDateList(),
+            // 'peticionesPago' => $this->getPeticionesPagoList()//peticiones_pago
             //'categories' => $this->getCategoryList()//BORRAR si no es necesario
         ]);
     }
@@ -131,21 +131,9 @@ class Pagos extends SessionController{
     // devuelve todos los elementos de un arreglo como si fuera un JSON para las llamadas AJAX
     //funciona como una API simple
     function getPagosHistoryJSON(){
-        header('Content-Type: application/json');
+        error_log('PAGOSCONTROLLER::getPagosHistoryJSON()');
+        
         $res = [];
-        $res['id_pago'] = 1;
-        $res['estado'] = "open";
-        $res['cedula_empleado'] = "7";
-        $res['nombre'] = "David";
-        $res['apellido'] = "Cordoba";
-        $res['adeudado'] = 2000;
-        $res['planilla'] = 1;
-        $res['fecha_creacion'] = "08/06/2021";
-        $res['fecha_pago'] = "08/06/2021";
-        $res['detalles'] = "Hola mundo";
-
-
-
 
         $joinModel = new JoinPagosPeticionesModel();
         $peticiones = $joinModel->getAllPagos();
@@ -153,9 +141,30 @@ class Pagos extends SessionController{
         foreach ($peticiones as $p) {
             array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
         }
-        
+        header("HTTP/1.1 200 OK");
+        header('Content-Type: application/json');
         echo json_encode($res);
 
+    }
+
+    //cambia el estado de open a pagado
+    function pagar($params){
+        error_log("PagosCONTROLLER::Pagar()");
+        
+        if($params === NULL) $this->redirect('pagos', ['error' => ErrorMessages::ERROR_ADMIN_PAGOS_PAGAR]);//TODO AGREGAR A LISTA
+        $id = $params[0];
+        //error_log("Pagos::delete() id = " . $id);
+        // $pago = new PagosModel();
+        // $pago->get($id);
+        $this->model->get($id);
+        $this->model->setEstadoPago("pagado");
+        $res = $this->model->update();//CAMBIAR ESTADO
+
+        if($res){//SI RES tiene un resultado
+            $this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PAGOS_PAGAR]);//TODO AGREGAR A LISTA
+        }else{
+            $this->redirect('pagos', ['error' => ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);
+        }
     }
     
     // //getExpensesJSON
