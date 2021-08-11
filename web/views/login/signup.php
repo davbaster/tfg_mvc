@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="<?php echo constant('URL'); ?>public/css/login.css">
-    <title>Signup</title>
+    <title>Modulo Usuarios</title>
 </head>
 <body>
     <?php require 'views/header.php'; ?>
     
     <div id="login-main">
-    
+        <?php $this->showMessages() ?>
         <form action="<?php echo constant('URL'); ?>/signup/newUser" method="POST">
         <div></div>
-            <h2>Registrarse</h2>
+            <h2>Crear un nuevo usuario</h2>
 
             <div class="row mb-3 gx-3">
                 <div class="col">
@@ -67,25 +67,38 @@
             </div>
             
             <div class="mb-3">
-                <input type="text" name="contrasena" id="contrasena" class="form-control form-control-lg" placeholder="Password">
+                <input type="password" onkeyup='check();' name="contrasena" id="contrasena" class="form-control form-control-lg" placeholder="Password">
                 
             </div>
             
             <div class="mb-3">
-                <input type="text" name="confcontrasena" id="confcontrasena" class="form-control form-control-lg" placeholder="Confirme Password">
+                <input type="password" onkeyup='check()'; name="confcontrasena" id="confcontrasena" class="form-control form-control-lg" placeholder="Confirme Password">
                 
             </div>
-            <div id="passError" ></div>
+            <span id='message'></span>
 
-            <div class="mb-3">
+            <!-- <div class="mb-3">
                 <input type="rol" name="rol" id="rol" class="form-control form-control-lg" placeholder="rol del usuario" required>
                 
+            </div> -->
+
+            <div class="div" class="mb-3">
+            <label for="rol">Rol del usuario:</label>
+
+                <select name="rol" id="rol" required>
+                <option value="contratista">contratista</option>
+                <option value="contador">contador</option>
+                <option value="administrador">administrador</option>
+                
+</select>
             </div>
             <p>
-                <input type="submit" value="Agregar Usuario" />
+                <input type="submit" id= "btnEnviar" value="Agregar Usuario" />
             </p>
             
         </form>
     </div>
+
+    <script src="public/js/usuarios.js"></script>
 </body>
 </html>

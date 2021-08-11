@@ -28,7 +28,7 @@
             </p>
 
             <p>
-                ¿No tienes cuenta? <a href="<?php echo constant('URL'); ?>/signup">Registrarse</a>
+                <!-- ¿No tienes cuenta? <a href="<?php //echo constant('URL'); ?>/signup">Registrarse</a> -->
             </p>
         </form>
     </div>

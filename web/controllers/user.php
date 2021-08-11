@@ -21,34 +21,34 @@ class User extends SessionController{
     }
 
 
-    //
-    function updateBudget(){
+    //TODO borrar si no se puede reutilizar
+    // function updateBudget(){
 
-        //si no existe
-        if(!$this->existPOST('budget')){
-            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEBUDGET]);
-            return;
-        }
+    //     //si no existe
+    //     if(!$this->existPOST('budget')){
+    //         $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEBUDGET]);
+    //         return;
+    //     }
 
-        $budget = $this->getPost('budget');
+    //     $budget = $this->getPost('budget');
 
-        if(empty($budget) || $budget === 0 || $budget < 0){//valida sea vacio, igual o menor que cero
-            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEBUDGET_EMPTY]);
-            return;
-        }
+    //     if(empty($budget) || $budget === 0 || $budget < 0){//valida sea vacio, igual o menor que cero
+    //         $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEBUDGET_EMPTY]);
+    //         return;
+    //     }
     
-        $this->user->setBudget($budget);//asignando budget al usuario
+    //     $this->user->setBudget($budget);//asignando budget al usuario
 
-        if($this->user->update()){//si se actualiza
-            $this->redirect('user', ['success' => SuccessMessages::SUCCESS_USER_UPDATEBUDGET]);
-        }else{
-            //error
-        }
-    }
+    //     if($this->user->update()){//si se actualiza
+    //         $this->redirect('user', ['success' => SuccessMessages::SUCCESS_USER_UPDATEBUDGET]);
+    //     }else{
+    //         //error
+    //     }
+    // }
 
 
 
-    //
+    //actualiza nombre de usuario
     function updateName(){
         if(!$this->existPOST(['name'])){
             $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATENAME]);
@@ -111,7 +111,7 @@ class User extends SessionController{
     }
 
 
-    //
+    //Codigo para funcionalidad futura
     function updatePhoto(){
         //CAMBIOS: cambie la variable foto a photo
         error_log("USERCONTROLLER::updatePhoto() started");

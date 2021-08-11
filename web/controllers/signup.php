@@ -37,6 +37,7 @@ class Signup extends SessionController{
             $cuentaBancaria = $this->getPost('cuentaBancaria');
             $email = $this->getPost('email');
             $contrasena = $this->getPost('contrasena');
+            $confcontrasena = $this->getPost('confcontrasena');//confirmacion contrasena
             
 
             // validacion de los valores obligatorios recibidos
