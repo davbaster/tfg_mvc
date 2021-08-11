@@ -12,7 +12,7 @@
     <?php require_once 'views/header.php'; ?>
 
     <div id="main-container">
-
+        <?php $this->showMessages() ?>
         <div id="user-container" class="container">
             <div id="user-header">
                 <div id="user-info-container">
@@ -64,11 +64,13 @@
                     <form action="<?php echo constant('URL'). '/user/updatePassword' ?>" method="POST">
                         <div class="section">
                             <label for="current_password">Password actual</label>
-                            <input type="password" name="current_password" id="current_password" autocomplete="off" required>
+                            <input type="password" onkeyup='check();' name="current_password" id="current_password" autocomplete="off" required>
 
                             <label for="new_password">Nuevo password</label>
-                            <input type="password" name="new_password" id="new_password" autocomplete="off" required>
-                            <div><input type="submit" value="Cambiar password" /></div>
+                            <input type="password"  onkeyup='check();' name="new_password" id="new_password" autocomplete="off" required>
+                            <span id='message'></span>
+                            <div><input type="submit" id="btnEnviar" value="Cambiar password" /></div>
+                            
                         </div>
                     </form>
                 </section>
@@ -87,6 +89,7 @@
         </div><!-- user container -->
 
     </div><!-- main container -->
+    <script src="public/js/user_dashboard.js"></script>
     <script>
         
         const url = location.href;
@@ -131,5 +134,6 @@
                             
         
     </script>
+    
 </body>
 </html>
