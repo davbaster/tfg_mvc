@@ -161,7 +161,9 @@ class Pagos extends SessionController{
         $res = $this->model->update();//CAMBIAR ESTADO
 
         if($res){//SI RES tiene un resultado
-            $this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PAGOS_PAGAR]);//TODO AGREGAR A LISTA
+            //$this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PAGOS_PAGAR]);//TODO AGREGAR A LISTA
+            $this->getPagosHistoryJSON();
+
         }else{
             $this->redirect('pagos', ['error' => ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);
         }

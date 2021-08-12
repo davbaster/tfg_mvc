@@ -54,6 +54,9 @@
         const sdate     = document.querySelector('#sdate');
         const scategory = document.querySelector('#scategory');
         const sorts = document.querySelectorAll('th');
+        const btnPago = document.querySelector('#pagarItem');
+
+        
 
         sdate.addEventListener('change', e =>{
             const value = e.target.value;
@@ -179,7 +182,12 @@
             console.table(data);
             renderData(data);
         }
+
         getData();
+
+
+
+        
 
         function numberWithCommas(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -202,7 +210,7 @@
                         <td>${item.fecha_creacion}</td>
                         <td>¢${item.adeudado}</td>
                         <td>${item.estado}</td>
-                        <td><a href="http://localhost:41062/www/pagos/pagar/${item.id_pago}">Pagar</a></td>
+                        <td><a id="pagarItem" href="#" onclick="pagar(${item.id_pago})">Pagar</a></td>
                         </tr>`;
 
                         break;
@@ -215,6 +223,7 @@
                         <td>${item.fecha_creacion}</td>
                         <td>¢${item.adeudado}</td>
                         <td>${item.estado}</td>
+                        <td></td>
                         
                         </tr>`;
                         break;
@@ -222,6 +231,22 @@
             });
         }
         
+    // Esta funcion es llamada desde el boton pagar.
+    //se usa asincrona para que no recargue toda la pagina, solo tabla
+    async function pagar(id){
+
+        event.preventDefault();
+
+        data = await fetch(`http://localhost:41062/www/pagos/pagar/${id}`)
+        .then(res =>res.json())
+        .then(json => json);
+        this.copydata = [...this.data];
+        console.table(data);
+        renderData(data);
+
+
+
+    };
 
         
     </script>
