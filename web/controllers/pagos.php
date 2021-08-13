@@ -24,14 +24,16 @@ class Pagos extends SessionController{
 
         $this->view->render('pagos/index', [
             'user' => $this->user,
-            // 'dates' => $this->getDateList(),
-            // 'peticionesPago' => $this->getPeticionesPagoList()//peticiones_pago
-            //'categories' => $this->getCategoryList()//BORRAR si no es necesario
+            'fechas' => $this->getDateList(),
+            // 'peticionesPago' => $this->getPeticionesPagoList()//Nombres de los contratistas en las peticiones_pago
+            'peticionesPago' => $this->getPeticionesPagoIds()//IDs de los contratistas en las peticiones_pago
+            
         ]);
     }
 
 
-    //
+    //recoger la informacion mandada de la vista para crear un nuevo pago
+    //es llamado usando un ajax.
     function newPago(){
         error_log('Pagos::newPago()');
         if(!$this->existPOST(['cedula', 'amount', 'peticion_pago_id', 'detalles'])){//si no existe el post con los parametros
@@ -68,20 +70,7 @@ class Pagos extends SessionController{
         ]);
     } 
 
-    //
-    function getPeticionesPagoIds(){
-        $joinModel = new JoinPagosPeticionesModel();
-        $peticiones = $joinModel->getAll($this->user->getId());//lista las peticiones de pago por id de user
-
-        $res = [];
-        foreach ($peticiones as $p) {
-            //guarda IDs de peticiones de pago
-            array_push($res, $p->getPeticionPagoId());//$p es un objeto del tipo joinPagosPeticionesModel
-            //array_push($res, $pet->getCategoryId());
-        }
-        $res = array_values(array_unique($res));//devuelve solo los valores del array. unique regresa solo valores unicos
-        return $res; //res contine un arreglo con IDs de peticiones de pago
-    }
+    
 
 
      // crea una lista con los meses donde hay pagos
@@ -100,18 +89,13 @@ class Pagos extends SessionController{
         foreach ($months as $month) {
             array_push($res, $month);
         }
-        //mostrar los últimos 3 meses
-        // if(count($months) >3){
-        //     array_push($res, array_pop($months));//quita un elemento de arreglo x3
-        //     array_push($res, array_pop($months));
-        //     array_push($res, array_pop($months));
-        // }
+
         return $res;
     }
 
 
-    // crea una lista con las peticiones de Pago donde hay pagos
-    // getCategoryList()
+    // crea una lista con los nombres de los contratistas que han abierto peticiones de Pago
+    // usada para la vista de pagos
     private function getPeticionesPagoList(){
         $res = [];
         $joinModel = new JoinPagosPeticionesModel();
@@ -123,6 +107,22 @@ class Pagos extends SessionController{
         $res = array_values(array_unique($res));
 
         return $res;
+    }
+
+
+    //carga en un arreglo todos los IDs de las peticiones de pago que vienen del joinPagosPeticionesModel
+    function getPeticionesPagoIds(){
+        $joinModel = new JoinPagosPeticionesModel();
+        $peticiones = $joinModel->getAllPeticiones();//lista las peticiones de pago por id de user
+
+        $res = [];
+        foreach ($peticiones as $p) {
+            //guarda IDs de peticiones de pago
+            array_push($res, $p->getPeticionPagoId());//$p es un objeto del tipo joinPagosPeticionesModel
+            //array_push($res, $pet->getCategoryId());
+        }
+        $res = array_values(array_unique($res));//devuelve solo los valores del array. unique regresa solo valores unicos
+        return $res; //res contine un arreglo con IDs de peticiones de pago
     }
 
 
