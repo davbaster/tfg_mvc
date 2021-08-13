@@ -47,7 +47,7 @@
                         <select id="sestado" class="custom-select">
                             <option value="">Todos los estados</option>
 
-                                <option value="open" >Pendiente</option>;
+                                <option value="open" >Pendiente aprobar</option>;
                                 <option value="pending" >Aprobado</option>;
                                 <option value="pagado" >Pagado</option>;
 

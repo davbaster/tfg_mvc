@@ -38,9 +38,9 @@ btnPeticion.addEventListener('click', async () =>{
   
 });
 
-// FIXME no esta llegando el llamado al servidor
+//localhost se deberia cambiar por la direccion del servidor
 async function getContent(){
-  const html = await fetch('http://127.0.0.1:41062/www/peticionespago/viewPeticion').then(res => res.text());
+  const html = await fetch('http://localhost:41062/www/peticionespago/viewPeticion').then(res => res.text());
   return html;   
 }
 

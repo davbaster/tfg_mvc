@@ -1,6 +1,7 @@
 <?php
 
-    define('URL' , 'http://127.0.0.1:41062/www');
+    // define('URL' , 'http://127.0.0.1:41062/www');//URL del servidor
+    define('URL' , 'http://localhost:41062/www');//URL del servidor
 
     // define('HOST', '127.0.0.1');
     //define('HOST', 'localhost');
