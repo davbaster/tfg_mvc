@@ -1,8 +1,8 @@
 <?php
 
-    $user                      = $this->d['user'];
-    $fechas                    = $this->d['fechas'];
-    $peticionesPago            = $this->d['peticionesPago'];
+    $user                       = $this->d['user'];
+    $fechas                     = $this->d['fechas'];//recibe las fechas de los pagos pendientes de pago y pagados
+    $peticionesPagoAutorizadas  = $this->d['peticionesPagoAutorizadas'];//recibe todos los Ids de peticionesPago (planillas) aprobadas para pago
 
 
 ?>
@@ -16,6 +16,9 @@
             
             <div id="history-options">
                 <h2>Historial de pagos</h2>
+                <!--//TODO mejora: dividir el filtro en a;o, mes, dia  -->
+                <!-- //TODO mejora: hacer que los filtros sean cruzados entre si -->
+                
                 <div id="filters-container">
                     <div class="filter-container">
                         <select id="sdate" class="custom-select">
@@ -31,10 +34,10 @@
                     </div>
 
                     <div class="filter-container">
-                        <select id="scategory" class="custom-select">
+                        <select id="speticionpago" class="custom-select">
                             <option value="">Ver todas las planillas</option>
                                 <?php
-                                    $options = $peticionesPago;
+                                    $options = $peticionesPagoAutorizadas;
                                     foreach ($options as $option) {
                                         echo "<option value=$option >".$option."</option>";
                                     }
@@ -47,8 +50,8 @@
                         <select id="sestado" class="custom-select">
                             <option value="">Todos los estados</option>
 
-                                <option value="open" >Pendiente aprobar</option>;
-                                <option value="pending" >Aprobado</option>;
+                
+                                <option value="pendiente" >Pendiente</option>;
                                 <option value="pagado" >Pagado</option>;
 
                             

@@ -8,8 +8,8 @@ class PagosModel extends Model implements IModel {
 
     //************ */
     private $id;
-    private $estadoPago; //open = acabado de crear, no se puede pagar hasta que pase a pending
-                         //pending = ya se mando para autorizar, y esta autorizado. Esta esperando que se pague
+    private $estadoPago; //open = acabado de crear, no se puede pagar hasta que pase a pendiente
+                         //pendiente = ya se mando para autorizar, y esta autorizado. Esta esperando que se pague
                          //parcial??? se le hizo un adelanto //TODO verificar si es factible, o se crea la tabla adelantos                         
                          //pagado, 
     private $peticionPagoId;
@@ -212,7 +212,7 @@ class PagosModel extends Model implements IModel {
         $items = [];//arreglo de objetos de tipo pago
 
         //$aprobado = 1;
-        $estadoPago = "pending";
+        $estadoPago = "pendiente";
 
         try{
             

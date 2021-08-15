@@ -1,6 +1,6 @@
 <?php
 
-require_once 'models/joinpagospeticionesmodel.php';
+require_once 'models/joinpeticionesusermodel.php';
 require_once 'models/peticionespagomodel.php';
 require_once 'models/pagosmodel.php';
 
@@ -20,19 +20,22 @@ class PeticionesPago extends SessionController{
 
     //muestra la vista
     function render(){
-        error_log("PeticionesPagos::RENDER() ");
+        error_log("PeticionesPagosCONTROLLER::RENDER() ");
+        
 
         $this->view->render('peticionespago/index', [
             'user' => $this->user,
-            'dates' => $this->getDateList(),//FIXME se le tiene que mandar dates para algo?
-            'peticionesPago' => $this->getPeticionesPagoList()//peticiones_pago//TODO hay que revisar si esta utilizando el metodo adecuado,
+            'fechas' => $this->getDateList(),//FIXME se le tiene que mandar dates para algo?
+            'peticionesPagoRecibidas' => $this->getAllPeticionesPagoRecibidas()//peticiones_pago que han sido enviadas por los contratistas
                                                                                //TODO este metodo deberia de pasar la informacion como un array no objetos
             //'categories' => $this->getCategoryList()//BORRAR si no es necesario
         ]);
     }
 
 
-     // carga vista para nuevas peticion pago UI
+     // carga vista para nuevas peticion pago UI en DASHBOARD 
+     //TODO tal vez el controlador de dashboard deberia manejar esto y pedir la info
+     //al controlador de peticionesPago, en lugar de la vista de dashboard pida esta info directamente a controlador peticiones pago
      function viewPago(){
         $peticionModel = new PeticionesPagoModel();
         $peticionesPago = $peticionModel->getAll(); //este metodo trae todas las peticiones de pago como objetos, 
@@ -92,22 +95,62 @@ class PeticionesPago extends SessionController{
     }
 
 
+        // crea una lista con los meses donde hay peticionesPago/planilla
+        private function getDateList(){
+        $months = [];
+        $res = [];
+        $joinModel = new JoinPeticionesUserModel();
+        $peticionesJoin = $joinModel->getAllPeticiones();//devuelve solo peticiones autorizados pendientes de pago o pagados
+
+        foreach ($peticionesJoin as $p) {
+            //TODO En futuro se podria sacar el mes y el a;o por aparte para hacer el filtro mas minucioso
+            array_push($months, substr($p->getFechaCreacion(),0, 7 ));//suprime desde 0 y termina en 7
+        }
+        $months = array_values(array_unique($months));//devuelve solo los valores del array. unique regresa solo valores unicos
+
+        foreach ($months as $month) {
+            array_push($res, $month);
+        }
+
+        return $res;
+    }
+
+    //lista solo las id de peticionesPago/planillas que han sido enviadas a aprobar por los contratistas
+    //saca los IDs de las peticionesPago pendientes Pago y pagadas
+    function getAllPeticionesPagoRecibidas(){
+        $joinModel = new JoinPeticionesUserModel();
+        $peticionesJoin = $joinModel->getAllPeticionesAutorizadas();//lista las peticiones de pago por id de user
+                                                                //hacer un metodo para sacar las IDs con el resultado 
+                                                                //(array) de pagos enviado anteriormente en 
+                                                                //getAllPeticionesRecibidas
+
+        $res = [];
+        foreach ($pagosJoin as $p) {
+            //guarda IDs de peticiones de pago
+            array_push($res, $p->getPeticionPagoId());//$p es un objeto del tipo joinPagosPeticionesModel
+            //array_push($res, $pet->getCategoryId());
+        }
+        $res = array_values(array_unique($res));//devuelve solo los valores del array. unique regresa solo valores unicos
+        return $res; //res contine un arreglo con IDs de peticiones de pago
+    }
+
+
     
     //TODO borrar que?
-    function delete($params){
-        error_log("Pagos::delete()");
+    // function delete($params){
+    //     error_log("Pagos::delete()");
         
-        if($params === NULL) $this->redirect('pagos', ['error' => ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);
-        $id = $params[0];
-        error_log("Pagos::delete() id = " . $id);
-        $res = $this->model->delete($id);
+    //     if($params === NULL) $this->redirect('pagos', ['error' => ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);
+    //     $id = $params[0];
+    //     error_log("Pagos::delete() id = " . $id);
+    //     $res = $this->model->delete($id);
 
-        if($res){//SI RES tiene un resultado
-            $this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PETICIONPAGOS_DELETE]);
-        }else{
-            $this->redirect('pagos', ['error' => ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);
-        }
-    }
+    //     if($res){//SI RES tiene un resultado
+    //         $this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PETICIONPAGOS_DELETE]);
+    //     }else{
+    //         $this->redirect('pagos', ['error' => ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);
+    //     }
+    // }
 
 
         // //FIXME arreglar metodo, los campos del arreglo de existPOST son incorrectos
@@ -152,26 +195,7 @@ class PeticionesPago extends SessionController{
     //     return $res; //res contine un arreglo con IDs de peticiones de pago
     // }
 
-     //TODO revisar si hace lo que tiene que hacer
-     // crea una lista con los meses donde hay peticiones de pago (Planillas)
-    //  private function getDateList(){
-    //     $months = [];
-    //     $res = [];
-    //     $joinModel = new JoinPagosPeticionesModel();
-    //     $peticiones = $joinModel->getAll($this->user->getId());
 
-    //     foreach ($peticiones as $p) {
-    //         array_push($months, substr($p->getDate(),0, 7 ));//suprime desde 0 y termina en 7
-    //     }
-    //     $months = array_values(array_unique($months));//devuelve solo los valores del array. unique regresa solo valores unicos
-    //     //mostrar los últimos 3 meses
-    //     if(count($months) >3){
-    //         array_push($res, array_pop($months));//quita un elemento de arreglo x3
-    //         array_push($res, array_pop($months));
-    //         array_push($res, array_pop($months));
-    //     }
-    //     return $res;
-    // }
 
 
     //TODO revisar si este metodo debe de existir y si hay otro que hace la misma funcionalidad

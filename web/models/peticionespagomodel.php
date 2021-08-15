@@ -10,10 +10,10 @@ class PeticionesPagoModel extends Model implements IModel {
     private $idContrato; //TODO se va a usar si se crea modulo contratos
     private $monto;
     private $estado; //open = todavia se le puede agregar pagos
-                     //pending = ya se mando para autorizar. No se le puede agregar mas pagos.
-                     //approved = ya se mando para autorizar, y esta autorizado esperando pago. No se le puede agregar mas pagos,
+                     //pendiente = ya se mando para autorizar. No se le puede agregar mas pagos.
+                     //autorizado = ya se mando para autorizar, y esta autorizado esperando pago. No se le puede agregar mas pagos,
                      //parcial?? = se han hecho algunos pagos, ya no se le pueden meter mas pagos.
-                     //completed = todos los pagos fueron hechos. Falta fecha pagada? 
+                     //pagado = todos los pagos fueron hechos. Falta fecha pagada? 
     // private $aprobado; //true or false
     
     private $pagos;//array que almacena los ids de pagos hechos //TODO ponerlo en la DB, revisar si esta nomencleatura es la mejor
