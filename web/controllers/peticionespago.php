@@ -26,14 +26,106 @@ class PeticionesPago extends SessionController{
         $this->view->render('peticionespago/index', [
             'user' => $this->user,
             'fechas' => $this->getDateList(),//FIXME se le tiene que mandar dates para algo?
-            'peticionesPagoRecibidas' => $this->getAllPeticionesPagoRecibidas()//peticiones_pago que han sido enviadas por los contratistas
+            'peticionesPagoRecibidas' => $this->getAllContratistas()//peticiones_pago que han sido enviadas por los contratistas
                                                                                //TODO este metodo deberia de pasar la informacion como un array no objetos
             //'categories' => $this->getCategoryList()//BORRAR si no es necesario
         ]);
     }
 
 
-     // carga vista para nuevas peticion pago UI en DASHBOARD 
+     
+
+        // crea una lista con los meses donde hay peticionesPago/planilla
+        private function getDateList(){
+        $months = [];
+        $res = [];
+        $joinModel = new JoinPeticionesUserModel();
+        $peticionesJoin = $joinModel->getAllPeticionesAutorizadas();//devuelve solo peticiones autorizados pendientes de pago o pagados
+
+        foreach ($peticionesJoin as $p) {
+            //TODO En futuro se podria sacar el mes y el a;o por aparte para hacer el filtro mas minucioso
+            array_push($months, substr($p->getFechaCreacion(),0, 7 ));//suprime desde 0 y termina en 7
+        }
+        $months = array_values(array_unique($months));//devuelve solo los valores del array. unique regresa solo valores unicos
+
+        foreach ($months as $month) {
+            array_push($res, $month);
+        }
+
+        return $res;
+    }
+
+    //Devuelve un array con todas las peticionesPago pendiente->autorizada->pagada
+    function getAllPeticionesPagoRecibidas(){
+        $joinModel = new JoinPeticionesUserModel();
+        $peticionesJoin = $joinModel->getAllPeticiones();//lista las peticiones de pago por id de user
+                                                                //hacer un metodo para sacar las IDs con el resultado 
+                                                                //(array) de pagos enviado anteriormente en 
+                                                                //getAllPeticionesRecibidas
+
+        $res = [];
+        foreach ($peticionesJoin as $p) {
+            //guarda las peticionesPago en estructura json
+            array_push($res,  $p->toArray() ) ;//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json )
+            //array_push($res, $p->getPeticionPagoId());                                                   
+            
+        }
+        //$res = array_values(array_unique($res));//devuelve solo los valores del array. unique regresa solo valores unicos
+        return $res; //res contine un arreglo con IDs de peticiones de pago
+    }
+
+
+    //devuelve solo los contratistas con nombres sin repetir extraidos de todas las peticiones
+    // pendiente->autorizada->pagada
+    function getAllContratistas(){
+        $joinModel = new JoinPeticionesUserModel();
+        $peticionesJoin = $joinModel->getAllPeticiones();//lista las peticiones de pago por id de user
+                                                                //hacer un metodo para sacar las IDs con el resultado 
+                                                                //(array) de pagos enviado anteriormente en 
+                                                                //getAllPeticionesRecibidas
+
+        $res = [];
+        foreach ($peticionesJoin as $p) {
+            //guarda las peticionesPago en estructura json
+            //array_push($res,  $p->toArray() ) ;//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json )
+            array_push($res, $p->getNombre(). ' '. $p->getApellido1().' '.$p->getApellido2()  );                                                   
+            
+        }
+        $res = array_values(array_unique($res));//devuelve solo los valores del array. unique regresa solo valores unicos
+        return $res; //res contine un arreglo con IDs de peticiones de pago
+    }
+
+
+    function getPeticionesPagoHistoryJSON(){
+        error_log('PAGOSCONTROLLER::getPagosHistoryJSON()');
+        
+        $res = [];
+
+        $joinModel = new JoinPeticionesUserModel();
+        $peticiones = $joinModel->getAllPeticiones();//todas las peticiones menos las open, porque no han sido enviadas por los contratistas
+
+        foreach ($peticiones as $p) {
+            array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+        }
+        header("HTTP/1.1 200 OK");
+        header('Content-Type: application/json');
+        echo json_encode($res);
+
+    }
+
+
+    //autorizarPago
+
+
+
+
+
+    //******************************************** */
+    //TODO este codigo deberia de comunicarse con el controlador del dashboard para mandar la informacion que necesita 
+    //la vista del dashboard. La vista del dashboard no deberia de pedir esta info directamente a este controlador
+    //******************************************** */
+
+    // carga vista para nuevas peticion pago UI en DASHBOARD 
      //TODO tal vez el controlador de dashboard deberia manejar esto y pedir la info
      //al controlador de peticionesPago, en lugar de la vista de dashboard pida esta info directamente a controlador peticiones pago
      function viewPago(){
@@ -95,45 +187,9 @@ class PeticionesPago extends SessionController{
     }
 
 
-        // crea una lista con los meses donde hay peticionesPago/planilla
-        private function getDateList(){
-        $months = [];
-        $res = [];
-        $joinModel = new JoinPeticionesUserModel();
-        $peticionesJoin = $joinModel->getAllPeticiones();//devuelve solo peticiones autorizados pendientes de pago o pagados
-
-        foreach ($peticionesJoin as $p) {
-            //TODO En futuro se podria sacar el mes y el a;o por aparte para hacer el filtro mas minucioso
-            array_push($months, substr($p->getFechaCreacion(),0, 7 ));//suprime desde 0 y termina en 7
-        }
-        $months = array_values(array_unique($months));//devuelve solo los valores del array. unique regresa solo valores unicos
-
-        foreach ($months as $month) {
-            array_push($res, $month);
-        }
-
-        return $res;
-    }
-
-    //lista solo las id de peticionesPago/planillas que han sido enviadas a aprobar por los contratistas
-    //saca los IDs de las peticionesPago pendientes Pago y pagadas
-    function getAllPeticionesPagoRecibidas(){
-        $joinModel = new JoinPeticionesUserModel();
-        $peticionesJoin = $joinModel->getAllPeticionesAutorizadas();//lista las peticiones de pago por id de user
-                                                                //hacer un metodo para sacar las IDs con el resultado 
-                                                                //(array) de pagos enviado anteriormente en 
-                                                                //getAllPeticionesRecibidas
-
-        $res = [];
-        foreach ($pagosJoin as $p) {
-            //guarda IDs de peticiones de pago
-            array_push($res, $p->getPeticionPagoId());//$p es un objeto del tipo joinPagosPeticionesModel
-            //array_push($res, $pet->getCategoryId());
-        }
-        $res = array_values(array_unique($res));//devuelve solo los valores del array. unique regresa solo valores unicos
-        return $res; //res contine un arreglo con IDs de peticiones de pago
-    }
-
+    //**************************************************************************** */
+    //Fin de metodos que conversar con otro controlador
+    //**************************************************************************** */
 
     
     //TODO borrar que?

@@ -5,7 +5,7 @@
     var data = [];
     var copydata = [];
     const sdate     = document.querySelector('#sdate');
-    const speticionpago = document.querySelector('#speticionpago');
+    const scontratista = document.querySelector('#scontratista');
     const sestado = document.querySelector('#sestado');
     const sorts = document.querySelectorAll('th');
    
@@ -19,14 +19,14 @@
         const value = e.target.value;
         if(value === '' || value === null){
             this.copydata = [...this.data];
-            checkForFilters(speticionpago);
+            checkForFilters(scontratista);
 
             return;
         }
         filterByDate(value);
     });
 
-    speticionpago.addEventListener('change', e =>{
+    scontratista.addEventListener('change', e =>{
         const value = e.target.value;
         if(value === '' || value === null){
             this.copydata = [...this.data];
@@ -57,7 +57,7 @@
                     filterByDate(object.value);
                 break;  
 
-                case 'speticionpago':
+                case 'scontratista':
                     filterByPlanilla(object.value);
                 break;
 
@@ -99,7 +99,7 @@
     function filterByPlanilla(value){
         this.copydata = [...this.data];
         const res = this.copydata.filter(item =>{
-            return value == item.planilla_id;
+            return value == item.nombre;
         });
         this.copydata = [...res];
         renderData(res);
@@ -121,7 +121,7 @@
     //https://web.dev/promises/ , https://stackoverflow.com/questions/37533929/how-to-return-data-from-promise
     async function getData(){
         
-        data = await fetch('http://localhost:41062/www/pagos/getPagosHistoryJSON')
+        data = await fetch('http://localhost:41062/www/peticionespago/getPeticionesPagoHistoryJSON')
         .then(res =>res.json())
         .then(json => json);
         this.copydata = [...this.data];
@@ -150,24 +150,22 @@
                 case "pendiente":
 
                     databody.innerHTML += `<tr>
-                    <td>${item.id_pago}</td>
+                    <td>${item.id_planilla}</td>
                     <td>${item.nombre}</td>
-                    <td>${item.planilla_id}</td>
                     <td>${item.fecha_creacion}</td>
-                    <td>¢${item.adeudado}</td>
+                    <td>¢${item.monto}</td>
                     <td>${item.estado}</td>
-                    <td><a id="pagarItem" href="#" onclick="pagar(${item.id_pago})">Pagar</a></td>
+                    <td><a id="pagarItem" href="#" onclick="autorizarPago(${item.id_planilla})">Aprobar</a></td>
                     </tr>`;
 
                     break;
             
                 default:
                     databody.innerHTML += `<tr>
-                    <td>${item.id_pago}</td>
+                    <td>${item.id_planilla}</td>
                     <td>${item.nombre}</td>
-                    <td>${item.planilla_id}</td>
                     <td>${item.fecha_creacion}</td>
-                    <td>¢${item.adeudado}</td>
+                    <td>¢${item.monto}</td>
                     <td>${item.estado}</td>
                     <td></td>
                     
@@ -181,11 +179,11 @@
     //se usa asincrona para que no recargue toda la pagina, solo tabla
     //Esta funcion al ser asyncrona usa promises
     //https://web.dev/promises/ , https://stackoverflow.com/questions/37533929/how-to-return-data-from-promise
-    async function pagar(id){
+    async function autorizarPago(id){
 
     event.preventDefault();
 
-    data = await fetch(`http://localhost:41062/www/pagos/pagar/${id}`)
+    data = await fetch(`http://localhost:41062/www/peticionespago/autorizarPago/${id}`)
     .then(res =>res.json())
     .then(json => json);
     this.copydata = [...this.data];
@@ -197,56 +195,7 @@
     };
 
 
-    //TODO function futura par ordenar alfabeticamente por nombre de empleado
-    // function sortBy(name){
-    //     this.copydata = [...this.data];
-    //     let res;
-    //     switch(name){
-    //         case 'title':
-    //             res = this.copydata.sort(compareTitle);
-    //         break;
-                
-    //         case 'category':
-    //             res = this.copydata.sort(compareCategory);
-    //             break;
-
-    //         case 'date':
-    //             res = this.copydata.sort(compareDate);
-    //             break;
-                    
-    //         case 'amount':
-    //             res = this.copydata.sort(compareAmount);
-    //             break;
-
-    //             default:
-    //             res = this.copydata;
-    //     }
-
-    //     renderData(res);
-    // }
-
-
-    //TODO function futura par ordenar por montons, planilla_ID, etc
-    // function compareTitle(a, b){
-    //     if(a.expense_title.toLowerCase() > b.expense_title.toLowerCase()) return 1;
-    //     if(b.expense_title.toLowerCase() > a.expense_title.toLowerCase()) return -1;
-    //     return 0;
-    // }
-    // function compareCategory(a, b){
-    //     if(a.category_name.toLowerCase() > b.category_name.toLowerCase()) return 1;
-    //     if(b.category_name.toLowerCase() > a.category_name.toLowerCase()) return -1;
-    //     return 0;
-    // }
-    // function compareAmount(a, b){
-    //     if(a.amount > b.amount) return 1;
-    //     if(b.amount > a.amount) return -1;
-    //     return 0;
-    // }
-    // function compareDate(a, b){
-    //     if(a.date > b.date) return 1;
-    //     if(b.date > a.date) return -1;
-    //     return 0;
-    // }
+    
 
 
         
