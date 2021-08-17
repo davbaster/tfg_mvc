@@ -129,7 +129,6 @@ class PeticionesPagoModel extends Model implements IModel {
                                                     fecha_creacion = :fechaCreacion,  
                                                     id_contrato = :idContrato, 
                                                     monto = :monto, 
-                                                    estado_pago = :estadoPago, 
                                                     estado = :estado,  
                                                     detalles = :detalles WHERE id = :id');
             $query->execute([
@@ -140,7 +139,6 @@ class PeticionesPagoModel extends Model implements IModel {
                 'idContrato' => $this->idContrato,
                 'monto' => $this->monto,
                 'estado' => $this->estado,
-                'aprobado' => $this->aprobado,
                 'detalles' => $this->detalles
             ]);
             return true;
@@ -287,6 +285,8 @@ class PeticionesPagoModel extends Model implements IModel {
         
         echo json_encode($res);
     }
+
+
 
 
 

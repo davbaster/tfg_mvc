@@ -183,7 +183,7 @@
 
     event.preventDefault();
 
-    data = await fetch(`http://localhost:41062/www/peticionespago/autorizarPago/${id}`)
+    data = await fetch(`http://localhost:41062/www/peticionespago/autorizarPeticion/${id}`)
     .then(res =>res.json())
     .then(json => json);
     this.copydata = [...this.data];

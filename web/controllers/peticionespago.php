@@ -115,7 +115,47 @@ class PeticionesPago extends SessionController{
 
 
     //autorizarPago
+    function autorizarPeticion($params){
+        error_log("PagosCONTROLLER::Pagar()");
+        
+        if($params === NULL) $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PETICIONPAGO_AUTORIZAR]);//TODO AGREGAR A LISTA
+        $id = $params[0];
+        //error_log("Pagos::delete() id = " . $id);
+        // $pago = new PagosModel();
+        // $pago->get($id);
+        $this->model->get($id);
+        $this->model->setEstado("autorizado");
 
+        $res = $this->model->update();//CAMBIAR ESTADO de la peticionPago autorizada
+
+
+
+        
+
+        if($res){//SI RES tiene un resultado
+            //$this->redirect('peticionespago', ['success' => SuccessMessages::SUCCESS_PETICIONPAGO_AUTORIZAR]);//TODO AGREGAR A LISTA
+            
+
+            //aqui va metodo que cambia el estado de todos los pagos que tengan la peticionPagoID autorizada
+            //METODO
+            $pagosModel = new PagosModel();
+            $pagos = $pagosModel->getAllByPeticionPagoId($id);
+
+            foreach ($pagos as $p) {
+                //cambia el estado a pendiente de pago
+                                                
+                //$p->get($id);
+                $p->setEstadoPago("pendiente");
+                $p->update();//CAMBIA ESTADO
+            }
+
+            //refresca la tabla de la vista
+            $this->getPeticionesPagoHistoryJSON();
+
+        }else{
+            $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PETICIONPAGO_AUTORIZAR]);
+        }
+    }
 
 
 

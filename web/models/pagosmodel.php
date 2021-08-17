@@ -194,7 +194,7 @@ class PagosModel extends Model implements IModel {
 
     public function from($array){
         $this->id = $array['id'];
-        $this->estadoPago = $array['estadoPago'];
+        $this->estadoPago = $array['estado_pago'];
         $this->peticionPagoId = $array['peticion_pago_id'];
         $this->amount = $array['amount'];
         $this->fechaCreacion = $array['fecha_creacion'];
@@ -236,6 +236,34 @@ class PagosModel extends Model implements IModel {
         }
     }
 
+
+    //devuelve todos los pagos que tengan el id de la peticionPago dada.
+    //todos los pagos que esten con el estado de open, osea esperando a que sean aprobados
+    public function getAllByPeticionPagoId($idPeticionPago){
+        $items = [];//listado de pagos
+        $estado = "open";
+
+        try{
+            $query = $this->prepare('SELECT * FROM pagos 
+                                    WHERE peticion_pago_id = :idPeticionPago
+                                    AND estado_pago = :estado' );
+            $query->execute([ "idPeticionPago" => $idPeticionPago,
+                            "estado" => $estado]);
+
+            while($p = $query->fetch(PDO::FETCH_ASSOC)){
+                $item = new PagosModel();
+                $item->from($p); 
+                
+                array_push($items, $item);
+            }
+
+            return $items;
+
+        }catch(PDOException $e){
+            return [];
+            echo $e;
+        }
+    }
 
 
 
