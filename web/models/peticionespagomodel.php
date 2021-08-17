@@ -192,7 +192,7 @@ class PeticionesPagoModel extends Model implements IModel {
 
         $items = [];//arreglo de objetos de tipo pago
 
-        $estado = "open";//open, aprobado, denegado
+        $estado = "pendiente";//open, pendiente, aprobado, denegado, (pagado??)
         //$estadoPago = "pending"; //pending, parcial, pagado
 
         try{
@@ -217,22 +217,22 @@ class PeticionesPagoModel extends Model implements IModel {
         }
     }
 
-
+    //
     //saca de la base de datos todos las peticiones de pagos que esten pendientes de pago
     //retorna arreglo de peticiones de pago pendientes
     public function getPeticionesPendientesPago(){
 
         $items = [];//arreglo de objetos de tipo pago
 
-        $estado = "aprobado";//open, aprobado, denegado
-        $estadoPago = "pending"; //pending, pagado
+        $estado = "pendiente";//open, aprobado, denegado
+        //$estadoPago = "pendiente"; //pending, pagado
 
         try{
             
-            $query = $this->prepare('SELECT * FROM peticiones_pago WHERE estado = :estado AND estado_pago = :estadopago');
+            //$query = $this->prepare('SELECT * FROM peticiones_pago WHERE estado = :estado AND estado_pago = :estadopago');
+            $query = $this->prepare('SELECT * FROM peticiones_pago WHERE estado = :estado');
             //$query = $this->prepare('SELECT * FROM pagos WHERE id = :id');
-            $query->execute([ 'estado' => $estado,
-                            'estadopago' => $estadoPago]);
+            $query->execute([ 'estado' => $estado]);
 
             //mientras que exista un objeto no null
             while($p = $query->fetch(PDO::FETCH_ASSOC)){
@@ -249,6 +249,39 @@ class PeticionesPagoModel extends Model implements IModel {
             return false;
         }
     }
+
+
+    //Devuelve las peticionesPago en estado OPEN 
+    //osea planillas que no se han enviado para aprobacion
+    public function getPeticionesNoEnviadas(){
+
+        $items = [];//arreglo de objetos de tipo pago
+
+        $estado = "open";//open, aprobado, denegado
+        //$estadoPago = "pending"; //pending, parcial, pagado
+
+        try{
+            
+            $query = $this->prepare('SELECT * FROM peticiones_pago WHERE estado = :estado');
+            //$query = $this->prepare('SELECT * FROM pagos WHERE id = :id');
+            $query->execute([ 'estado' => $estado]);
+
+            //mientras que exista un objeto no null
+            while($p = $query->fetch(PDO::FETCH_ASSOC)){
+                $item = new PeticionesPagoModel();
+                //rellena objeto con informacion
+                $item->from($p); 
+                
+                array_push($items, $item);
+            }
+
+            return $items;
+
+        }catch(PDOException $e){
+            return false;
+        }
+    }
+    
 
 
      //getExpensesJSON
@@ -287,6 +320,7 @@ class PeticionesPagoModel extends Model implements IModel {
     }
 
 
+    
 
 
 

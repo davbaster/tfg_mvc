@@ -73,6 +73,18 @@
     </div>
 
     <div class="center">
-        <input type="submit" value="Nuevo Pago">
+        
+        <?php 
+                if (!empty($peticionesPago)) {
+                    ?>
+                    <input type="submit" value="Nuevo Pago">
+       
+        <?php
+                }else{
+                    ?>
+                    <input type="submit" value="Nuevo Pago" disabled>
+        <?php
+                }
+                    ?>
     </div>
 </form>

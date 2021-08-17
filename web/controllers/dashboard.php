@@ -27,6 +27,8 @@ class Dashboard extends SessionController{
         $peticionesPagoModel    = new PeticionesPagoModel();
         $petiPendientesAprobar  = $peticionesPagoModel->getPeticionesPendientesAprobacion();//planillas (peticiones pago) pendientes de aprobar
         $petiPendientesPagar    = $peticionesPagoModel->getPeticionesPendientesPago();//planillas (peticiones pago) aprobadas y pendientes de pago
+        $peticionesOpen         = $peticionesPagoModel->getPeticionesNoEnviadas();//peticiones que no se han enviado para aprobacion
+
 
         //$joinPagosPeticionesModel = new JoinPagosPeticionesModel();
         //$pagosPendientes          = $joinPagosPeticionesModel->getAllPagosPendientes();
@@ -41,7 +43,29 @@ class Dashboard extends SessionController{
             'petiPendientesPagar'       => $petiPendientesPagar,
             'petiPendientesAprobar'     => $petiPendientesAprobar,
             'pagosRecientes'            => $pagosRecientes,
-            'petiRecientes'             => $petiRecientes
+            'petiRecientes'             => $petiRecientes,
+            'peticionesOpen'             => $peticionesOpen
+            
+            
+        ]);
+    }
+
+     // carga vista para nuevas peticion pago UI en DASHBOARD 
+     function viewNewPagoDialog(){
+        $peticionModel = new PeticionesPagoModel();
+        $peticionesPago = $peticionModel->getPeticionesNoEnviadas(); //recibe las peticiones en estado OPEN, osea no mandadas a autorizar todavia 
+
+        $user = new UserModel();
+        $usuarios = $user->getAll();
+                                                     
+
+        //$this->view->render('peticionespago/agregarpago', [
+        $this->view->render('dashboard/agregarpago', [
+
+            'user'                      => $this->user,
+            'peticionesPago'            => $peticionesPago,
+            'usuarios'                  => $usuarios
+
             
         ]);
     }

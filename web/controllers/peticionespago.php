@@ -165,26 +165,7 @@ class PeticionesPago extends SessionController{
     //la vista del dashboard. La vista del dashboard no deberia de pedir esta info directamente a este controlador
     //******************************************** */
 
-    // carga vista para nuevas peticion pago UI en DASHBOARD 
-     //TODO tal vez el controlador de dashboard deberia manejar esto y pedir la info
-     //al controlador de peticionesPago, en lugar de la vista de dashboard pida esta info directamente a controlador peticiones pago
-     function viewPago(){
-        $peticionModel = new PeticionesPagoModel();
-        $peticionesPago = $peticionModel->getAll(); //este metodo trae todas las peticiones de pago como objetos, 
 
-        $user = new UserModel();
-        $usuarios = $user->getAll();
-                                                     
-
-        $this->view->render('peticionespago/agregarpago', [
-
-            'user'                      => $this->user,
-            'peticionesPago'            => $peticionesPago,
-            'usuarios'                  => $usuarios
-
-            
-        ]);
-    }
 
 
     // carga vista para la creacion de una nueva peticion de pago/planilla

@@ -4,11 +4,15 @@
     require_once 'models/peticionespagomodel.php';
 
     $user                      = $this->d['user'];
+    
     $pagosPendientes           = $this->d['pagosPendientes'];
+    $pagosRecientes            = $this->d['pagosRecientes'];
+
     $petiPendientesPagar       = $this->d['petiPendientesPagar'];
     $petiPendientesAprobar     = $this->d['petiPendientesAprobar'];
-    $pagosRecientes            = $this->d['pagosRecientes'];
     $petiRecientes            = $this->d['petiRecientes'];
+    $peticionesOpen            = $this->d['peticionesOpen'];
+
     $rol                        = $user->getRol();
 
 ?>
@@ -192,6 +196,44 @@
                         
                     </section>
 
+                    <!-- Seccion de peticionesPago en estado OPEN -->
+                    <section id="expenses-recents">
+                        <h2>Planillas abiertas</h2>
+                        <div id="categories-container">
+                            <?php
+                                //peticionPago pagada mas alta en el mes
+                                if($peticionesOpen  == NULL){
+                                    echo 'No hay Planillas abiertas.';
+                                }else{
+                                        foreach($peticionesOpen  as $p){ ?>
+                                            <!-- Agregar un onClick para llamar a una funcion con popup -->
+                                            <div class="card w-30 bs-1" style="background-color: coral" id=peticionPago>
+                                                <div class="content category-name">
+                                                    <?php echo $p->getFechaCreacion(); ?>
+                                                </div>
+                                                <div class="content category-name">
+                                                    <!-- descripcion de la planilla  -->
+                                                    <?php echo $p->getNombre(); ?>
+                                                </div>
+                                                <div class="content category-name">
+                                                    <!-- ID de la planilla -->
+                                                    <input type="hidden" name="idPeticionPago" id="idPeticionPago" value="<?php echo $p->getId() ?>">
+                                                </div>
+
+                                                
+                                                <div class="content category-name">¢<?php echo $p->getMonto(); ?></div>
+                                            </div>
+
+
+
+                                        <?php }?>
+                            <?php }?>
+                        </div>
+                    
+                    </section>
+
+
+                    <!-- Seccion de pagos recientes -->
                     <section id="expenses-recents">
                     <h2>Pagos recientes</h2>
                     <?php
@@ -223,7 +265,6 @@
         </div>
 
     </div>
-    <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
     <script src="public/js/dashboard_pago.js"></script>
     <script src="public/js/dashboard_planilla.js"></script>
     

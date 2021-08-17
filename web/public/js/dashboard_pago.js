@@ -39,7 +39,9 @@ btnPago.addEventListener('click', async () =>{
 
 //localhost se deberia cambiar por la direccion del servidor
 async function getContentPago(){
-  const html = await fetch('http://localhost:41062/www/peticionespago/viewPago').then(res => res.text());
+  //const html = await fetch('http://localhost:41062/www/peticionespago/viewPago').then(res => res.text());
+  const html = await fetch('http://localhost:41062/www/dashboard/viewNewPagoDialog').then(res => res.text());
+
   return html;   
 }
 

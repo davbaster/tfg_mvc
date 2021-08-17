@@ -26,7 +26,7 @@ class SuccessMessages{
             SuccessMessages::SUCCESS_USER_UPDATENAME => 'Nombre actualizado correctamente',
             SuccessMessages::SUCCESS_ADMIN_NEWPETICIONPAGO => 'Peticion de pago creada satisfactoriamente',
             SuccessMessages::SUCCESS_PAGOS_NEWPAGO => 'Pago creado satisfactoriamente',
-            SuccessMessages::SUCCESS_PETICIONPAGOS_NEWPETICION => 'Nueva peticion de pago creada satisfactoriamente',
+            SuccessMessages::SUCCESS_PETICIONPAGOS_NEWPETICION => 'Nueva planilla creada satisfactoriamente',
             SuccessMessages::SUCCESS_PETICIONPAGOS_DELETE => 'Peticion de pago borrada satisfactoriamente',
             SuccessMessages::SUCCESS_PETICIONPAGO_AUTORIZAR => 'Planilla autorizada satisfactoriamente'
         ];
