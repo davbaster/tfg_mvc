@@ -115,6 +115,55 @@ class JoinPeticionesUserModel extends Model {
 
 
     
+    
+    //Lista peticiones OPEN dado un ID de contratista
+    public function getAllPeticionesOpen($cedula){
+        $items = [];
+
+        $estado = "open";
+        //$estadoPagado = "pagado";
+
+        try{
+          //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
+           //WHERE p2.fecha_pago as fechaPago,
+            $query = $this->prepare('SELECT 
+                        p2.id as id_planilla, 
+                        p2.estado as estado, 
+                        p2.cedula as cedula_contratista, 
+                        u.nombre as nombre, 
+                        u.apellido1 as apellido1, 
+                        u.apellido2 as apellido2,
+                        p2.monto as monto, 
+                        p2.fecha_creacion as fechaCreacion,
+                        p2.detalles as detalles
+                    FROM peticiones_pago AS p2
+                    INNER JOIN users AS u ON p2.cedula = u.cedula      
+                    WHERE p2.estado = :estado
+                    AND p2.cedula = :cedula
+                    ORDER BY p2.cedula');
+
+            
+            //$query->execute(['']);
+            $query->execute(["estado" => $estado,
+                             "cedula" => $cedula]);
+
+            //$p es un arreglo que guarda las filas del query anterior, filas de un join
+            while($p = $query->fetch(PDO::FETCH_ASSOC)){
+                $item = new JoinPeticionesUserModel();
+                $item->from($p);//va rellenando el objeto del tipo JoinPagosPeticionesModel con la info de las filas guardadas en $p
+                array_push($items, $item);//va rellenando el objeto del tipo JoinPagosPeticionesModel con la info de las filas guardadas en $p
+            }
+
+            return $items;//devuelve un arreglo de objetos de JoinPagosPeticionesModel
+
+        }catch(PDOException $e){
+            error_log('JOINPAGOSPETICIONESMODEL::getAllPeticionesAutorizadas => ' . $e);
+            echo $e;
+        }
+    }
+
+
+    
 
     //
     public function from($array){
