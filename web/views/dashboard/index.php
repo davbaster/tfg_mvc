@@ -191,13 +191,13 @@
                             <i class="material-icons">add</i>
                             <span>Nuevo Pago</span>
                         </button>
-                        <!-- <a href="<?php //echo constant('URL'); ?>/user#budget-user-container">Definir Planilla<i class="material-icons">keyboard_arrow_right</i></a> -->
+                        
                         <div>
-                            <a href="" class="btn-peticion" id="new-peticion-pago">Crear Planilla<i class="material-icons">keyboard_arrow_right</i></a>
+                            <a href="" class="btn-peticion" id="new-peticion-pago" value="">Crear Planilla<i class="material-icons">keyboard_arrow_right</i></a>
                         </div>
 
                         <div>
-                            <a href="" class="btn-peticion" id="cerrar-peticion-pago">Cerrar Planilla<i class="material-icons">keyboard_arrow_right</i></a>
+                            <a href="" class="btn-peticion" id="cerrar-peticion-pago" value="">Cerrar Planilla<i class="material-icons">keyboard_arrow_right</i></a>
                         </div>
                         
                         
@@ -214,7 +214,7 @@
                                 }else{
                                         foreach($peticionesOpen  as $p){ ?>
                                             <!-- Agregar un onClick para llamar a una funcion con popup -->
-                                            <div class="card w-30 bs-1" style="background-color: coral" id=peticionPago>
+                                            <div class="card w-30 bs-1" style="background-color: coral" id=peticionPagoOpen >
                                                 <div class="content category-name">
                                                     <?php echo $p->getFechaCreacion(); ?>
                                                 </div>
@@ -222,13 +222,11 @@
                                                     <!-- descripcion de la planilla  -->
                                                     <?php echo $p->getNombre(); ?>
                                                 </div>
+                                                <div class="content category-name">¢<?php echo $p->getMonto(); ?></div>
                                                 <div class="content category-name">
                                                     <!-- ID de la planilla -->
-                                                    <input type="hidden" name="idPeticionPago" id="idPeticionPago" value="<?php echo $p->getId() ?>">
+                                                    <input type="hidden" name="idPeticionPago" id="idPeticionEscondida" value="<?php echo $p->getId() ?>">
                                                 </div>
-
-                                                
-                                                <div class="content category-name">¢<?php echo $p->getMonto(); ?></div>
                                             </div>
 
 
@@ -274,6 +272,7 @@
     </div>
     <script src="public/js/dashboard_pago.js"></script>
     <script src="public/js/dashboard_planilla.js"></script>
+    <script src="public/js/dashboard_default.js"></script>
     
 </body>
 </html>

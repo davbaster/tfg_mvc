@@ -8,7 +8,8 @@
     require_once 'models/usermodel.php';
 
     $user                               = $this->d['user'];
-    $peticionesPago                     = $this->d['peticionesPagoAbiertasPorUsuario']; 
+    $peticionesPago                     = $this->d['peticionesPagoAbiertasPorUsuario'];
+    $pagosOpen                          = $this->d['pagosOpen'];  
     $usuarios                           = $this->d['usuarios'];
 
 ?>
@@ -17,11 +18,10 @@
 
 <!-- FIXME arreglar los campos que se van a llenar -->
 <form id="form-expense-container" action="peticionespago/newPeticionPago" method="POST">
-    <h3>Cerrar planilla</h3>
+    <h3>Resumen planilla</h3>
     <div class="section" >
-        <label for="cedula" value= "<?php $cedulaPeticion ?>">Codigo de usuario: <?php echo " " . $cedulaPeticion ?></label>
+        <label for="cedula" value= "">Descripcion: <?php echo " " . $cedulaPeticion ?></label>
         
-        <input type="hidden" name="cedula" id="cedula" value="<?php echo $cedulaPeticion ?>">
     </div>  
 
     <div class="section">
@@ -42,21 +42,6 @@
     <div class="center">
         <input type="submit" value="Eviar Planilla">
     </div>
-
-
-
-    <!-- <div class="section">
-        <label for="categoria">Categoria</label>
-            <select name="category" id="" required>
-            <?php 
-                //foreach ($peticionesPago as $p) {
-            ?>
-                <option value="<?php //echo $p->getId() ?>"><?php //echo $p->getName() ?></option>
-                    <?php
-                //}
-            ?>
-            </select>
-    </div>     -->
 
 
 </form>

@@ -2,7 +2,9 @@
 
 require_once 'models/pagosmodel.php';
 require_once 'models/peticionespagomodel.php';
-require_once 'models/joinpagospeticionesmodel.php';
+require_once 'models/joinpagospeticionesmodel.php'; 
+require_once 'models/joinpeticionesusermodel.php';
+
 
 class Dashboard extends SessionController{
 
@@ -157,6 +159,30 @@ class Dashboard extends SessionController{
             "user"                            => $this->user
         ]);
     }
+
+
+
+    function getPeticionPagoJSON($params){
+        error_log('DASHBOARDCONTROLLER::getPeticionPagoJSON()');
+
+
+        if($params === NULL) $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO]);//TODO AGREGAR A LISTA
+
+        $id = $params[0];
+
+        $joinModel = new JoinPeticionesUserModel();
+        $peticion = $joinModel->get($id);//devuelve la peticion dado un id
+
+        
+        array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+        
+        header("HTTP/1.1 200 OK");
+        header('Content-Type: application/json');
+        echo json_encode($res);
+
+    }
+
+    
 
 
 
