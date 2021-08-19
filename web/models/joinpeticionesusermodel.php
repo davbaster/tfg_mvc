@@ -3,12 +3,13 @@
 class JoinPeticionesUserModel extends Model {
 
     private $peticionId;
+    private $descripcion; 
     private $estado;//open->pendiente->autorizada->pagada
     private $cedula;
     private $nombre;
     private $apellido1; 
     private $apellido2; 
-    private $descripcion; 
+    
     private $monto;
     private $fechaCreacion;//fecha en que se creo el pago
     private $fechaAprobacion;
@@ -32,7 +33,8 @@ class JoinPeticionesUserModel extends Model {
           //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
            //WHERE p2.fecha_pago as fechaPago,
             $query = $this->prepare('SELECT 
-                        p2.id as id_planilla, 
+                        p2.id as id_planilla,
+                        p2.nombre as descripcion,  
                         p2.estado as estado, 
                         p2.cedula as cedula_contratista, 
                         u.nombre as nombre, 
@@ -75,7 +77,8 @@ class JoinPeticionesUserModel extends Model {
           //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
            //WHERE p2.fecha_pago as fechaPago,
             $query = $this->prepare('SELECT 
-                        p2.id as id_planilla, 
+                        p2.id as id_planilla,
+                        p2.nombre as descripcion,  
                         p2.estado as estado, 
                         p2.cedula as cedula_contratista, 
                         u.nombre as nombre, 
@@ -122,7 +125,8 @@ class JoinPeticionesUserModel extends Model {
               //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
                //WHERE p2.fecha_pago as fechaPago,
                 $query = $this->prepare('SELECT 
-                            p2.id as id_planilla, 
+                            p2.id as id_planilla,
+                            p2.nombre as descripcion,  
                             p2.estado as estado, 
                             p2.cedula as cedula_contratista, 
                             u.nombre as nombre, 
@@ -169,7 +173,8 @@ class JoinPeticionesUserModel extends Model {
           //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
            //WHERE p2.fecha_pago as fechaPago,
             $query = $this->prepare('SELECT 
-                        p2.id as id_planilla, 
+                        p2.id as id_planilla,
+                        p2.nombre as descripcion, 
                         p2.estado as estado, 
                         p2.cedula as cedula_contratista, 
                         u.nombre as nombre, 
@@ -210,6 +215,7 @@ class JoinPeticionesUserModel extends Model {
     //
     public function from($array){
         $this->peticionId = $array['id_planilla'];
+        $this->descripcion = $array['descripcion'];
         $this->estado = $array['estado'];
         $this->cedula = $array['cedula_contratista'];
         $this->nombre = $array['nombre'];
@@ -228,6 +234,7 @@ class JoinPeticionesUserModel extends Model {
     public function toArray(){
         $array = [];
         $array['id_planilla'] = $this->peticionId;
+        $array['descripcion'] = $this->descripcion;
         $array['estado'] = $this->estado;
         $array['cedula_contratista'] = $this->cedula;
         $array['nombre'] = $this->nombre;

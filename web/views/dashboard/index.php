@@ -186,8 +186,8 @@
                 <div class="transactions-container">
                     <section class="operations-container">
                         <h2>Operaciones</h2>  
-                        
-                        <button class="btn-main" id="new-pago">
+                        <!-- value contiene el id de planilla activa -->
+                        <button class="btn-main" id="new-pago" value="">
                             <i class="material-icons">add</i>
                             <span>Nuevo Pago</span>
                         </button>

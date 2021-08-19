@@ -3,6 +3,9 @@ const btnPago = document.querySelector('#new-pago');
 
 btnPago.addEventListener('click', async () =>{
   event.preventDefault();
+  
+  const value = event.currentTarget.value //value contien la PeticionPago ID que esta seleccionada 
+
   const background = document.createElement('div');
   const panel = document.createElement('div');
   const titlebar = document.createElement('div');

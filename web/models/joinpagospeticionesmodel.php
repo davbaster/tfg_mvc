@@ -335,7 +335,8 @@ class JoinPagosPeticionesModel extends Model {
     }
 
 
-    //
+    //utilizado para meter la info de un objeto a un array, 
+
     public function toArray(){
         $array = [];
         $array['id_pago'] = $this->pagoId;

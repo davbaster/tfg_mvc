@@ -36,7 +36,7 @@
                 //if($u->getRol() == "construccion"){ //TODO Este if deberia de verificar que tipo de rol tiene el usuario en session 
                                                   //para limitar el tipo de usuario que se despliega en la lista
                 ?>
-                    <option name="cedula" value="<?php echo $u->getCedula() ?>"><?php echo $u->getNombre() ." " . $u->getApellido1() ." " . $u->getApellido2() ?></option> 
+                    <option name="cedula" value="<?php echo $peticionesPago['cedula_contratista'] ?>"><?php echo $peticionesPago['nombre'] ." " . $peticionesPago['apellido1'] ." " . $peticionesPago['apellido2'] ?></option> 
                     <?php
                 //    }
                 }
@@ -50,20 +50,28 @@
        
     <div class="section">
         <label for="categoria">Planilla</label>
-            <select name="peticion_pago_id" id="" required>
+            <!-- <select name="peticion_pago_id" id="" required>
             <?php 
-                foreach ($peticionesPago as $p) {
+                //foreach ($peticionesPago as $p) {
             ?>
-                <!-- aqui nos lista las planillas / peticiones de pago que estan en estado open -->
+                 aqui nos lista las planillas / peticiones de pago que estan en estado open 
                 <?php
-                if($p->getEstado() == "open"){
+               // if($p->getEstado() == "open"){
                 ?>
-                    <option name="peticionPagoID" value="<?php echo $p->getId() ?>"><?php echo $p->getNombre() ?></option> 
+                    <option name="peticionPagoID" value="<?php //echo $p->getId() ?>"><?php //echo $p->getNombre() ?></option> 
                     <?php
-                    }
-                }
+                   // }
+               // }
             ?>
+            </select> -->
+
+            <select name="peticion_pago_id" id="" required>
+                <!-- value contiene la peticionesPagoID , getNombre = titulo de la planilla -->
+                <option name="peticionPagoID" value="<?php echo $p->getId() ?>"><?php echo $p->getNombre() ?></option> 
+
             </select>
+
+
     </div>
     
     <div class="section">
