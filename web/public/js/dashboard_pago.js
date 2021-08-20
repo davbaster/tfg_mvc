@@ -4,7 +4,7 @@ const btnPago = document.querySelector('#new-pago');
 btnPago.addEventListener('click', async () =>{
   event.preventDefault();
   
-  const value = event.currentTarget.value //value contien la PeticionPago ID que esta seleccionada 
+  const value = event.currentTarget.value //value contien la PeticionPagoID/planilla que esta seleccionada 
 
   const background = document.createElement('div');
   const panel = document.createElement('div');
@@ -35,15 +35,15 @@ btnPago.addEventListener('click', async () =>{
   });
 
   
-  const html = await getContentPago();
+  const html = await getContentPago(value);//manda el id de la planilla
   ajaxcontent.innerHTML+= html;
   
 });
 
 //localhost se deberia cambiar por la direccion del servidor
-async function getContentPago(){
+async function getContentPago(id){
   //const html = await fetch('http://localhost:41062/www/peticionespago/viewPago').then(res => res.text());
-  const html = await fetch('http://localhost:41062/www/dashboard/viewNewPagoDialog').then(res => res.text());
+  const html = await fetch(`http://localhost:41062/www/dashboard/viewNewPagoDialog/${id}`).then(res => res.text());
 
   return html;   
 }

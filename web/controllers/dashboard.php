@@ -53,10 +53,10 @@ class Dashboard extends SessionController{
     }
 
      // carga vista para nuevas peticion pago UI en DASHBOARD 
-     function viewNewPagoDialog(){
+     function viewNewPagoDialog($peticionId){
         //$peticionModel = new PeticionesUserModel();
         //$peticionesPago = $peticionModel->getAllPeticionesOpen($this->user->getCedula()); //recibe las peticiones en estado OPEN, osea no mandadas a autorizar todavia 
-        $peticionesPago = $this->getPeticionPagoArray($this->user->getCedula()); //recibe las peticiones en estado OPEN, osea no mandadas a autorizar todavia 
+        $peticionesPago = $this->getPeticionPagoArray($peticionId); //recibe las peticiones en estado OPEN, osea no mandadas a autorizar todavia 
         $user = new UserModel();
         $usuarios = $user->getAll(); //todos los trabajadores que pueden trabajar en una planilla
                                                      
@@ -183,21 +183,21 @@ class Dashboard extends SessionController{
     }
 
     //devuelve peticiones de pago en un array Imitando a un Json
-    function getPeticionPagoArray($cedula){
+    function getPeticionPagoArray($peticionId){
         error_log('DASHBOARDCONTROLLER::getPeticionPagoArray()');
-        $res = [];
+        
 
-        if($cedula === NULL) $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO]);//TODO AGREGAR A LISTA
+        if($peticionId === NULL) $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO]);//TODO AGREGAR A LISTA
 
-        $id = $params[0];
+        
 
         $joinModel = new JoinPeticionesUserModel();
-        $peticion = $joinModel->getAllPeticionesOpen($cedula);//devuelve la peticion dado un id
+        $peticion = $joinModel->getPeticionOpen($peticionId);//devuelve la peticion dado un id
 
         
         //array_push($res, $peticion->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
-        
-        return $peticion[0]->toArray(); //devuelve el objeto en forma de array
+        $res = $peticion[0]->toArray();
+        return $res;  //devuelve el objeto en forma de array
 
     }
 

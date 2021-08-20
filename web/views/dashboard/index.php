@@ -186,27 +186,42 @@
                 <div class="transactions-container">
                     <section class="operations-container">
                         <h2>Operaciones</h2>  
-                        <!-- value contiene el id de planilla activa -->
-                        <button class="btn-main" id="new-pago" value="">
-                            <i class="material-icons">add</i>
-                            <span>Nuevo Pago</span>
-                        </button>
-                        
-                        <div>
-                            <a href="" class="btn-peticion" id="new-peticion-pago" value="">Crear Planilla<i class="material-icons">keyboard_arrow_right</i></a>
-                        </div>
 
-                        <div>
-                            <a href="" class="btn-peticion" id="cerrar-peticion-pago" value="">Cerrar Planilla<i class="material-icons">keyboard_arrow_right</i></a>
-                        </div>
-                        
+                        <?php
+                            //peticionPago pagada mas alta en el mes
+                            if($peticionesOpen  == NULL){
+                                echo 'No hay planillas abiertas.';
+                        ?>
+                            <div>
+                                <a href="" class="btn-peticion" id="new-peticion-pago" value="">Crear Planilla<i class="material-icons">keyboard_arrow_right</i></a>
+                            </div>
+                        <?php
+                            }else{
+                        ?>
+
+                            <!-- value contiene el id de planilla activa -->
+                            <button class="btn-main" id="new-pago" value="<?php echo  $peticionesOpen[0]->getId() ?>">
+                                <i class="material-icons">add</i>
+                                <span>Nuevo Pago</span>
+                            </button>
+                            
+                            <div>
+                                <a href="" class="btn-peticion" id="new-peticion-pago" value="">Crear Planilla<i class="material-icons">keyboard_arrow_right</i></a>
+                            </div>
+
+                            <div>
+                                <a href="" class="btn-peticion" id="cerrar-peticion-pago" value="">Cerrar Planilla<i class="material-icons">keyboard_arrow_right</i></a>
+                            </div>
+                        <?php
+                            }
+                        ?>  
                         
                     </section>
 
                     <!-- Seccion de peticionesPago en estado OPEN -->
                     <section id="expenses-recents">
                         <h2>Planillas abiertas</h2>
-                        <div id="categories-container">
+                        <div id="planillasOpenContainer">
                             <?php
                                 //peticionPago pagada mas alta en el mes
                                 if($peticionesOpen  == NULL){
@@ -214,16 +229,16 @@
                                 }else{
                                         foreach($peticionesOpen  as $p){ ?>
                                             <!-- Agregar un onClick para llamar a una funcion con popup -->
-                                            <div class="card w-30 bs-1" style="background-color: coral" id=peticionPagoOpen >
-                                                <div class="content category-name">
+                                            <div class="card w-30 bs-1 peticion-open-card" style="background-color: coral" id=peticionPagoOpenCard >
+                                                <div class="content category-name peticion-open-fecha" id=peticionPagoOpenFecha>
                                                     <?php echo $p->getFechaCreacion(); ?>
                                                 </div>
-                                                <div class="content category-name">
+                                                <div class="content category-name peticion-open-titulo" id=peticionPagoOpenTitulo>
                                                     <!-- descripcion de la planilla  -->
                                                     <?php echo $p->getNombre(); ?>
                                                 </div>
-                                                <div class="content category-name">¢<?php echo $p->getMonto(); ?></div>
-                                                <div class="content category-name">
+                                                <div class="content category-name peticion-open-monto" id=peticionPagoOpenMonto>¢<?php echo $p->getMonto(); ?></div>
+                                                <div class="content category-name peticion-open-planilla"  id=peticionPagoOpenPlanilla> 
                                                     <!-- ID de la planilla -->
                                                     <input type="hidden" name="idPeticionPago" id="idPeticionEscondida" value="<?php echo $p->getId() ?>">
                                                 </div>

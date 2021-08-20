@@ -1,5 +1,5 @@
 
-const peticionCard = document.querySelector('#peticionPagoOpen');
+// const peticionCard = document.querySelector('#peticionPagoOpen');
 
 
 
@@ -18,17 +18,61 @@ const peticionCard = document.querySelector('#peticionPagoOpen');
   
 // });
 
-peticionCard.addEventListener('click', e =>{
-  event.preventDefault();
+// peticionCard.addEventListener('click', e =>{
+//   event.preventDefault();
   
-  const value = event.currentTarget.lastElementChild.lastElementChild.value;
+//   const value = event.currentTarget.lastElementChild.lastElementChild.value;
   
 
   
-  getContentPeticionPago(value);
-  // ajaxcontent.innerHTML+= html;
+//   getContentPeticionPago(value);
+//   // ajaxcontent.innerHTML+= html;
   
-});
+// });
+
+
+
+if (document.body.addEventListener){
+  document.body.addEventListener('click',peticionCard,false);
+}
+else{
+  document.body.attachEvent('onclick',peticionCard);//for IE
+}
+
+//handler que maneja los clicks a las tarjetas de peticionesPagos/planillas en estado open
+function peticionCard(e){
+    e = e || window.event;
+    var target = e.target || e.srcElement;
+
+    switch (target.id){
+
+      case 'peticionPagoOpenCard':
+            $value = target.lastElementChild.lastElementChild.value;
+            getContentPeticionPago($value);
+            break;
+
+      case 'peticionPagoOpenFecha':
+            $value = target.parentElement.lastElementChild.lastElementChild.value;
+            getContentPeticionPago($value);
+            break;
+
+      case 'peticionPagoOpenTitulo':
+            $value = target.parentElement.lastElementChild.lastElementChild.value;
+            getContentPeticionPago($value);
+            break;
+
+      case 'peticionPagoOpenMonto':
+            $value = target.parentElement.lastElementChild.lastElementChild.value;
+            getContentPeticionPago($value);
+            break;
+
+      case 'peticionPagoOpenPlanilla':
+            $value = target.parentElement.lastElementChild.lastElementChild.value;
+            getContentPeticionPago($value);
+            break;
+
+    }
+}
 
 
 

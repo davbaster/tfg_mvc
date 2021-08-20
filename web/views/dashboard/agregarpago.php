@@ -11,6 +11,8 @@
     $peticionesPago             = $this->d['peticionesPago']; 
     $usuarios                   = $this->d['usuarios'];
 
+    $tituloPlanilla = $peticionesPago['descripcion'];
+
 ?>
 
 
@@ -36,7 +38,7 @@
                 //if($u->getRol() == "construccion"){ //TODO Este if deberia de verificar que tipo de rol tiene el usuario en session 
                                                   //para limitar el tipo de usuario que se despliega en la lista
                 ?>
-                    <option name="cedula" value="<?php echo $peticionesPago['cedula_contratista'] ?>"><?php echo $peticionesPago['nombre'] ." " . $peticionesPago['apellido1'] ." " . $peticionesPago['apellido2'] ?></option> 
+                    <option name="cedula" value="<?php echo $u->getCedula() ?>"><?php echo $u->getNombre() ." " . $u->getApellido1() ." " . $u->getApellido2() ?></option> 
                     <?php
                 //    }
                 }
@@ -66,8 +68,20 @@
             </select> -->
 
             <select name="peticion_pago_id" id="" required>
+            <?php 
+                if (!empty($peticionesPago)) {
+            ?>
                 <!-- value contiene la peticionesPagoID , getNombre = titulo de la planilla -->
-                <option name="peticionPagoID" value="<?php echo $p->getId() ?>"><?php echo $p->getNombre() ?></option> 
+                <option name="peticionPagoID" value="<?php echo $peticionesPago['id_planilla'] ?>"><?php echo $tituloPlanilla ?></option> 
+            <?php
+                 }else {
+            ?>
+                   <option name="peticionPagoID" value="<?php echo $peticionesPago['id_planilla'] ?>" disabled><?php echo $tituloPlanilla ?></option> 
+            <?php
+                 }
+               
+            ?>
+
 
             </select>
 
