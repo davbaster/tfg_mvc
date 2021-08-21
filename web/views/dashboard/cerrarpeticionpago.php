@@ -10,7 +10,7 @@
     $user                               = $this->d['user'];
     //$peticionesPago                     = $this->d['peticionesPagoAbiertasPorUsuario'];
     $peticionPago                       = $this->d['peticionAbiertaSeleccionada'];
-    //$pagosOpen                          = $this->d['pagosOpen'];  
+    $pagosOpen                          = $this->d['pagosOpenPerId'];  //contiene los pagos asignados a esta peticionPago
     $usuarios                           = $this->d['usuarios'];
 
 ?>
@@ -30,14 +30,35 @@
         <!-- <input type="number" name="amount" id="amount" autocomplete="off" required> -->
     </div>
     <div class="section">
-        <label for="detalles">detalles</label>
+        <label for="detalles">Detalles:</label>
         <!-- <input type="text" name="detalles" id="detalles" required> -->
-        <textarea id="detalles" name="detalles" rows="4" cols="39"></textarea><!-- FIXME sola guarda la primera linea de texto -->
+        <textarea id="detalles" name="detalles" rows="4" cols="39"><?php echo " " . $peticionPago['detalles'] ?></textarea><!-- FIXME sola guarda la primera linea de texto -->
     </div>
     <div class="section">
         <!-- aqui va a ir la lista de trabajadores que esta incluida en la planilla -->
         <label for="nombre_planilla">Trabajadores</label>
-        <div><input type="text" name="nombre_planilla" autocomplete="off" required></div>
+        <!-- <div><input type="text" name="nombre_planilla" autocomplete="off" required></div> -->
+        <select name="pagoID" id="" required>
+            <?php 
+                if (!empty($pagosOpen)) {
+                    //for each
+                    foreach ($pagosOpen as $p) {
+                        $nombre =  $p['nombre'].' '.$p['apellido1'].' '.$p['apellido2'];
+            ?>
+                <!-- value contiene la peticionesPagoID , getNombre = titulo de la planilla -->
+                <option name="pagoId" value="<?php echo $p['id_pago'] ?>"><?php echo $nombre .' ¢'. $p['adeudado'] ?></option> 
+            <?php
+                    }
+                 }else {
+            ?>
+                   <option name="pagoId" value="" disabled><?php echo "No hay trabajadores en la planilla" ?></option> 
+            <?php
+                 }
+               
+            ?>
+
+
+            </select>
     </div> 
   
     

@@ -3,10 +3,11 @@
 class JoinPagosPeticionesModel extends Model {
 
     private $pagoId;
-    private $estadoPago;
+    private $estado;//estado del pago
     private $cedula;
     private $nombre;
-    private $apellido; 
+    private $apellido1;
+    private $apellido2;  
     private $amount;
     private $peticionPagoId; //planillaID
     private $fechaPago;
@@ -28,9 +29,11 @@ class JoinPagosPeticionesModel extends Model {
           
             $query = $this->query('SELECT 
                         p.id as id_pago, 
+                        p.estado_pago as estado,
                         p.cedula as cedula_empleado, 
                         u.nombre as nombre, 
-                        u.apellido1 as apellido, 
+                        u.apellido1 as apellido1,
+                        u.apellido1 as apellido2, 
                         p.amount as adeudado, 
                         p.peticion_pago_id as planilla_id, 
                         p.fecha_creacion as fechaCreacion,
@@ -61,55 +64,7 @@ class JoinPagosPeticionesModel extends Model {
     }
 
 
-        //Lista peticiones autorizadas a ser pagadas que tienen el estado de "pendiente" para pago
-        // public function getAllPeticionesAutorizadas(){
-        //     $items = [];
-
-        //     $estadoPendiente = "pendiente";
-        //     //$estadoPagado = "pagado";
-
-        //     try{
-        //       //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
-        //        //WHERE p.peticion_pago_id = p2.id 
-        //        //p.cedula = es de pagos o es de peticionPagos???? 
-        //         $query = $this->query('SELECT 
-        //                     p2.id as id_pago, 
-        //                     p.estado_pago as estado, 
-        //                     p.cedula as cedula_empleado, 
-        //                     u.nombre as nombre, 
-        //                     u.apellido1 as apellido, 
-        //                     p.amount as adeudado, 
-        //                     p.peticion_pago_id as planilla, 
-        //                     p.fecha_creacion as fechaCreacion,
-        //                     p.fecha_pago as fechaPago,
-        //                     p.detalles as detalles
-        //                 FROM peticiones_pago AS p2
-        //                 INNER JOIN users AS u ON p.cedula = u.cedula
-        //                 INNER JOIN pagos AS p ON p.peticion_pago_id  = p2.id        
-        //                 WHERE p.estado_pago = :estadoPendiente 
-        //                 ORDER BY p.cedula');
-   
-                
-        //         //$query->execute(['']);
-        //         $query->execute(["estadoPendiente" => $estadoPendiente,
-        //                      "estadoPagado" => $estadoPagado]);
-    
-        //         //$p es un arreglo que guarda las filas del query anterior, filas de un join
-        //         while($p = $query->fetch(PDO::FETCH_ASSOC)){
-        //             $item = new JoinPagosPeticionesModel();
-        //             $item->from($p);//va rellenando el objeto del tipo JoinPagosPeticionesModel con la info de las filas guardadas en $p
-        //             array_push($items, $item);//va rellenando el objeto del tipo JoinPagosPeticionesModel con la info de las filas guardadas en $p
-        //         }
-    
-        //         return $items;//devuelve un arreglo de objetos de JoinPagosPeticionesModel
-    
-        //     }catch(PDOException $e){
-        //         error_log('JOINPAGOSPETICIONESMODEL::getAllPeticionesAutorizadas => ' . $e);
-        //         echo $e;
-        //     }
-        // }
-
-
+ 
     //devuelve los pagos pendientes de pagar
     public function getAllPagos(){
         $items = [];
@@ -118,10 +73,12 @@ class JoinPagosPeticionesModel extends Model {
                 //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
                 //p2.cedula as contratista,//TODO agregar luego por si queremos poner el nombre del contratista
                 $query = $this->query('SELECT 
-                p.id as id_pago, 
+                p.id as id_pago,
+                p.estado_pago as estado, 
                 p.cedula as cedula_empleado, 
                 u.nombre as nombre, 
-                u.apellido1 as apellido, 
+                u.apellido1 as apellido1,
+                u.apellido1 as apellido2, 
                 p.amount as adeudado, 
                 p.peticion_pago_id as planilla_id, 
                 p.estado_pago as estado,
@@ -151,6 +108,48 @@ class JoinPagosPeticionesModel extends Model {
         }
     }
 
+    //devuelve todos los pagos con estado OPEN dado un ID de peticionPago
+    public function getAllPagosOpen($peticionPagoId){
+        $items = [];
+        $estado = "open";
+        try{
+          //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
+            $query = $this->prepare('SELECT p.id as id_pago, 
+                             p.estado_pago as estado,
+                             p.cedula as cedula_empleado, 
+                             u.nombre as nombre, 
+                             u.apellido1 as apellido1,
+                             u.apellido1 as apellido2, 
+                             p.amount as adeudado, 
+                             p.peticion_pago_id as planilla_id, 
+                             p.fecha_creacion as fechaCreacion,
+                             p.fecha_pago as fechaPago,
+                             p.detalles as detalles
+                    FROM pagos AS p
+                    INNER JOIN users AS u ON p.cedula = u.cedula
+                    INNER JOIN peticiones_pago AS p2 ON p.peticion_pago_id  = p2.id
+                    WHERE p.estado_pago = :estado
+                    AND p.peticion_pago_id = :peticionPagoId  
+                    ORDER BY p.cedula');
+            
+            
+            $query->execute(["estado" => $estado,
+                             "peticionPagoId" => $peticionPagoId]);
+
+            //$p es un arreglo que guarda las filas del query anterior, filas de un join
+            while($p = $query->fetch(PDO::FETCH_ASSOC)){
+                $item = new JoinPagosPeticionesModel();
+                $item->from($p);//va rellenando el objeto del tipo JoinPagosPeticionesModel con la info de las filas guardadas en $p
+                array_push($items, $item);
+            }
+
+            return $items;//devuelve un arreglo de objetos de JoinPagosPeticionesModel
+
+        }catch(PDOException $e){
+            echo $e;
+        }
+    }
+
 
     //cual pago, a quien se le paga, de cual planilla,      y cual contratista,     fecha de la peticion de pago,  estado del pago.
     //pagos.id, pagos.cedula,        pagos.peticion_pago_id, peticiones_pago.cedula, peticiones_pago.date,         pagos.estado_pago
@@ -162,9 +161,11 @@ class JoinPagosPeticionesModel extends Model {
             //$query = $this->prepare('SELECT pagos.id as pago_id, estado_pago, peticion_pago_id, amount, date, cedula, peticiones_pago.id FROM pagos INNER JOIN peticiones_pago WHERE pagos.peticion_pago_id = peticiones_pago.id AND pagos.id_user = :userId ORDER BY date');
             $query = 'SELECT 
                         p.id as id_pago, 
+                        p.estado_pago as estado,
                         p.cedula as cedula_empleado, 
                         u.nombre as nombre, 
-                        u.apellido1 as apellido, 
+                        u.apellido1 as apellido1,
+                        u.apellido1 as apellido2, 
                         p.amount as adeudado, 
                         p.peticion_pago_id as planilla_id, 
                         p.fecha_creacion as fechaCreacion,
@@ -201,10 +202,12 @@ class JoinPagosPeticionesModel extends Model {
         $estado = "pendiente";
         try{
           //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
-            $query = $this->prepare('SELECT p.id as id_pago, 
+            $query = $this->prepare('SELECT p.id as id_pago,
+                             p.estado_pago as estado, 
                              p.cedula as cedula_empleado, 
                              u.nombre as nombre, 
-                             u.apellido1 as apellido, 
+                             u.apellido1 as apellido1,
+                             u.apellido1 as apellido2, 
                              p.amount as adeudado, 
                              p.peticion_pago_id as planilla_id, 
                              p.fecha_creacion as fechaCreacion,
@@ -245,7 +248,8 @@ class JoinPagosPeticionesModel extends Model {
                              p.estado_pago as estado, 
                              p.cedula as cedula_empleado, 
                              u.nombre as nombre, 
-                             u.apellido1 as apellido, 
+                             u.apellido1 as apellido1,
+                             u.apellido1 as apellido2, 
                              p.amount as adeudado, 
                              p.peticion_pago_id as planilla_id, 
                              p.fecha_creacion as fechaCreacion,
@@ -283,10 +287,12 @@ class JoinPagosPeticionesModel extends Model {
         $estado = "pagado";
         try{
           //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
-            $query = $this->prepare('SELECT p.id as id_pago, 
+            $query = $this->prepare('SELECT p.id as id_pago,
+                             p.estado_pago as estado, 
                              p.cedula as cedula_empleado, 
                              u.nombre as nombre, 
-                             u.apellido1 as apellido, 
+                             u.apellido1 as apellido1,
+                             u.apellido1 as apellido2, 
                              p.amount as adeudado, 
                              p.peticion_pago_id as planilla_id, 
                              p.fecha_creacion as fechaCreacion,
@@ -323,10 +329,11 @@ class JoinPagosPeticionesModel extends Model {
     //
     public function from($array){
         $this->pagoId = $array['id_pago'];
-        $this->estadoPago = $array['estado'];
+        $this->estado = $array['estado'];
         $this->cedula = $array['cedula_empleado'];
         $this->nombre = $array['nombre'];
-        $this->apellido = $array['apellido'];
+        $this->apellido1 = $array['apellido1'];
+        $this->apellido2 = $array['apellido2'];
         $this->amount = $array['adeudado'];
         $this->peticionPagoId = $array['planilla_id'];
         $this->fechaCreacion = $array['fechaCreacion'];
@@ -340,10 +347,11 @@ class JoinPagosPeticionesModel extends Model {
     public function toArray(){
         $array = [];
         $array['id_pago'] = $this->pagoId;
-        $array['estado'] = $this->estadoPago;
+        $array['estado'] = $this->estado;
         $array['cedula_empleado'] = $this->cedula;
         $array['nombre'] = $this->nombre;
-        $array['apellido'] = $this->apellido;
+        $array['apellido1'] = $this->apellido1;
+        $array['apellido2'] = $this->apellido2;
         $array['adeudado'] = $this->amount;//adeudado
         $array['planilla_id'] = $this->peticionPagoId;
         $array['fecha_creacion'] = $this->fechaCreacion;
@@ -358,9 +366,11 @@ class JoinPagosPeticionesModel extends Model {
 
 
     public function getPagoId(){return $this->pagoId;}
+    public function getEstado(){return $this->estado;}
     public function getCedula(){return $this->cedula;}
     public function getNombre(){return $this->nombre;}
-    public function getApellido(){return $this->apellido;}
+    public function getApellido1(){return $this->apellido1;}
+    public function getApellido2(){return $this->apellido2;}
     public function getAmount(){return $this->amount;}
     public function getPeticionPagoId(){return $this->peticionPagoId;}
     public function getFechaCreacion(){return $this->fechaCreacion;}

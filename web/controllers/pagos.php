@@ -99,21 +99,6 @@ class Pagos extends SessionController{
     }
 
 
-    // crea una lista con los nombres de los contratistas que han abierto peticiones de Pago
-    // usada para la vista de pagos
-    // private function getPeticionesPagoList(){
-    //     $res = [];
-    //     $joinModel = new JoinPagosPeticionesModel();
-    //     $peticiones = $joinModel->getAllPeticiones();//FIXME revisar si se hay que usar otro metodo o los datos de uno existente
-
-    //     foreach ($peticiones as $p) {
-    //         array_push($res, $p->getNombre());
-    //     }
-    //     $res = array_values(array_unique($res));
-
-    //     return $res;
-    // }
-
 
     //carga en un arreglo todos los IDs de las peticiones de pago que vienen del joinPagosPeticionesModel
     //TODO mejora: devolver una cantidad limitada
@@ -172,6 +157,9 @@ class Pagos extends SessionController{
         echo json_encode($res);
 
     }
+
+
+
 
     //cambia el estado de open a pagado
     function pagar($params){

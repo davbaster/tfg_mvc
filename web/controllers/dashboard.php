@@ -82,7 +82,7 @@ class Dashboard extends SessionController{
     }
 
 
-    //obtine los pagos con estado de pending ,
+    //obtine los pagos con estado de pendiente ,
     //getPetiPagosPorAprobar
     function getPagosPorCancelar(){
         $res = [];
@@ -95,7 +95,8 @@ class Dashboard extends SessionController{
  
             $descripcion['cedula'] = $p->getPagoId();
             $descripcion['nombre'] = $p->getNombre();
-            $descripcion['apellido1'] = $p->getApellido();
+            $descripcion['apellido1'] = $p->getApellido1();
+            $descripcion['apellido2'] = $p->getApellido2();
             $descripcion['monto'] = $p->getAmount();
             $descripcion['planilla'] = $p->getPeticionPagoId();
             $descripcion['fecha'] = $p->getFechaCreacion();
@@ -123,7 +124,8 @@ class Dashboard extends SessionController{
  
             $descripcion['cedula'] = $p->getPagoId();
             $descripcion['nombre'] = $p->getNombre();
-            $descripcion['apellido1'] = $p->getApellido();
+            $descripcion['apellido1'] = $p->getApellido1();
+            $descripcion['apellido2'] = $p->getApellido2();
             $descripcion['monto'] = $p->getAmount();
             $descripcion['planilla'] = $p->getPeticionPagoId();
             $descripcion['fecha'] = $p->getFechaCreacion();
@@ -136,6 +138,23 @@ class Dashboard extends SessionController{
         }
         return $res;
     }
+
+        //devuelve un array con los pagos Open dado un peticionPagoId
+        function pagosOpenPerIdPeticion($peticionPagoId){
+            error_log('PAGOSCONTROLLER::pagosOpenPerIdPeticion()');
+            
+            $res = [];
+    
+            $joinModel = new JoinPagosPeticionesModel();
+            $pagosJoin = $joinModel->getAllPagosOpen($peticionPagoId);//cambie de getAllPagos a getAllPagosAutorizados
+    
+            foreach ($pagosJoin as $p) {
+                array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+            }
+    
+            return $res;
+    
+        }
 
 
 
@@ -155,17 +174,18 @@ class Dashboard extends SessionController{
         
         if($params[0] === NULL) $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO]);//TODO AGREGAR A LISTA
 
-        $idPlanilla = $params[0];
+        $peticionPagoId = $params[0];
 
-        $peticionJoin = new JoinPeticionesUserModel();
+        //$pagosJoin = new JoinPagosPeticionesModel();
         $this->view->render('dashboard/cerrarpeticionpago', [
 
            //"peticionesPagoAbiertasPorUsuario" => $peticionJoin->getAllPeticionesOpen($this->user->getCedula()), //este metodo trae todas las peticiones de pago como objetos, 
 
            //"peticionAbiertaSeleccionada" => $peticionJoin->getPeticionOpen($idPlanilla),//envia un objeto peticionuserJoinmodel 
 
-           "peticionAbiertaSeleccionada"      => $this->getPeticionPagoArray($idPlanilla), //envia un objeto peticionuserJoinmodel en forma de array
+           "peticionAbiertaSeleccionada"      => $this->getPeticionPagoArray($peticionPagoId), //envia un objeto peticionuserJoinmodel en forma de array
 
+            "pagosOpenPerId"                  => $this->pagosOpenPerIdPeticion($peticionPagoId),
          
                                                         //TODO deberia utilizar metodo que traiga las peticiones pendientes de pago y como un arreglo de datos
             "user"                            => $this->user
