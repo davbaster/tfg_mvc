@@ -165,7 +165,7 @@ class JoinPeticionesUserModel extends Model {
      public function getPeticionOpen($peticionId){
         $items = [];
 
-        $id = $peticionId[0];
+        $id = $peticionId;
 
         $estado = "open";
         //$estadoPagado = "pagado";

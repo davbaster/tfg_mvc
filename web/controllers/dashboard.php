@@ -150,11 +150,23 @@ class Dashboard extends SessionController{
         // carga vista para la creacion de una nueva peticion de pago/planilla
     //manda las peticiones de pago en estado Open, estas se les puede seguir metiendo pagos.
     //bien implementada, deberia de mandar solo arrays con la informacion formateada.//TODO
-    function viewDialogCerrarPeticionPago(){
+    function viewDialogCerrarPeticionPago($params){
+
+        
+        if($params[0] === NULL) $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO]);//TODO AGREGAR A LISTA
+
+        $idPlanilla = $params[0];
+
         $peticionJoin = new JoinPeticionesUserModel();
         $this->view->render('dashboard/cerrarpeticionpago', [
 
-           "peticionesPagoAbiertasPorUsuario" => $peticionJoin->getAllPeticionesOpen($this->user->getCedula()), //este metodo trae todas las peticiones de pago como objetos, 
+           //"peticionesPagoAbiertasPorUsuario" => $peticionJoin->getAllPeticionesOpen($this->user->getCedula()), //este metodo trae todas las peticiones de pago como objetos, 
+
+           //"peticionAbiertaSeleccionada" => $peticionJoin->getPeticionOpen($idPlanilla),//envia un objeto peticionuserJoinmodel 
+
+           "peticionAbiertaSeleccionada"      => $this->getPeticionPagoArray($idPlanilla), //envia un objeto peticionuserJoinmodel en forma de array
+
+         
                                                         //TODO deberia utilizar metodo que traiga las peticiones pendientes de pago y como un arreglo de datos
             "user"                            => $this->user
         ]);
@@ -187,16 +199,16 @@ class Dashboard extends SessionController{
         error_log('DASHBOARDCONTROLLER::getPeticionPagoArray()');
         
 
-        if($peticionId === NULL) $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO]);//TODO AGREGAR A LISTA
+        if($peticionId[0] === NULL) $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO]);//TODO AGREGAR A LISTA
 
         
 
         $joinModel = new JoinPeticionesUserModel();
-        $peticion = $joinModel->getPeticionOpen($peticionId);//devuelve la peticion dado un id
+        $peticion = $joinModel->getPeticionOpen($peticionId[0]);//devuelve la peticion dado un id
 
         
         //array_push($res, $peticion->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
-        $res = $peticion[0]->toArray();
+        $res = $peticion->toArray();
         return $res;  //devuelve el objeto en forma de array
 
     }

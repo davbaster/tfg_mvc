@@ -1,36 +1,4 @@
 
-// const peticionCard = document.querySelector('#peticionPagoOpen');
-
-
-
-
-//muestra dialogo para crear una planilla.
-//cuando se da click en el boton crear peticion
-// peticionCard.addEventListener('click', async () =>{
-//   event.preventDefault();
-  
-//   const value = event.currentTarget.lastElementChild.lastElementChild.value;
-  
-
-  
-//   const html = await getContentPeticionPago(value);
-//   // ajaxcontent.innerHTML+= html;
-  
-// });
-
-// peticionCard.addEventListener('click', e =>{
-//   event.preventDefault();
-  
-//   const value = event.currentTarget.lastElementChild.lastElementChild.value;
-  
-
-  
-//   getContentPeticionPago(value);
-//   // ajaxcontent.innerHTML+= html;
-  
-// });
-
-
 
 if (document.body.addEventListener){
   document.body.addEventListener('click',peticionCard,false);
@@ -48,6 +16,7 @@ function peticionCard(e){
 
       case 'peticionPagoOpenCard':
             $value = target.lastElementChild.lastElementChild.value;
+            // target.classList.add('active'); //ver el elemento seleccionado resaltado
             getContentPeticionPago($value);
             break;
 
@@ -91,7 +60,17 @@ async function getContentPeticionPago(id){
 
 function renderData(data){
   const newPagoBtn = document.querySelector('#new-pago');
+  const cerrarPeticionPagoBtn = document.querySelector('#cerrar-peticion-pago');
+  $idPlanilla = data[0].id_planilla;
   
-  newPagoBtn.value = data[0].id_planilla;
+  //cerrarPeticionPagoBtn.value = $idPlanilla; //asignar valor del card (planilla seleccionada) al boton de cerrar planilla, 
+  cerrarPeticionPagoBtn.setAttribute("value", $idPlanilla);
+  //newPagoBtn.value = $idPlanilla;//asigna al boton de crear pago el valor del card (planilla seleccionada)
+
+  newPagoBtn.setAttribute("value", $idPlanilla);
+  
+
+  
+  
 }
 

@@ -54,6 +54,7 @@ async function getContentDialogoCrearPeticionPago(){
 //cuando se da click en el boton cerrar peticion
 btnCerrarPeticion.addEventListener('click', async () =>{
   event.preventDefault();
+  const value = event.currentTarget.getAttribute('value'); //value contien la PeticionPagoID/planilla ID (previamente asignado) del boton donde se hizo click
   
   const background = document.createElement('div');
   const panel = document.createElement('div');
@@ -84,14 +85,14 @@ btnCerrarPeticion.addEventListener('click', async () =>{
   });
 
   
-  const html = await getContentDialogoEnviarPeticionPago();
+  const html = await getContentDialogoEnviarPeticionPago(value);
   ajaxcontent.innerHTML+= html;
   
 });
 
 
 //localhost se deberia cambiar por la direccion del servidor
-async function getContentDialogoEnviarPeticionPago(){
-  const html = await fetch('http://localhost:41062/www/dashboard/viewDialogCerrarPeticionPago').then(res => res.text());
+async function getContentDialogoEnviarPeticionPago(id){
+  const html = await fetch(`http://localhost:41062/www/dashboard/viewDialogCerrarPeticionPago/${id}`).then(res => res.text());
   return html;   
 }

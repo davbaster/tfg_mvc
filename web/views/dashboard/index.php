@@ -210,7 +210,8 @@
                             </div>
 
                             <div>
-                                <a href="" class="btn-peticion" id="cerrar-peticion-pago" value="">Cerrar Planilla<i class="material-icons">keyboard_arrow_right</i></a>
+                                <a href="" class="btn-peticion" id="cerrar-peticion-pago" value="<?php echo  $peticionesOpen[0]->getId() ?>">Cerrar Planilla<i class="material-icons">keyboard_arrow_right</i></a>
+                                <!-- <a href="" class="btn-peticion" id="cerrar-peticion-pago" value="">Cerrar Planilla<i class="material-icons">keyboard_arrow_right</i></a> -->
                             </div>
                         <?php
                             }

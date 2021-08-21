@@ -139,6 +139,11 @@ body{
     margin: 0 auto;
 }
 
+.active{
+    margin-bottom: -5px;
+    padding-bottom: 30px;
+}
+
 .center{
     text-align: center
 }
