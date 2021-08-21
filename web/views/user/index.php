@@ -26,41 +26,74 @@
             </div>
             <div id="side-menu">
                 <ul>
-                    <li><a href="#info-user-container">Personalizar usuario</a></li>
-                    <li><a href="#password-user-container">Password</a></li>
-                    <li><a href="#budget-user-container">Presupuesto</a></li>
+                    <li><a href="#add-user-container">Agregar Usuario</a></li>
+                    <li><a href="#search-user-container">Buscar Usuario</a></li>
+                    <!-- <li><a href="#budget-user-container">Presupuesto</a></li> -->
                 </ul>
             </div>
 
             <div id="user-section-container">
                 
-                <section id="info-user-container">
-                    <form action=<?php echo constant('URL'). '/user/updateName' ?> method="POST">
-                        <div class="section">
-                            <label for="name">Nombre</label>
-                            <input type="text" name="name" id="name" autocomplete="off" required value="<?php echo $user->getNombre() ?>">
-                            <div><input type="submit" value="Cambiar nombre" /></div>
+                <section id="add-user-container">
+                    <form action=<?php echo constant('URL'). '/user/crearUsuario' ?> method="POST">
+                        <div class="">
+                            <label for="cedula">Cedula</label>
+                            <input type="text" name="cedula" id="cedula" required value=""></input>
                         </div>
-                    </form>
-
-                    <form action="<?php echo constant('URL'). '/user/updatePhoto' ?>" method="POST" enctype="multipart/form-data">
-                        <div class="section">
-                            <label for="photo">Foto de perfil</label>
-                            <?php
-                                if(!empty($user->getFoto())){
-                            ?>
-
-                                <img src="<?php echo constant('URL') ?>/public/img/photos/<?php echo $user->getFoto() ?>" width="50" height="50" />
-                            <?php
-                                }
-                            ?>
-                            <input type="file" name="photo" id="photo" autocomplete="off" required>
-                            <div><input type="submit" value="Cambiar foto de perfil" /></div>
+                        <div class="">
+                            <label for="name">Nombre</label>
+                            <input type="text" name="nombre" id="nombre" required value=""></input>
+                        </div>
+                        <div class="">
+                            <label for="name">Primer Apellido</label>
+                            <input type="text" name="apellido1" id="apellido1" required value=""></input>
+                        </div>
+                        <div class="">
+                            <label for="name">Segundo Apellido</label>
+                            <input type="text" name="apellido2" id="apellido2" required value=""></input>
+                        </div>
+                        <div class="">
+                            <label for="name">Telefono</label>
+                            <input type="text" name="telefono" id="telefono" value=""></input>
+                        </div>
+                        <div class="">
+                            <label for="name">Cuenta Bancaria</label>
+                            <input type="text" name="cuentaBancaria" id="cuentaBancaria" value=""></input>
+                        </div>
+                        <div class="">
+                            <label for="name">Direccion</label>
+                            <input type="text" name="direccion" id="direccion" value=""></input>
+                        </div>
+                        <div id="datos_opcional" hidden>
+                            <div class="">
+                                <label for="name">Correo Electr&oacute;nico</label>
+                                <input type="text" name="email" id="email" value=""></input>
+                            </div>
+                            <div class="">
+                                <label for="name">Contrase&ntilde;a</label>
+                                <input type="password" name="contrasena" id="contrasena" value=""></input>
+                            </div>
+                            <div class="">
+                                <label for="">Confirmaci&oacute;n Contrase&ntilde;a</label>
+                                <input type="password" name="confcontrasena" id="confcontrasena" onkeyup='verificarContrasenaIgual()' value=""></input>
+                                <span id='message'></span>
+                            </div>
+                        </div>
+                        <div class="">
+                        <label for="rol">Rol del usuario:</label>
+                            <select name="rol" id="rol" required>
+                                <option value="construccion">Construccion</option>
+                                <option value="contratista">Contratista</option>
+                                <!-- <option value="contador">Contador</option> -->
+                                <option value="administrador">Administrador</option>
+                                
+                            </select>
+                            <div><input type="submit" value="Crear usuario" /></div>
                         </div>
                     </form>
                 </section>
 
-                <section id="password-user-container">
+                <section id="search-user-container">
                     <form action="<?php echo constant('URL'). '/user/updatePassword' ?>" method="POST">
                         <div class="section">
                             <label for="current_password">Password actual</label>
@@ -75,7 +108,7 @@
                     </form>
                 </section>
 
-                <section id="budget-user-container">
+                <!-- <section id="budget-user-container">
                     <form action="user/updateBudget" method="POST">
                         <div class="section">
                             <label for="budget">Definir presupuesto</label>
@@ -83,57 +116,19 @@
                             <div><input type="submit" value="Actualizar presupuesto" /></div>
                         </div>
                     </form>
-                </section>
+                </section> -->
 
             </div><!-- user section container -->
         </div><!-- user container -->
 
     </div><!-- main container -->
+    
+    <!-- <script> -->
     <script src="public/js/user_dashboard.js"></script>
-    <script>
+    <script src="public/js/tools.js"></script> 
+    
         
-        const url = location.href;
-        const indexAnchor = url.indexOf('#');
 
-        closeSections();
-
-        if(indexAnchor > 0){
-            const anchor = url.substring(indexAnchor);
-            document.querySelector(anchor).style.display = 'block';
-
-            document.querySelectorAll('#side-menu a').forEach(item =>{
-                if(item.getAttribute('href') === anchor){
-                    item.classList.add('option-active');
-                }
-            });
-        }else{
-            document.querySelector('#info-user-container').style.display = 'block';
-            document.querySelectorAll('#side-menu a')[0].classList.add('option-active');
-        }
-
-        document.querySelectorAll('#side-menu a').forEach(item =>{
-            item.addEventListener('click', e =>{
-                closeSections();
-                const anchor = e.target.getAttribute('href');
-                document.querySelector(anchor).style.display = 'block';
-                //e.target.setAttribute('class', 'option-active');
-                e.target.classList.add('option-active');
-            });
-        });
-
-        function closeSections(){
-            const sections = document.querySelectorAll('section');
-            sections.forEach(item =>{
-                item.style.display="none";
-            });
-            document.querySelectorAll('.option-active').forEach(item =>{
-                item.classList.remove('option-active');
-            });
-        }
-        
-                            
-        
-    </script>
     
 </body>
 </html>

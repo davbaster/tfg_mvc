@@ -15,17 +15,17 @@
         <!-- <li><a href="<?php //echo constant('URL'); ?>/dashboard">Home</a></li> -->
         <!-- <li><a href="<?php //echo constant('URL'); ?>/peticionespago">Planillas</a></li> -->
         <!-- <li><a href="<?php //echo constant('URL'); ?>/pagos">Pagos</a></li> -->
-        <!-- <li><a href="<?php //echo constant('URL'); ?>/signup">Usuarios</a></li> -->
-        <!-- <li><a href="<?php //echo constant('URL'); ?>/user">Configuracion</a></li> -->
+        <!-- <li><a href="<?php //echo constant('URL'); ?>/user">Usuarios</a></li> -->
+        <!-- <li><a href="<?php //echo constant('URL'); ?>/configuracion">Configuracion</a></li> -->
         <!-- <li><a href="<?php //echo constant('URL'); ?>/logout">Salir</a></li> -->
         
         <!--DEVELOPMENT  -->
         <li><a href="dashboard">Home</a></li>
         <li><a href="peticionespago">Planillas</a></li>
         <li><a href="pagos">Pagos</a></li>
-        <li><a href="signup">Usuarios</a></li>
+        <li><a href="user">Usuarios</a></li>
         <!-- <li><a href="<?php //echo constant('URL'); ?>/user">Configuracion</a></li> -->
-        <li><a href="user">Configuracion</a></li>
+        <li><a href="configuracion">Configuracion</a></li>
         <li><a href="logout">Salir</a></li>
     </ul>
     <!-- <div id="profile-container">

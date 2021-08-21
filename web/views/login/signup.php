@@ -90,7 +90,7 @@
                 <option value="contador">contador</option>
                 <option value="administrador">administrador</option>
                 
-</select>
+            </select>
             </div>
             <p>
                 <input type="submit" id= "btnEnviar" value="Agregar Usuario" />
