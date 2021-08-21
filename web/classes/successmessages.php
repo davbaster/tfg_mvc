@@ -13,6 +13,7 @@ class SuccessMessages{
     const SUCCESS_PETICIONPAGOS_NEWPETICION = "s5025";
     const SUCCESS_PETICIONPAGOS_DELETE = "s5026";
     const SUCCESS_PETICIONPAGO_AUTORIZAR = "s5027";
+    const SUCCESS_PETICIONPAGO_ENVIAR = "s5028";
 
 
     private $successList = [];
@@ -28,7 +29,8 @@ class SuccessMessages{
             SuccessMessages::SUCCESS_PAGOS_NEWPAGO => 'Pago creado satisfactoriamente',
             SuccessMessages::SUCCESS_PETICIONPAGOS_NEWPETICION => 'Nueva planilla creada satisfactoriamente',
             SuccessMessages::SUCCESS_PETICIONPAGOS_DELETE => 'Peticion de pago borrada satisfactoriamente',
-            SuccessMessages::SUCCESS_PETICIONPAGO_AUTORIZAR => 'Planilla autorizada satisfactoriamente'
+            SuccessMessages::SUCCESS_PETICIONPAGO_AUTORIZAR => 'Planilla autorizada satisfactoriamente',
+            SuccessMessages::SUCCESS_PETICIONPAGO_ENVIAR => 'Planilla enviada para revision satisfactoriamente'
         ];
     }
 

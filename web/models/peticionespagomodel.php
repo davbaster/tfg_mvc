@@ -97,7 +97,7 @@ class PeticionesPagoModel extends Model implements IModel {
             $query->execute([ 'id' => $id]);
             $peticion = $query->fetch(PDO::FETCH_ASSOC);
 
-            $this->from($peticion);//rellena objeto
+            $this->from($peticion);//rellena objeto con la informacion de la BD
 
             return $this;
         }catch(PDOException $e){

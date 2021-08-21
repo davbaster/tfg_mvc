@@ -21,6 +21,7 @@ class ErrorMessages{
     const ERROR_PETICIONPAGOS_NEWPETICION = "e0015";
     const ERROR_PETICIONPAGOS_NEWPETICION_EMPTY = "e0016";
     const ERROR_PETICIONPAGO_AUTORIZAR = "e0017";
+    const ERROR_PETICIONPAGO_ENVIAR = "e0018";
    
 
     private $errorList = [];
@@ -46,7 +47,9 @@ class ErrorMessages{
             ErrorMessages::ERROR_PETICIONPAGOS_NEWPETICION => 'No se pudo crear el la peticion de pago. ',
             ErrorMessages::ERROR_PETICIONPAGOS_NEWPETICION_EMPTY => 'No se pudo crear la peticion de pago. No hay informacion',
             ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS => 'No se pudo crear la peticion de pago. Ya existe una con ese nombre',
-            ErrorMessages::ERROR_PETICIONPAGO_AUTORIZAR     => 'No se pudo autorizar la peticion de pago.'
+            ErrorMessages::ERROR_PETICIONPAGO_AUTORIZAR     => 'No se pudo autorizar la peticion de pago. Trate de nuevo',
+            ErrorMessages::ERROR_PETICIONPAGO_ENVIAR     => 'No se pudo Enviar la peticion de pago. Trate de nuevo'
+            
         ];
 
     }

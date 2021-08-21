@@ -165,7 +165,7 @@ class Dashboard extends SessionController{
     //
     //***************************************** */
 
-    //enviarAutorizarPeticion
+    //VistaenviarAutorizarPeticion
         // carga vista para la creacion de una nueva peticion de pago/planilla
     //manda las peticiones de pago en estado Open, estas se les puede seguir metiendo pagos.
     //bien implementada, deberia de mandar solo arrays con la informacion formateada.//TODO
@@ -190,6 +190,44 @@ class Dashboard extends SessionController{
                                                         //TODO deberia utilizar metodo que traiga las peticiones pendientes de pago y como un arreglo de datos
             "user"                            => $this->user
         ]);
+    }
+
+    //cambia el estado de una planilla de OPEN a PENDIENTE de autorizacion
+    //deberia refrescar la pagina para que refleje las planillas pendientes de autorizacion por parte del administrador.
+    function enviarPeticionPago(){
+        error_log("DASHBOARD_CONTROLLER::enviarPeticionPago()");
+
+
+        if ($this->existPOST(['peticionPago_id'])) {
+            $peticionPagoId = $this->getPost('peticionPago_id');
+                
+                // validacion de los valores obligatorios recibidos
+                // if($peticionPagoId == '' || empty ($peticionPagoId) ){
+
+                //     // redirige a pagina de inicio
+                //     $this->redirect('', ['error' => ErrorMessages::ERROR_LOGIN_AUTHENTICATE_EMPTY]);
+                // }
+            
+            if($peticionPagoId === NULL) $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO_AUTORIZAR]);
+            
+            //error_log("Pagos::delete() id = " . $id);
+            $peticionPagoModel = new PeticionesPagoModel();
+            // $pago->get($id);
+            $peticionPagoModel->get($peticionPagoId);
+            $peticionPagoModel->setEstado("pendiente");//cambia estado planilla a pendiente de aprobaci[on]
+            $res = $peticionPagoModel->update();//CAMBIAR ESTADO
+
+            if($res){//SI RES tiene un resultado
+                $this->redirect('dashboard', ['success' => SuccessMessages::SUCCESS_PETICIONPAGO_ENVIAR]);
+               
+
+            }else{
+                $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO_ENVIAR]);
+            }
+        }else{
+    
+            $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO_ENVIAR]);
+        }
     }
 
 

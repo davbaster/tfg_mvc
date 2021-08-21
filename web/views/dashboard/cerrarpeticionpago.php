@@ -9,6 +9,7 @@
 
     $user                               = $this->d['user'];
     //$peticionesPago                     = $this->d['peticionesPagoAbiertasPorUsuario'];
+    
     $peticionPago                       = $this->d['peticionAbiertaSeleccionada'];
     $pagosOpen                          = $this->d['pagosOpenPerId'];  //contiene los pagos asignados a esta peticionPago
     $usuarios                           = $this->d['usuarios'];
@@ -18,8 +19,9 @@
 <link rel="stylesheet" href="<?php echo constant('URL'); ?>/public/css/expense.css">
 
 <!-- FIXME arreglar los campos que se van a llenar -->
-<form id="form-expense-container" action="peticionespago/newPeticionPago" method="POST">
+<form id="form-expense-container" action="dashboard/enviarPeticionPago" method="POST">
     <h3>Resumen planilla</h3>
+    <input id="peticionPago_id" name="peticionPago_id" value="<?php echo $peticionPago['id_planilla'] ?>" type="hidden">
     <div class="section" >
         <label for="cedula" value= "">Descripcion: <?php echo " " . $peticionPago['descripcion'] ?></label>
         
@@ -36,9 +38,9 @@
     </div>
     <div class="section">
         <!-- aqui va a ir la lista de trabajadores que esta incluida en la planilla -->
-        <label for="nombre_planilla">Trabajadores</label>
+        <label for="trabajadores">Trabajadores</label>
         <!-- <div><input type="text" name="nombre_planilla" autocomplete="off" required></div> -->
-        <select name="pagoID" id="" required>
+        <select name="trabajador" id="">
             <?php 
                 if (!empty($pagosOpen)) {
                     //for each
