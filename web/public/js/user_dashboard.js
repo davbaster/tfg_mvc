@@ -14,7 +14,7 @@
           }
       });
   }else{
-      document.querySelector('#add-user-container').style.display = 'block';
+      document.querySelector('#search-user-container').style.display = 'block';
       document.querySelectorAll('#side-menu a')[0].classList.add('option-active');
   }
 

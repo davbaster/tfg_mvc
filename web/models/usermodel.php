@@ -233,7 +233,7 @@ class UserModel extends Model implements IModel {
         $this->setCuentaBancaria  ( $array['cuentaBancaria'] ) ;
         $this->setEmail           ( $array['email'] ) ;
         //error_log('USERMODEL::Contrasena recibida en array[contrasena] ' . $array['contrasena']);
-        $this->setContrasena($array['contrasena']);
+        $this->contrasena    =     $array['contrasena'];
         $this->setRol             ( $array['rol'] ) ;
         $this->setFoto            ( $array['foto'] ) ;
         //$this->fechaIngreso            ( $array['fechaIngreso'] ) ;

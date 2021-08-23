@@ -27,8 +27,9 @@
             </div>
             <div id="side-menu">
                 <ul>
-                    <li><a href="#add-user-container">Agregar Usuario</a></li>
                     <li><a href="#search-user-container">Buscar Usuario</a></li>
+                    <li><a href="#add-user-container">Agregar Usuario</a></li>
+                    
                     <!-- <li><a href="#budget-user-container">Presupuesto</a></li> -->
                 </ul>
             </div>
@@ -122,6 +123,17 @@
                             </tbody>
                         </table>
                     </div>
+                    <div id="user-container-view">
+                    </div>
+                    <div id="user-container-edit" hidden>
+                        <form action=<?php echo constant('URL'). '/user/actualizarUsuario' ?> method="POST">
+                            <div id="user-edit">
+
+                            </div>
+                        <div><input type="submit" value="Guardar Cambios" /></div>
+                        <div><button type="button" onclick="cancelarEdicion()">Cancelar</button></div>
+                    </div>
+                    
 
                 </section>
 
