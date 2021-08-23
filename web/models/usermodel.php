@@ -120,26 +120,11 @@ class UserModel extends Model implements IModel {
 
             $user = $query->fetch(PDO::FETCH_ASSOC);
 
+            if(!$user){//si el resultado es vacio
+                return $user;
+            }
+
             $this->from($user);//rellena objeto con la informacion de la BD
-
-            //user es puntero elemento actual
-            //PDO::FETCH_ASSOC devuelve un objeto transformado
-
-            //llenando la informacion del usuario en el objeto this
-            //revisar si se tiene que crear un nuevo usuario y llenar la informacion
-            //porque he estado teniendo problemas con  $this = new UserModel(); linea 75
-            // $this->setCedula($user['cedula']);
-            // $this->setNombre($user['nombre']);
-            // $this->setApellido1($user['apellido1']);
-            // $this->setApellido2($user['apellido2']);
-            // $this->setTelefono($user['telefono']);
-            // $this->setDireccion($user['direccion']);
-            // $this->setCuentaBancaria($user['cuentaBancaria']);
-            // $this->setEmail($user['email']);
-            // //$this->setContrasena($user['contrasena']);
-            // $this->setContrasenaSinHash($user['contrasena']);
-            // $this->setRol($user['rol']);
-            // $this->setFoto($user['foto']);
 
 
 

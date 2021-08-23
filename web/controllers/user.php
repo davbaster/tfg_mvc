@@ -124,10 +124,10 @@ class User extends SessionController{
         if($params === NULL) $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_BUSCAR]);//
         $id = $params[0];
         $user = new UserModel();
-        $user->get($id);
+        $res = $user->get($id);
 
 
-        if($user != null){//SI RES tiene un resultado
+        if($res){//SI RES tiene un resultado
             //$this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PAGOS_PAGAR]);//TODO AGREGAR A LISTA
             $res = [];
             array_push($res, $user->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
@@ -136,7 +136,10 @@ class User extends SessionController{
           
 
         }else{
-            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_BUSCAR_NOEXISTE]);
+            //$this->redirect('user', ['error' => ErrorMessages::ERROR_USER_BUSCAR_NOEXISTE]);
+            $res = [];
+            array_push($res, [ 'cedula' => 'false', 'mensaje' => 'El n&uacute;mero de c&eacute;dula provisto no tuvo resultados' ]);
+            $this->getUserJSON($res);
         }
     }
 

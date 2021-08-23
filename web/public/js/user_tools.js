@@ -41,6 +41,7 @@ const btnBuscar                 = document.querySelector('#btnBuscar');
 const userContainerView         = document.querySelector('#user-container-view');
 const userContainerEdit         = document.querySelector('#user-container-edit');
 const userEdit                  = document.querySelector('#user-edit');
+// const message                   = document.querySelector('#message');
 
 
 
@@ -50,12 +51,14 @@ const userEdit                  = document.querySelector('#user-edit');
     //copie la data desde el promise
     //
     btnBuscar.addEventListener('click', e =>{
+      event.preventDefault();
       const cedula = document.querySelector('#cedula_buscar').value;
       //const apellidoBusc = document.querySelector('#apellido1_buscar').value;
 
       if(cedula === '' || cedula === null){
-
-          alert('Ingrese un numero de cedula sin guiones o espacios');
+        //message.innerHTML= ``;
+        userContainerView.innerHTML = `Ingrese un n&uacute;mero de c&eacute;dula sin guiones o espacios`;
+          //alert('Ingrese un numero de cedula sin guiones o espacios');
       }else{
 
         // this.datacopy = [...this.data]; 
@@ -83,33 +86,68 @@ async function getResultadosBusqueda(id){
 
 //pone nuevas filas con informacion en la tabla
 function renderResultados(data){
-  var databody = document.querySelector('#databody');
+  
+  
   let total = 0;
-  databody.innerHTML = '';
-  data.forEach(item => { 
-      //total += item.amount;
-      switch (item.estado) {
 
-          case "inactivo":
+  if (data[0].cedula == 'false') {
+    
 
+    userContainerView.innerHTML = data[0].mensaje;
+    
+  } else {
+
+    dibujarTabla();//dibuja la tabla sin resultados
+    var databody = document.querySelector('#databody');//busca el body de la tabla recien dibujada
+
+    databody.innerHTML = '';
+    data.forEach(item => { 
+        //total += item.amount;
+        switch (item.estado) {
+
+            case "inactivo":
+
+                databody.innerHTML += `<tr>
+                <td>${item.cedula}</td>
+                <td>${item.nombre}</td>
+                <td><a id="activarUsuario" href="#" onclick="activarUsuario(${item.cedula})">Activar</a><a id="verUsuario href="#" onclick="ver(${item.cedula})">Ver</a></td>
+                </tr>`;
+
+                break;
+        
+            default:
               databody.innerHTML += `<tr>
               <td>${item.cedula}</td>
               <td>${item.nombre}</td>
-              <td><a id="activarUsuario" href="#" onclick="activarUsuario(${item.cedula})">Activar</a><a id="verUsuario href="#" onclick="ver(${item.cedula})">Ver</a></td>
+              <td><a id="verUsuario href="#" onclick="ver(${item.cedula})">Ver</a></td>
               </tr>`;
 
-              break;
-      
-          default:
-            databody.innerHTML += `<tr>
-            <td>${item.cedula}</td>
-            <td>${item.nombre}</td>
-            <td><a id="verUsuario href="#" onclick="ver(${item.cedula})">Ver</a></td>
-            </tr>`;
+                break;
+        }
+    });
+    
+  }
 
-              break;
-      }
-  });
+}
+
+//dibuja una estructura de tabla
+function dibujarTabla(){
+
+  var tableContainer = document.querySelector('#table-container-right-side');
+
+  tableContainer.innerHTML =
+  `<table width="100%" cellpadding="0">
+      <thead>
+          <tr>
+          <th data-sort="id">Cedula</th>
+          <th data-sort="nombre" width="20%">Trabajador</th>
+          <th>Acciones</th>
+          </tr>
+      </thead>
+    <tbody id="databody">
+        
+    </tbody>
+  </table>`;
 }
 
 
@@ -230,7 +268,7 @@ function renderResultados(data){
       //vuelve a la vista de resultado de busqueda
       function cancelarEdicion(){
 
-        userContainerEdit.innerHTML=``;
+        userContainerEdit.setAttribute('hidden', 'true');
         
-        userContainerView.removeAttribute(hidden);
+        userContainerView.setAttribute('hidden', 'false');
       }

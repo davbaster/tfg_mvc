@@ -109,8 +109,9 @@
                         </div>                      
                     </form>
                     <!-- Tabla de resultados -->
+                    
                     <div id="table-container-right-side">
-                        <table width="100%" cellpadding="0">
+                        <!-- <table width="100%" cellpadding="0">
                             <thead>
                                 <tr>
                                 <th data-sort="id">Cedula</th>
@@ -121,7 +122,7 @@
                             <tbody id="databody">
                                 
                             </tbody>
-                        </table>
+                        </table> -->
                     </div>
                     <div id="user-container-view">
                     </div>
@@ -136,16 +137,6 @@
                     
 
                 </section>
-
-                <!-- <section id="budget-user-container">
-                    <form action="user/updateBudget" method="POST">
-                        <div class="section">
-                            <label for="budget">Definir presupuesto</label>
-                            <div><input type="number" name="budget" id="budget" autocomplete="off" required value="<?php echo $user->getBudget() ?>"></div>
-                            <div><input type="submit" value="Actualizar presupuesto" /></div>
-                        </div>
-                    </form>
-                </section> -->
 
             </div><!-- user section container -->
         </div><!-- user container -->
