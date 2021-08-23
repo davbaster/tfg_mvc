@@ -116,6 +116,43 @@ class User extends SessionController{
 
 
 
+    //BUSCAR USUARIO
+    //Busca un usuario usando la cedula
+    function buscar($params){
+        error_log("USER_CONTROLLER::Buscar()");
+        
+        if($params === NULL) $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_BUSCAR]);//
+        $id = $params[0];
+        $user = new UserModel();
+        $user->get($id);
+
+
+        if($user != null){//SI RES tiene un resultado
+            //$this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PAGOS_PAGAR]);//TODO AGREGAR A LISTA
+            $res = [];
+            array_push($res, $user->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+        
+            $this->getUserJSON($res);
+          
+
+        }else{
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_BUSCAR_NOEXISTE]);
+        }
+    }
+
+
+    function getUserJSON($userArray){
+        error_log('USER_CONTROLLER::getUserJSON()');
+
+        
+        header("HTTP/1.1 200 OK");
+        header('Content-Type: application/json');
+        echo json_encode($userArray);
+
+    }
+
+
+
 
     //actualiza nombre de usuario
     function updateName(){

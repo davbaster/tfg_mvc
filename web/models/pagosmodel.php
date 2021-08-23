@@ -63,18 +63,7 @@ class PagosModel extends Model implements IModel {
     //las variables en el constructor
     public function save(){
         try{
-            // $query = $this->prepare('INSERT INTO pagos (estado_pago, 
-            //                                             peticion_pago_id, 
-            //                                             amount,
-            //                                             fecha_pago, 
-            //                                             cedula, 
-            //                                             detalles) 
-            //                                             VALUES(:estadoPago,
-            //                                                 :peticionPagoId,
-            //                                                 :amount,
-            //                                                 :p, 
-            //                                                 :user, 
-            //                                                 detalles)');
+
 
             $query= $this->prepare("INSERT INTO pagos(estado_pago, peticion_pago_id, amount,fecha_pago, cedula, detalles) 
                                         VALUES (:estadoPago,:peticionPagoId,:amount,:fechaPago,:user,:detalles)");
@@ -352,28 +341,7 @@ class PagosModel extends Model implements IModel {
         }
     }
 
-    //total de pagos por planilla este mes
-    //$categoryid podria ser el idContratista, para sacar la cantidad total de pagos que se hizo a un contratista en el mes
-    //$categoryid podria ser el idPlanilla, para sacar el monto total de una planilla pagada 
-    //getTotalByCategoryThisMonth
-    // function getTotalByCategoryThisMonth($peticionPagoId, $userId){ 
-    //     error_log("ExpensesModel::getTotalByCategoryThisMonth");
-    //     try{
-    //         $total = 0;
-    //         $year = date('Y');
-    //         $month = date('m');
-    //         $query = $this->prepare('SELECT SUM(amount) AS total from pagos WHERE peticion_pago_id = :peticionPagoId AND id_user = :userId AND YEAR(date) = :year AND MONTH(date) = :month');
-    //         $query->execute(['peticionPagoId' => $peticionPagoId, 'userId' => $userId, 'year' => $year, 'month' => $month]);
-            
-    //         $total = $query->fetch(PDO::FETCH_ASSOC)['total'];//trae la fila en la columna total
-    //         if($total == NULL) return 0;
-    //         return $total;
 
-    //     }catch(PDOException $e){
-    //         error_log("**ERROR: PagosModel::getTotalByCategoryThisMonth: error: " . $e);
-    //         return NULL;
-    //     }
-    // }
     //lista la cantidad total pagada a un usuario en el mes actual.
     function getTotalByUserThisMonth($cedula){ 
         error_log("ExpensesModel::getTotalByUserThisMonth");

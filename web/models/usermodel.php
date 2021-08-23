@@ -120,24 +120,26 @@ class UserModel extends Model implements IModel {
 
             $user = $query->fetch(PDO::FETCH_ASSOC);
 
+            $this->from($user);//rellena objeto con la informacion de la BD
+
             //user es puntero elemento actual
             //PDO::FETCH_ASSOC devuelve un objeto transformado
 
             //llenando la informacion del usuario en el objeto this
             //revisar si se tiene que crear un nuevo usuario y llenar la informacion
             //porque he estado teniendo problemas con  $this = new UserModel(); linea 75
-            $this->setCedula($user['cedula']);
-            $this->setNombre($user['nombre']);
-            $this->setApellido1($user['apellido1']);
-            $this->setApellido2($user['apellido2']);
-            $this->setTelefono($user['telefono']);
-            $this->setDireccion($user['direccion']);
-            $this->setCuentaBancaria($user['cuentaBancaria']);
-            $this->setEmail($user['email']);
-            //$this->setContrasena($user['contrasena']);
-            $this->setContrasenaSinHash($user['contrasena']);
-            $this->setRol($user['rol']);
-            $this->setFoto($user['foto']);
+            // $this->setCedula($user['cedula']);
+            // $this->setNombre($user['nombre']);
+            // $this->setApellido1($user['apellido1']);
+            // $this->setApellido2($user['apellido2']);
+            // $this->setTelefono($user['telefono']);
+            // $this->setDireccion($user['direccion']);
+            // $this->setCuentaBancaria($user['cuentaBancaria']);
+            // $this->setEmail($user['email']);
+            // //$this->setContrasena($user['contrasena']);
+            // $this->setContrasenaSinHash($user['contrasena']);
+            // $this->setRol($user['rol']);
+            // $this->setFoto($user['foto']);
 
 
 
@@ -234,8 +236,31 @@ class UserModel extends Model implements IModel {
         $this->setContrasena($array['contrasena']);
         $this->setRol             ( $array['rol'] ) ;
         $this->setFoto            ( $array['foto'] ) ;
+        //$this->fechaIngreso            ( $array['fechaIngreso'] ) ;
+        //$this->estado            ( $array['estado'] ) ;
 
     }
+
+    //Mete un objeto a un arreglo
+    public function toArray(){
+        $array = [];
+        $array['cedula']            = $this->cedula;
+        $array['nombre']            = $this->nombre;
+        $array['apellido1']         = $this->apellido1;
+        $array['apellido2']         = $this->apellido2;
+        $array['telefono']          = $this->telefono;
+        $array['direccion']         = $this->direccion;
+        $array['cuentaBancaria']    = $this->cuentaBancaria;
+        $array['email']             = $this->email;
+        $array['contrasena']        = $this->contrasena;
+        $array['rol']               = $this->rol;
+        $array['foto']              = $this->foto;
+        //$array['fechaIngreso'] = $this->fechaIngreso;
+        //$array['estado'] = $this->estado;
+
+        return $array;
+    }
+
 
     // verifica si el usuario existe
     public function exists($cedula){

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense App - Dashboard</title>
     <link rel="stylesheet" href="<?php echo constant('URL') ?>/public/css/user.css">
+    <!-- <link rel="stylesheet" href="<?php //echo constant('URL') ?>/public/css/history.css"> -->
 </head>
 <body>
     <?php require_once 'views/header.php'; ?>
@@ -93,19 +94,35 @@
                     </form>
                 </section>
 
+                <!-- BUSCAR usuario  -->
                 <section id="search-user-container">
-                    <form action="<?php echo constant('URL'). '/user/updatePassword' ?>" method="POST">
+                    <form action="" method="">
                         <div class="section">
-                            <label for="current_password">Password actual</label>
-                            <input type="password" onkeyup='check();' name="current_password" id="current_password" autocomplete="off" required>
+                            <label for="cedula">Busqueda por cedula:</label>
+                            <input type="number" name="cedula_buscar" id="cedula_buscar" autocomplete="off">
 
-                            <label for="new_password">Nuevo password</label>
-                            <input type="password"  onkeyup='check();' name="new_password" id="new_password" autocomplete="off" required>
+                            <!-- <label for="new_password">Busqueda por Primer Apellido</label>
+                            <input type="text" name="apellido1_buscar" id="apellido1_buscar" autocomplete="off"> -->
                             <span id='message'></span>
-                            <div><input type="submit" id="btnEnviar" value="Cambiar password" /></div>
-                            
-                        </div>
+                            <div><input type="submit" id="btnBuscar" value="Buscar" /></div>
+                        </div>                      
                     </form>
+                    <!-- Tabla de resultados -->
+                    <div id="table-container-right-side">
+                        <table width="100%" cellpadding="0">
+                            <thead>
+                                <tr>
+                                <th data-sort="id">Cedula</th>
+                                <th data-sort="nombre" width="20%">Trabajador</th>
+                                <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="databody">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+
                 </section>
 
                 <!-- <section id="budget-user-container">
@@ -125,7 +142,7 @@
     
     <!-- <script> -->
     <script src="public/js/user_dashboard.js"></script>
-    <script src="public/js/tools.js"></script> 
+    <script src="public/js/user_tools.js"></script> 
     
         
 

@@ -139,8 +139,6 @@
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-
-    //pone nuevas filas con informacion en la tabla
     function renderData(data){
         var databody = document.querySelector('#databody');
         let total = 0;

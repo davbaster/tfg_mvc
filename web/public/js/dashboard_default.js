@@ -47,6 +47,7 @@ function peticionCard(e){
 
 
 //localhost se deberia cambiar por la direccion del servidor
+//recolecta datos pedidos al servidor y luego los manda a renderData para ser escritos en la vista
 async function getContentPeticionPago(id){
         
   data = await fetch(`http://localhost:41062/www/dashboard/getPeticionPagoJSON/${id}`) 

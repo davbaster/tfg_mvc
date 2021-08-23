@@ -73,3 +73,16 @@
     color: white !important;
     text-decoration: none;
 }
+
+#table-container-right-side{
+    width: 400px;
+    padding: 0 20px;
+    margin: 0 auto;
+    font-size: 12px;
+}
+
+#table-container-right-side thead{
+    font-weight: bold;
+    text-align: left;
+    font-size: 12px;
+}
