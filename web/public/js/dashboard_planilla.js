@@ -52,7 +52,7 @@ async function getContentDialogoCrearPeticionPago(){
 
 //muestra dialogo para mandar aprobar una planilla.
 //cuando se da click en el boton cerrar peticion
-btnCerrarPeticion.addEventListener('click', async () =>{
+async function desplegarFormularioCerrarPeticion(){
   event.preventDefault();
   const value = event.currentTarget.getAttribute('value'); //value contien la PeticionPagoID/planilla ID (previamente asignado) del boton donde se hizo click
   
@@ -88,11 +88,17 @@ btnCerrarPeticion.addEventListener('click', async () =>{
   const html = await getContentDialogoEnviarPeticionPago(value);
   ajaxcontent.innerHTML+= html;
   
-});
+};
 
 
 //localhost se deberia cambiar por la direccion del servidor
 async function getContentDialogoEnviarPeticionPago(id){
   const html = await fetch(`http://localhost:41062/www/dashboard/viewDialogCerrarPeticionPago/${id}`).then(res => res.text());
   return html;   
+}
+
+
+//verica que el boton exista antes de asignarle un eventHanlder
+if(btnCerrarPeticion){
+  btnCerrarPeticion.addEventListener('click', desplegarFormularioCerrarPeticion, false);
 }

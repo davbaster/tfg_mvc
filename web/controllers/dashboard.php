@@ -192,6 +192,7 @@ class Dashboard extends SessionController{
         ]);
     }
 
+    //cierra la planilla, la accion la ejecuta el usuario contratista o un administrador
     //cambia el estado de una planilla de OPEN a PENDIENTE de autorizacion
     //deberia refrescar la pagina para que refleje las planillas pendientes de autorizacion por parte del administrador.
     function enviarPeticionPago(){
@@ -257,12 +258,12 @@ class Dashboard extends SessionController{
         error_log('DASHBOARDCONTROLLER::getPeticionPagoArray()');
         
 
-        if($peticionId[0] === NULL) $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO]);//TODO AGREGAR A LISTA
+        if($peticionId === NULL) $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO]);//TODO AGREGAR A LISTA
 
         
 
         $joinModel = new JoinPeticionesUserModel();
-        $peticion = $joinModel->getPeticionOpen($peticionId[0]);//devuelve la peticion dado un id
+        $peticion = $joinModel->getPeticionOpen($peticionId);//devuelve la peticion dado un id
 
         
         //array_push($res, $peticion->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json

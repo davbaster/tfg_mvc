@@ -1,7 +1,10 @@
 
 const btnPago = document.querySelector('#new-pago');
 
-btnPago.addEventListener('click', async () =>{
+
+//despliega el formulario para crear un nuevo pago
+//obtiene el valor de la peticionPago/planilla del value del boton.
+async function desplegarFormularioPago(){
   event.preventDefault();
   
   const value = event.currentTarget.value //value contien la PeticionPagoID/planilla que esta seleccionada 
@@ -38,7 +41,8 @@ btnPago.addEventListener('click', async () =>{
   const html = await getContentPago(value);//manda el id de la planilla
   ajaxcontent.innerHTML+= html;
   
-});
+};
+
 
 //localhost se deberia cambiar por la direccion del servidor
 async function getContentPago(id){
@@ -46,5 +50,10 @@ async function getContentPago(id){
   const html = await fetch(`http://localhost:41062/www/dashboard/viewNewPagoDialog/${id}`).then(res => res.text());
 
   return html;   
+}
+
+//verica que el boton exista antes de asignarle un eventHanlder
+if(btnPago){
+  btnPago.addEventListener('click', desplegarFormularioPago, false);
 }
 
