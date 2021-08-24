@@ -139,6 +139,14 @@ body{
     margin: 0 auto;
 }
 
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
 .active{
     margin-bottom: -5px;
     padding-bottom: 30px;

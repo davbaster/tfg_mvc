@@ -155,8 +155,13 @@
                     <td>${item.fecha_creacion}</td>
                     <td>¢${item.monto}</td>
                     <td>${item.estado}</td>
-                    <td><a id="pagarItem" href="#" onclick="autorizarPago(${item.id_planilla})">Aprobar</a></td>
-                    </tr>`;
+                    <td><a id="pagarItem" href="#" onclick="autorizarPago(${item.id_planilla})">Aprobar</a>
+                    <a class="verBtn" id="verItemBtn" href="#" onclick="ver(${item.id_planilla})">Ver</a>
+                    </td>
+                    </tr>
+                    <div class="hide" id="info_${item.id_planilla}" value="${item.id_planilla}"></div>
+                    `;
+                    
 
                     break;
             
@@ -167,13 +172,32 @@
                     <td>${item.fecha_creacion}</td>
                     <td>¢${item.monto}</td>
                     <td>${item.estado}</td>
-                    <td></td>
-                    
-                    </tr>`;
+                    <td><a class="verBtn" id="verItemBtn" href="#" onclick="ver(${item.id_planilla})">Ver</a></td>                  
+                    </tr>
+                    <div class="hide" id="info_${item.id_planilla}" value="${item.id_planilla}"></div>`;
                     break;
             }
         });
     }
+
+
+    //renderiza un objeto PeticionPago en un DIV debajo de un row de la tabla peticion pago
+    function renderPeticionPago(data, id){
+        
+        var divInfoId = `info_${id}`;
+        var divInfoPeticion = document.querySelector('#divInfoId');
+
+        divInfoPeticion.innerHTML = 
+        `<div class="">
+            <label for="cedula">Cedula Contratista: ${data[0].cedula_contratista}</label>
+        </div>`;
+        
+      }
+
+
+
+
+
 
     // Esta funcion es llamada desde el boton pagar.
     //se usa asincrona para que no recargue toda la pagina, solo tabla
@@ -193,6 +217,34 @@
 
 
     };
+
+
+    // Esta funcion es llamada desde el boton ver.
+    //se usa asincrona para que no recargue toda la pagina, 
+    //Esta funcion al ser asyncrona usa promises
+    //https://web.dev/promises/ , https://stackoverflow.com/questions/37533929/how-to-return-data-from-promise
+    async function ver(id){
+
+        event.preventDefault();
+        
+    
+        data = await fetch(`http://localhost:41062/www/peticionespago/buscar/${id}`)
+        .then(res =>res.json())
+        .then(json => json);
+        this.copydata = [...this.data];
+        console.table(data);
+        renderPeticionPago(data, id);
+        //userContainerView.removeAttribute("hidden");
+    
+        };
+  
+        //recibe un objeto del dom
+        //borra el codigo html de ese objeto      
+        function cerrarFormulario(formulario){
+          
+  
+          formulario.innerHTML = ``;
+        }
 
 
     
