@@ -158,6 +158,47 @@ class PeticionesPago extends SessionController{
     }
 
 
+    //BUSCAR PETICION Usuario
+    //Busca un usuario usando la cedula
+    function buscar($params){
+        error_log("PETICIONESPAGO_CONTROLLER::Buscar()");
+        
+        if($params === NULL) $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PETICIONPAGO_BUSCAR]);//
+        $id = $params[0];
+        $joinPeticion = new JoinPeticionesUserModel();
+        $res = $joinPeticion->get($id);
+
+
+        if($res){//SI RES tiene un resultado
+            //$this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PAGOS_PAGAR]);//TODO AGREGAR A LISTA
+            $array = [];
+            array_push($array, $res->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+        
+            $this->getPeticionJSON($array);
+          
+
+        }else{
+            //no existe la peticion
+            $res = [];
+            array_push($res, [ 'id_planilla' => 'false', 'mensaje' => 'El numero de planilla no existe o esta mal escrita' ]);
+            $this->getPeticionJSON($res);
+        }
+    }
+
+
+    //recibe un array con una peticion
+    //lo envia con formato JSON a la vista
+    function getPeticionJSON($objectArray){
+        error_log('PETICIONESPAGO_CONTROLLER::getPeticionJSON()');
+
+        
+        header("HTTP/1.1 200 OK");
+        header('Content-Type: application/json');
+        echo json_encode($objectArray);
+
+    }
+
+
 
 
     //******************************************** */

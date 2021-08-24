@@ -23,8 +23,8 @@ class ErrorMessages{
     const ERROR_PETICIONPAGO_AUTORIZAR = "e0017";
     const ERROR_PETICIONPAGO_ENVIAR = "e0018";
     const ERROR_USER_BUSCAR = "e0019";
-    const ERROR_USER_BUSCAR_NOEXISTE = "e0020";
-    
+    const ERROR_USER_BUSCAR_NOEXISTE = "e0020"; 
+    const ERROR_PETICIONPAGO_BUSCAR = "e0021";
    
 
     private $errorList = [];
@@ -53,8 +53,8 @@ class ErrorMessages{
             ErrorMessages::ERROR_PETICIONPAGO_AUTORIZAR     => 'No se pudo autorizar la peticion de pago. Trate de nuevo',
             ErrorMessages::ERROR_PETICIONPAGO_ENVIAR     => 'No se pudo Enviar la peticion de pago. Trate de nuevo',
             ErrorMessages::ERROR_USER_BUSCAR     => 'Error al buscar. Trate de nuevo',
-            ErrorMessages::ERROR_USER_BUSCAR_NOEXISTE     => 'Error al buscar. Usuario no existe en la base de datos.'
-            
+            ErrorMessages::ERROR_USER_BUSCAR_NOEXISTE     => 'Error al buscar. Usuario no existe en la base de datos.',
+            ErrorMessages::ERROR_PETICIONPAGO_BUSCAR     => 'Error al buscar. Peticion no existe en la base de datos.'
             
         ];
 

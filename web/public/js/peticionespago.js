@@ -156,7 +156,7 @@
                     <td>¢${item.monto}</td>
                     <td>${item.estado}</td>
                     <td><a id="pagarItem" href="#" onclick="autorizarPago(${item.id_planilla})">Aprobar</a>
-                    <a class="verBtn" id="verItemBtn" href="#" onclick="ver(${item.id_planilla})">Ver</a>
+                    <a class="btnVer show" id="btnVerItem_${item.id_planilla}" href="#" onclick="ver(${item.id_planilla})">Ver</a>
                     </td>
                     </tr>
                     <div class="hide" id="info_${item.id_planilla}" value="${item.id_planilla}"></div>
@@ -172,7 +172,7 @@
                     <td>${item.fecha_creacion}</td>
                     <td>¢${item.monto}</td>
                     <td>${item.estado}</td>
-                    <td><a class="verBtn" id="verItemBtn" href="#" onclick="ver(${item.id_planilla})">Ver</a></td>                  
+                    <td><a class="btnVer show" id="btnVerItem_${item.id_planilla}" href="#" onclick="ver(${item.id_planilla})">Ver</a></td>                  
                     </tr>
                     <div class="hide" id="info_${item.id_planilla}" value="${item.id_planilla}"></div>`;
                     break;
@@ -185,12 +185,44 @@
     function renderPeticionPago(data, id){
         
         var divInfoId = `info_${id}`;
-        var divInfoPeticion = document.querySelector('#divInfoId');
+        const divInfoPeticion = document.querySelector(`#${divInfoId}`);
+        divInfoPeticion.classList.replace("hide","show");
 
-        divInfoPeticion.innerHTML = 
-        `<div class="">
-            <label for="cedula">Cedula Contratista: ${data[0].cedula_contratista}</label>
-        </div>`;
+        divInfoPeticion.innerHTML =
+
+        `   <div class="">
+                <label for="planillaId">Planilla No.: ${data[0].id_planilla}</label>
+            </div>
+            <div class="">
+                <label for="cedula">Cedula Contratista: ${data[0].cedula_contratista}</label>
+            </div>
+            <div class="">
+                <label for="descripcion">Descripcion: ${data[0].descripcion}</label>
+            </div>
+            <div class="">
+                <label for="estado">Estado: ${data[0].estado}</label>
+            </div>
+            <div class="">
+                <label for="nombre">Nombre: ${data[0].Nombre}</label>
+            </div>
+            <div class="">
+                <label for="apellido1">Primer Apellido: ${data[0].apellido1}</label>
+            </div>
+            <div class="">
+                <label for="nombre">Nombre: ${data[0].apellido2}</label>
+            </div>
+            <div class="">
+                <label for="apellido1">Segundo Apellido: ${data[0].monto}</label>
+            </div>
+            <div class="">
+                <label for="fecha_creacion">Creada: ${data[0].fecha_creacion}</label>
+            </div>
+            <div class="">
+                <label for="detalles">Detalles: ${data[0].detalles}</label>
+            </div>
+            <div class="">
+                <a id="verUsuario href="#" onclick="cerrarFormulario(${id})">Cerrar</a>
+            </div>`;
         
       }
 
@@ -226,13 +258,14 @@
     async function ver(id){
 
         event.preventDefault();
-        
+        var botonVer = document.querySelector(`#btnVerItem_${id}`);
+        botonVer.classList.replace('show','hide');
     
         data = await fetch(`http://localhost:41062/www/peticionespago/buscar/${id}`)
         .then(res =>res.json())
         .then(json => json);
-        this.copydata = [...this.data];
-        console.table(data);
+        //this.copydata = [...this.data];
+        //console.table(data);
         renderPeticionPago(data, id);
         //userContainerView.removeAttribute("hidden");
     
@@ -240,10 +273,17 @@
   
         //recibe un objeto del dom
         //borra el codigo html de ese objeto      
-        function cerrarFormulario(formulario){
+        function cerrarFormulario(id){
           
-  
-          formulario.innerHTML = ``;
+          //formulario.innerHTML = ``;
+
+          //muestra boton Ver planilla
+          var botonVer = document.querySelector(`#btnVerItem_${id}`);
+          botonVer.classList.replace("hide","show");
+
+          //esconde formulario ver planilla
+          const formulario = document.querySelector(`#info_${id}`);          
+          formulario.classList.replace("show","hide");
         }
 
 
