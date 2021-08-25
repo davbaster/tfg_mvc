@@ -114,7 +114,8 @@ class PeticionesPago extends SessionController{
     }
 
 
-    //autorizarPago
+    //autoriza una peticionPago para ser pagada,
+    //cambia el estado de la peticionPago/planilla de open a pendiente
     function autorizarPeticion($params){
         error_log("PagosCONTROLLER::Pagar()");
         
@@ -156,6 +157,38 @@ class PeticionesPago extends SessionController{
             $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PETICIONPAGO_AUTORIZAR]);
         }
     }
+
+
+
+    //rechaza una peticionPago/planilla,
+    //cambia el estado de la peticionPago/planilla de autorizado a open
+    function rechazarPeticion($params){
+        error_log("PagosCONTROLLER::Pagar()");
+        
+        if($params === NULL) $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PETICIONPAGO_RECHAZAR]);
+        $id = $params[0];
+
+        
+        $this->model->get($id);
+        $this->model->setEstado("open");
+
+        $res = $this->model->update();//CAMBIAR ESTADO de la peticionPago autorizada
+
+
+
+        
+
+        if($res){//SI RES tiene un resultado
+            $this->redirect('peticionespago', ['success' => SuccessMessages::SUCCESS_PETICIONPAGO_RECHAZAR]);//TODO AGREGAR A LISTA
+            
+            //refresca la tabla de la vista
+            $this->getPeticionesPagoHistoryJSON();
+
+        }else{
+            $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PETICIONPAGO_RECHAZAR]);
+        }
+    }
+
 
 
     //BUSCAR PETICION Usuario

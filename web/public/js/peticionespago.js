@@ -222,6 +222,7 @@
             </div>
             <div class="">
                 <a id="verUsuario href="#" onclick="cerrarFormulario(${id})">Cerrar</a>
+                <a id="verUsuario href="#" onclick="rechazarPeticion(${id})">rechazar</a>
             </div>`;
         
       }
@@ -270,21 +271,39 @@
         //userContainerView.removeAttribute("hidden");
     
         };
+
+
+    //rechaza la peticion de pago, 
+    //manda a cambiar el estado de pendiente a OPEN
+    async function rechazarPeticion(id){
+
+        event.preventDefault();
+        var botonVer = document.querySelector(`#btnVerItem_${id}`);
+        botonVer.classList.replace('show','hide');
+    
+        data = await fetch(`http://localhost:41062/www/peticionespago/rechazarPeticion/${id}`)
+        .then(res =>res.json())
+        .then(json => json);
+        //this.copydata = [...this.data];
+        //console.table(data);
+        renderData(data);
+    
+    };
   
-        //recibe un objeto del dom
-        //borra el codigo html de ese objeto      
-        function cerrarFormulario(id){
-          
-          //formulario.innerHTML = ``;
+    //recibe un objeto del dom
+    //borra el codigo html de ese objeto      
+    function cerrarFormulario(id){
+        
+        //formulario.innerHTML = ``;
 
-          //muestra boton Ver planilla
-          var botonVer = document.querySelector(`#btnVerItem_${id}`);
-          botonVer.classList.replace("hide","show");
+        //muestra boton Ver planilla
+        var botonVer = document.querySelector(`#btnVerItem_${id}`);
+        botonVer.classList.replace("hide","show");
 
-          //esconde formulario ver planilla
-          const formulario = document.querySelector(`#info_${id}`);          
-          formulario.classList.replace("show","hide");
-        }
+        //esconde formulario ver planilla
+        const formulario = document.querySelector(`#info_${id}`);          
+        formulario.classList.replace("show","hide");
+    }
 
 
     
