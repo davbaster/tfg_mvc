@@ -56,7 +56,7 @@ class Dashboard extends SessionController{
      function viewNewPagoDialog($peticionId){
         //$peticionModel = new PeticionesUserModel();
         //$peticionesPago = $peticionModel->getAllPeticionesOpen($this->user->getCedula()); //recibe las peticiones en estado OPEN, osea no mandadas a autorizar todavia 
-        $peticionesPago = $this->getPeticionPagoArray($peticionId); //recibe las peticiones en estado OPEN, osea no mandadas a autorizar todavia 
+        $peticionesPago = $this->getPeticionPagoArray($peticionId[0]); //recibe las peticiones en estado OPEN, osea no mandadas a autorizar todavia 
         $user = new UserModel();
         $usuarios = $user->getAll(); //todos los trabajadores que pueden trabajar en una planilla
                                                      
