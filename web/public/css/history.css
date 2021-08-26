@@ -6,6 +6,13 @@
     display: block;
 }
 
+.view-info{
+    width: 100%;
+    background: rgb(216, 206, 211);
+    aspect-ratio: 100 / 29;
+    border: solid 1px #eee;
+}
+
 #history-options{
     background: rgb(34, 46, 63);;
     color: white;
@@ -67,6 +74,8 @@
 #history-container table tbody td a:hover{
     background-color: var(--hover-color);
 }
+
+
 
 
 select{

@@ -26,7 +26,7 @@ class PeticionesPago extends SessionController{
         $this->view->render('peticionespago/index', [
             'user' => $this->user,
             'fechas' => $this->getDateList(),//FIXME se le tiene que mandar dates para algo?
-            'peticionesPagoRecibidas' => $this->getAllContratistas()//peticiones_pago que han sido enviadas por los contratistas
+            'contratistas' => $this->getAllContratistas()//peticiones_pago que han sido enviadas por los contratistas
                                                                                //TODO este metodo deberia de pasar la informacion como un array no objetos
             //'categories' => $this->getCategoryList()//BORRAR si no es necesario
         ]);
@@ -40,7 +40,7 @@ class PeticionesPago extends SessionController{
         $months = [];
         $res = [];
         $joinModel = new JoinPeticionesUserModel();
-        $peticionesJoin = $joinModel->getAllPeticionesAutorizadas();//devuelve solo peticiones autorizados pendientes de pago o pagados
+        $peticionesJoin = $joinModel->getAllPeticionesNotOpen();//devuelve solo peticiones autorizado (pendientes) o pagados
 
         foreach ($peticionesJoin as $p) {
             //TODO En futuro se podria sacar el mes y el a;o por aparte para hacer el filtro mas minucioso
@@ -55,10 +55,10 @@ class PeticionesPago extends SessionController{
         return $res;
     }
 
-    //Devuelve un array con todas las peticionesPago pendiente->autorizada->pagada
+    //Devuelve un array con todas las peticionesPago pendiente->autorizado->pagado
     function getAllPeticionesPagoRecibidas(){
         $joinModel = new JoinPeticionesUserModel();
-        $peticionesJoin = $joinModel->getAllPeticiones();//lista las peticiones de pago por id de user
+        $peticionesJoin = $joinModel->getAllPeticionesNotOpen();//lista las peticiones de pago por id de user
                                                                 //hacer un metodo para sacar las IDs con el resultado 
                                                                 //(array) de pagos enviado anteriormente en 
                                                                 //getAllPeticionesRecibidas
@@ -76,10 +76,11 @@ class PeticionesPago extends SessionController{
 
 
     //devuelve solo los contratistas con nombres sin repetir extraidos de todas las peticiones
-    // pendiente->autorizada->pagada
+    // pendiente->autorizado->pagado
     function getAllContratistas(){
+        
         $joinModel = new JoinPeticionesUserModel();
-        $peticionesJoin = $joinModel->getAllPeticiones();//lista las peticiones de pago por id de user
+        $peticionesJoin = $joinModel->getAllPeticionesNotOpen();//lista las peticiones de pago por id de user
                                                                 //hacer un metodo para sacar las IDs con el resultado 
                                                                 //(array) de pagos enviado anteriormente en 
                                                                 //getAllPeticionesRecibidas
@@ -102,7 +103,7 @@ class PeticionesPago extends SessionController{
         $res = [];
 
         $joinModel = new JoinPeticionesUserModel();
-        $peticiones = $joinModel->getAllPeticiones();//todas las peticiones menos las open, porque no han sido enviadas por los contratistas
+        $peticiones = $joinModel->getAllPeticionesNotOpen();//todas las peticiones menos las open, porque no han sido enviadas por los contratistas
 
         foreach ($peticiones as $p) {
             array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json

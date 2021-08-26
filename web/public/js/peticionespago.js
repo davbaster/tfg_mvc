@@ -155,11 +155,13 @@
                     <td>${item.fecha_creacion}</td>
                     <td>¢${item.monto}</td>
                     <td>${item.estado}</td>
-                    <td><a id="pagarItem" href="#" onclick="autorizarPago(${item.id_planilla})">Aprobar</a>
-                    <a class="btnVer show" id="btnVerItem_${item.id_planilla}" href="#" onclick="ver(${item.id_planilla})">Ver</a>
+                    <td>
+                        <a class="btnVer show" id="btnVerItem_${item.id_planilla}" href="#" onclick="ver(${item.id_planilla})">Ver</a>
                     </td>
                     </tr>
-                    <div class="hide" id="info_${item.id_planilla}" value="${item.id_planilla}"></div>
+                    <tr>
+                        <div class="hide" id="info_${item.id_planilla}" value="${item.id_planilla}"></div>
+                    </tr>
                     `;
                     
 
@@ -172,9 +174,13 @@
                     <td>${item.fecha_creacion}</td>
                     <td>¢${item.monto}</td>
                     <td>${item.estado}</td>
-                    <td><a class="btnVer show" id="btnVerItem_${item.id_planilla}" href="#" onclick="ver(${item.id_planilla})">Ver</a></td>                  
+                    <td>
+                        <a class="btnVer show" id="btnVerItem_${item.id_planilla}" href="#" onclick="ver(${item.id_planilla})">Ver</a>
+                    </td>                  
                     </tr>
-                    <div class="hide" id="info_${item.id_planilla}" value="${item.id_planilla}"></div>`;
+                    <div class="hide" id="info_${item.id_planilla}" value="${item.id_planilla}"></div>
+                    `;
+                    
                     break;
             }
         });
@@ -188,9 +194,11 @@
         const divInfoPeticion = document.querySelector(`#${divInfoId}`);
         divInfoPeticion.classList.replace("hide","show");
 
+
         divInfoPeticion.innerHTML =
 
-        `   <div class="">
+        `<div class="view-info">
+            <div class="">
                 <label for="planillaId">Planilla No.: ${data[0].id_planilla}</label>
             </div>
             <div class="">
@@ -220,10 +228,33 @@
             <div class="">
                 <label for="detalles">Detalles: ${data[0].detalles}</label>
             </div>
-            <div class="">
-                <a id="verUsuario href="#" onclick="cerrarFormulario(${id})">Cerrar</a>
-                <a id="verUsuario href="#" onclick="rechazarPeticion(${id})">rechazar</a>
-            </div>`;
+        </div>
+           `;
+
+
+        switch (data[0].estado) {
+
+            case "pendiente":
+
+                divInfoPeticion.innerHTML +=
+                    `<div class="">
+                        <a id="verUsuario href="#" onclick="cerrarFormulario(${id})">Cerrar</a>
+                        <a id="verUsuario href="#" onclick="rechazarPeticion(${id})">rechazar</a>
+                        <a id="pagarItem" href="#" onclick="autorizarPago(${id})">Aprobar</a>
+                    </div>`;
+                
+                break;
+        
+            default:
+
+                divInfoPeticion.innerHTML +=
+                    `<div class="">
+                        <a id="verUsuario href="#" onclick="cerrarFormulario(${id})">Cerrar</a>
+                    </div>`;
+
+                break;
+        }
+        
         
       }
 

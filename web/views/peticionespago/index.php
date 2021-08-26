@@ -2,7 +2,7 @@
 
     $user                       = $this->d['user'];
     $fechas                     = $this->d['fechas'];//recibe las fechas de los pagos pendientes de pago y pagados
-    $peticionesPago             = $this->d['peticionesPagoRecibidas'];//recibe todos los Ids de peticionesPago (planillas) aprobadas para pago
+    $contratistas             = $this->d['contratistas'];//recibe todos los Ids de peticionesPago (planillas) aprobadas para pago
 
 
 ?>
@@ -37,7 +37,7 @@
                         <select id="scontratista" class="custom-select">
                             <option value="">Todos los Contratistas</option>
                                 <?php
-                                    $options = $peticionesPago;
+                                    $options = $contratistas;
                                     foreach ($options as $option) {
                                         // $valor = $option['nombre'] .' '. $option['apellido1'] ;
                                         echo "<option value=$option >".$option ."</option>";
@@ -51,7 +51,7 @@
                         <select id="sestado" class="custom-select">
                             <option value="">Todos los estados</option>
 
-                
+                            <option value="autorizado" >Autorizado</option>;
                                 <option value="pendiente" >Pendiente</option>;
                                 <option value="pagado" >Pagado</option>;
 
