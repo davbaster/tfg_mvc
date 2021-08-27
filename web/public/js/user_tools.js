@@ -31,6 +31,74 @@ var verificarContrasenaIgual = function() {
 
 
 
+//ACTUALIZAR CONTRASENA FORMULARIO Y METODOS
+function actualizarContrasena(cedula){
+  event.preventDefault();
+  
+  const value = event.currentTarget.value //value contien la PeticionPagoID/planilla que esta seleccionada 
+
+  const background = document.createElement('div');
+  const panel = document.createElement('div');
+  const titlebar = document.createElement('div');
+  const closeButton = document.createElement('a');
+  const closeButtonText = document.createElement('i');
+  const ajaxcontent = document.createElement('div');
+
+
+  background.setAttribute('id', 'background-container');
+  panel.setAttribute('id', 'panel-container');
+  titlebar.setAttribute('id', 'title-bar-container');
+  closeButton.setAttribute('class', 'close-button');
+  //closeButton.setAttribute('href', '#');
+  closeButtonText.setAttribute('class', 'material-icons');
+  ajaxcontent.setAttribute('id', 'ajax-content');
+
+  background.appendChild(panel);
+  panel.appendChild(titlebar);
+  panel.appendChild(ajaxcontent);
+  titlebar.appendChild(closeButton);
+  closeButton.appendChild(closeButtonText);
+  closeButtonText.appendChild(document.createTextNode('close'));
+  document.querySelector('#main-container').appendChild(background);
+
+  closeButton.addEventListener('click', e =>{
+    background.remove();
+  });
+
+  
+  
+  ajaxcontent.innerHTML=
+
+  `
+  <form action="<?php echo constant('URL'). '/user/updatePassword' ?>" method="POST">
+    <div class="section">
+        <input type="text" name="cedula" id="cedula" value="" hidden>
+
+        <label for="contrasena">Password actual</label>
+        <input type="password" onkeyup='check();' name="password" id="password" autocomplete="off" required>
+
+        <label for="newcontrasena">Nuevo password</label>
+        <input type="password"  onkeyup='check();' name="newcontrasena" id="newcontrasena" autocomplete="off" required>
+
+        <label for="confcontrasena">Confirmar password</label>
+        <input type="password"  onkeyup='check();' name="confpassword" id="confpassword" autocomplete="off" required>
+
+        <span id='message'></span>
+        <div><input type="submit" id="btnEnviar" value="Cambiar password" /></div>
+        
+    </div>
+  </form>
+  `;
+  
+};
+
+
+
+
+
+
+
+
   // LOGICA PARA RELLENAR UNA TABLA CON DATOS QUE VIENEN DE UN JSON DEL SERVIDOR
 //Hay algoritmos para ordenar por fecha, por planilla, por estado
 
@@ -67,28 +135,7 @@ function verificarCedula(){
 if(btnBuscar){
   btnBuscar.addEventListener('click', verificarCedula, false);
 }
-    //cuando hay click en el boton btnBuscar
-    //revise que el valor no es nulo
-    //copie la data desde el promise
-// btnBuscar.addEventListener('click', e =>{
-//   event.preventDefault();
-//   const cedula = document.querySelector('#cedula_buscar').value;
-//   //const apellidoBusc = document.querySelector('#apellido1_buscar').value;
-
-//   if(cedula === '' || cedula === null){
-//     //message.innerHTML= ``;
-//     userContainerView.innerHTML = `Ingrese un n&uacute;mero de c&eacute;dula sin guiones o espacios`;
-//       //alert('Ingrese un numero de cedula sin guiones o espacios');
-//   }else{
-
-//     // this.datacopy = [...this.data]; 
-//     userContainerView.innerHTML = '';
-//     getResultadosBusqueda(cedula);
-//   }
-    
-// });
-
-
+  
 
 
  //localhost se deberia cambiar por la direccion del servidor
@@ -191,6 +238,24 @@ function dibujarTabla(){
       userContainerView.removeAttribute("hidden");
   
       };
+
+
+    async function deshabilitarUsuario(id){
+
+      event.preventDefault();
+      
+
+      data = await fetch(`http://localhost:41062/www/user/deshabilitarUsuario/${id}`)
+      .then(res =>res.json())
+      .then(json => json);
+      this.copydata = [...this.data];
+      console.table(data);
+      renderUser(data);
+      userContainerView.removeAttribute("hidden");
+
+      };
+
+
 
       //recibe un objeto del dom
       //borra el codigo html de ese objeto      
@@ -356,8 +421,14 @@ function dibujarTabla(){
             <label for="rol">Rol del usuario: ${data[0].rol}</label>
         </div>
         <div class="">
+            <a id="verUsuario href="#" onclick="deshabilitarUsuario(${data[0].cedula})">Deshabilitar Usuario</a>
+        </div>
+        <div class="">
             <a id="verUsuario href="#" onclick="editar(data)">Editar Informacion</a>
         </div>
+        <div class="">
+          <a id="verUsuario href="#" onclick="actualizarContrasena(${data[0].cedula})">Actualizar Contrasena</a>
+         </div>
         <div class="">
             <a id="verUsuario href="#" onclick="cerrarFormulario(userContainerView)">Cerrar</a>
         </div>`;

@@ -27,6 +27,7 @@ class ErrorMessages{
     const ERROR_PETICIONPAGO_BUSCAR = "e0021";
     const ERROR_PETICIONPAGO_RECHAZAR = "e0022";
     const ERROR_USER_UPDATEUSER = "e0023";
+    const ERROR_USER_DISABLE  = "e0024";
    
 
     private $errorList = [];
@@ -58,7 +59,8 @@ class ErrorMessages{
             ErrorMessages::ERROR_USER_BUSCAR_NOEXISTE     => 'Error al buscar. Usuario no existe en la base de datos.',
             ErrorMessages::ERROR_PETICIONPAGO_BUSCAR     => 'Error al buscar. Planilla no existe en la base de datos.',
             ErrorMessages::ERROR_PETICIONPAGO_RECHAZAR      => 'Error al rechazar Planilla. Hubo un problema.',
-            ErrorMessages::ERROR_USER_UPDATEUSER            => 'Error al actualizar el usuario. Hubo un problema.'
+            ErrorMessages::ERROR_USER_UPDATEUSER            => 'Error al actualizar el usuario. Hubo un problema.',
+            ErrorMessages::ERROR_USER_DISABLE            => 'Error al deshabilitar el usuario. No hay datos suficientes.',
             
         ];
 

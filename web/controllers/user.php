@@ -210,6 +210,113 @@ class User extends SessionController{
     }
 
 
+    //desactivar usuario (Usando formulario con POST)
+    //cambia el estado de un usuario a inactivo,
+    // function deshabilitarUsuario(){
+
+    //     error_log('USER_CONTROLLER::desactivarUsuario -> ');
+
+
+    //     // verifica si existe los valores minimos necesarios para crear un usuario
+    //     if($this->existPost(['cedula','estado'])){
+
+    //         //Valores obligatorios
+    //         $cedula = $this->getPost('cedula');
+    //         $rol = $this->getPost('estado');
+
+ 
+    //         // validacion de los valores obligatorios recibidos
+    //         if($cedula == '' || empty ($cedula) || $estado == '' || empty($estado) ){
+
+    //             $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_DISABLE]);
+    //         }
+
+
+    //         //verifica si el usuario ya existe
+    //         $user = new UserModel();
+
+    //         if ($user->exists($cedula)) {
+    //             // si ya existe la cedula
+    //             //Entonces puede actualizar el estado
+    //             // $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_NEWUSER_EXISTS]);
+
+
+    //             //cambia el estado
+    //             $user->setEstado($estado);
+
+
+    //             //GUARDA al usuario en la BD
+    //             if ($user->update()){
+    //                 error_log('USER_CONTROLLER::desactivarUsuario -> Cedula existe, y se ha desactivado el usuario');
+    //                 // retorna al index, despliega mensaje de exito, despues de actualizar el usuario
+    //                 $this->redirect('user', ['success' => SuccessMessages::SUCCESS_USER_DISABLED]);
+    //             }else{
+    //                 $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_DISABLE]);
+    //             }
+
+    //         }else {
+    //             // cedula no existe, no se puede actualizar el usuario
+    //             $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_DISABLE]);
+    //         }
+            
+
+    //     }else{
+    //         // valores minimos para actualizar el usuario no estan
+    //         $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_DISABLE]);
+    //     }
+    // }
+
+
+
+    //
+    function deshabilitarUsuario($params){
+        error_log("USER_CONTROLLER::deshabilitarUsuario()");
+        
+        if($params === NULL) $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_DISABLE]);//
+        $id = $params[0];
+        $user = new UserModel();
+        $res = $user->get($id);
+
+
+        if($res){//SI RES tiene un resultado
+            //$this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PAGOS_PAGAR]);//TODO AGREGAR A LISTA
+            $user->setEstado($estado);
+            //GUARDA al usuario en la BD
+            if ($user->update()){
+                error_log('USER_CONTROLLER::desactivarUsuario -> Cedula existe, y se ha desactivado el usuario');
+
+                array_push($res, $user->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+        
+                //manda el usuario actualizado para volver ser escrito
+                $this->getUserJSON($res);
+
+
+            }else{
+                $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_DISABLE]);
+            }
+
+
+        }else{
+            //$this->redirect('user', ['error' => ErrorMessages::ERROR_USER_BUSCAR_NOEXISTE]);
+            $res = [];
+            array_push($res, [ 'cedula' => 'false', 'mensaje' => 'No se pudo inhabilitar el usuario con el n&uacute;mero de c&eacute;dula provisto' ]);
+            $this->getUserJSON($res);
+        }
+    }
+
+
+    //manda un usuario en formato array a la vista
+    //recibe un usuario en formato array
+    function getUserJSON($userArray){
+        error_log('USER_CONTROLLER::getUserJSON()');
+
+        
+        header("HTTP/1.1 200 OK");
+        header('Content-Type: application/json');
+        echo json_encode($userArray);
+
+    }
+
 
     //BUSCAR USUARIO
     //Busca un usuario usando la cedula
@@ -239,15 +346,6 @@ class User extends SessionController{
     }
 
 
-    function getUserJSON($userArray){
-        error_log('USER_CONTROLLER::getUserJSON()');
-
-        
-        header("HTTP/1.1 200 OK");
-        header('Content-Type: application/json');
-        echo json_encode($userArray);
-
-    }
 
 
 
