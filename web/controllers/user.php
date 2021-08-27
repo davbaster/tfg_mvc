@@ -115,6 +115,101 @@ class User extends SessionController{
     }
 
 
+    //ACTUALIZAR USUARIO
+    //CREAR USUARIO 
+    function actualizarUsuario(){
+
+        error_log('USER_CONTROLLER::actualizarUsuario -> ');
+
+
+        // verifica si existe los valores minimos necesarios para crear un usuario
+        if($this->existPost(['cedula','nombre', 'apellido1','apellido2','rol'])){
+
+            //Valores obligatorios
+            $cedula = $this->getPost('cedula');
+            $nombre = $this->getPost('nombre');
+            $apellido1 = $this->getPost('apellido1');
+            $apellido2 = $this->getPost('apellido2');
+            $rol = $this->getPost('rol');
+
+ 
+            // validacion de los valores obligatorios recibidos
+            if($cedula == '' || empty ($cedula) || $nombre == '' || empty($nombre) 
+                || $apellido1 == '' || empty($apellido1) || $apellido2 == '' || empty($apellido2) 
+                || $rol == '' || empty($rol) ){
+
+                $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_NEWUSER_EMPTY]);
+            }
+
+
+            //verifica si el usuario ya existe
+            $user = new UserModel();
+
+            if ($user->exists($cedula)) {
+                // si ya existe la cedula
+                //Entonces puede actualizar
+                // $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_NEWUSER_EXISTS]);
+
+
+                //valores opcionales
+                $telefono = $this->getPost('telefono');
+                $direccion = $this->getPost('direccion');
+                $cuentaBancaria = $this->getPost('cuentaBancaria');
+
+
+                // hacer procedimiento para llenar info usuario?? sino, llenar las variables aqui.
+                // se llena la info del usuario
+                $user->setCedula($cedula);
+                $user->setNombre($nombre);
+                $user->setApellido1($apellido1);
+                $user->setApellido2($apellido2);
+                $user->setRol($rol); 
+
+                //llena variables opcionales
+                $user->setTelefono($telefono);
+                $user->setDireccion($direccion);
+                $user->setCuentaBancaria($cuentaBancaria);
+
+
+
+
+                //si no es obrero de construccion entre y actualice estos valores opcionales
+                //de accesso al sistema
+                if ($rol != 'construccion') {
+                    # informacion obligatoria para los que acceden el sistema
+                    $email = $this->getPost('email');
+                    $contrasena = $this->getPost('contrasena');
+                    //$confcontrasena = $this->getPost('confcontrasena');//confirmacion hecha en la vista
+    
+                    //guardando valores requeridos para estos roles
+                    $user->setEmail($email);
+                    $user->setContrasena($contrasena);
+                    
+                }
+
+
+                //GUARDA al usuario en la BD
+                if ($user->update()){
+                    error_log('USER_CONTROLLER::actualizarUsuario -> Cedula existe, y se ha actualizado el usuario');
+                    // retorna al index, despliega mensaje de exito, despues de insertar a DB el usuario
+                    $this->redirect('user', ['success' => SuccessMessages::SUCCESS_USER_UPDATEUSER]);
+                }else{
+                    $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEUSER]);
+                }
+
+            }else {
+                // cedula no existe, no se puede actualizar el usuario
+                $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEUSER]);
+            }
+            
+
+        }else{
+            // valores minimos para actualizar el usuario no estan
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEUSER]);
+        }
+    }
+
+
 
     //BUSCAR USUARIO
     //Busca un usuario usando la cedula

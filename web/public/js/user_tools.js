@@ -210,59 +210,114 @@ function dibujarTabla(){
         userEdit.innerHTML = `<div class="">
         <label for="cedula">Cedula</label>
         <input type="text" name="cedula" id="cedula" required value="${data[0].cedula}"></input>
-    </div>
-    <div class="">
-        <label for="name">Nombre</label>
-        <input type="text" name="nombre" id="nombre" required value="${data[0].nombre}"></input>
-    </div>
-    <div class="">
-        <label for="name">Primer Apellido</label>
-        <input type="text" name="apellido1" id="apellido1" required value="${data[0].apellido1}"></input>
-    </div>
-    <div class="">
-        <label for="name">Segundo Apellido</label>
-        <input type="text" name="apellido2" id="apellido2" required value="${data[0].apellido2}"></input>
-    </div>
-    <div class="">
-        <label for="name">Telefono</label>
-        <input type="text" name="telefono" id="telefono" value="${data[0].telefono}"></input>
-    </div>
-    <div class="">
-        <label for="name">Cuenta Bancaria</label>
-        <input type="text" name="cuentaBancaria" id="cuentaBancaria" value="${data[0].cuentaBancaria}"></input>
-    </div>
-    <div class="">
-        <label for="name">Direccion</label>
-        <input type="text" name="direccion" id="direccion" value="${data[0].direccion}"></input>
-    </div>
-    <div id="datos_opcional" hidden>
-        <div class="">
-            <label for="name">Correo Electr&oacute;nico</label>
-            <input type="text" name="email" id="email" value="${data[0].email}"></input>
         </div>
         <div class="">
-            <label for="name">Contrase&ntilde;a</label>
-            <input type="password" name="contrasena" id="contrasena" value=""></input>
+            <label for="name">Nombre</label>
+            <input type="text" name="nombre" id="nombre" required value="${data[0].nombre}"></input>
         </div>
         <div class="">
-            <label for="">Confirmaci&oacute;n Contrase&ntilde;a</label>
-            <input type="password" name="confcontrasena" id="confcontrasena" onkeyup='verificarContrasenaIgual()' value=""></input>
-            <span id='message'></span>
+            <label for="name">Primer Apellido</label>
+            <input type="text" name="apellido1" id="apellido1" required value="${data[0].apellido1}"></input>
         </div>
-    </div>
-    <div class="">
-    <label for="rol">Rol del usuario:</label>
-        <select name="rol" id="rol" required>
-            <option value="construccion">Construccion</option>
-            <option value="contratista">Contratista</option>
-            <!-- <option value="contador">Contador</option> -->
-            <option value="administrador">Administrador</option>
-            
-        </select>
-    </div>`;
+        <div class="">
+            <label for="name">Segundo Apellido</label>
+            <input type="text" name="apellido2" id="apellido2" required value="${data[0].apellido2}"></input>
+        </div>
+        <div class="">
+            <label for="name">Telefono</label>
+            <input type="text" name="telefono" id="telefono" value="${data[0].telefono}"></input>
+        </div>
+        <div class="">
+            <label for="name">Cuenta Bancaria</label>
+            <input type="text" name="cuentaBancaria" id="cuentaBancaria" value="${data[0].cuentaBancaria}"></input>
+        </div>
+        <div class="">
+            <label for="name">Direccion</label>
+            <input type="text" name="direccion" id="direccion" value="${data[0].direccion}"></input>
+        </div>
+        <div id="datos_opcional" hidden>
+            <div class="">
+                <label for="name">Correo Electr&oacute;nico</label>
+                <input type="text" name="email" id="email" value="${data[0].email}"></input>
+            </div>
+            <div class="">
+                <label for="name">Contrase&ntilde;a</label>
+                <input type="password" name="contrasena" id="contrasena" value=""></input>
+            </div>
+            <div class="">
+                <label for="">Confirmaci&oacute;n Contrase&ntilde;a</label>
+                <input type="password" name="confcontrasena" id="confcontrasena" onkeyup='verificarContrasenaIgual()' value=""></input>
+                <span id='message'></span>
+            </div>
+        </div>`;
 
+        switch (data[0].rol) {
 
+          case "administrador":
+
+              userEdit.innerHTML += `        <div class="">
+              <label for="rol">Rol del usuario:</label>
+                  <select name="rol" id="rol" required>
+                      <option value="construccion">Construccion</option>
+                      <option value="contratista">Contratista</option>
+                      <!-- <option value="contador">Contador</option> -->
+                      <option value="administrador" selected>Administrador</option>
+                      
+                  </select>
+              </div>`;
+
+              break;
+          
+        case "contratista":
+
+              userEdit.innerHTML += `        <div class="">
+              <label for="rol">Rol del usuario:</label>
+                  <select name="rol" id="rol" required>
+                      <option value="construccion">Construccion</option>
+                      <option value="contratista" selected>Contratista</option>
+                      <!-- <option value="contador">Contador</option> -->
+                      <option value="administrador" selected>Administrador</option>
+                      
+                  </select>
+              </div>`;
+
+              break;
+
+          
+        case "construccion":
+
+          userEdit.innerHTML += `        <div class="">
+          <label for="rol">Rol del usuario:</label>
+              <select name="rol" id="rol" required>
+                  <option value="construccion" selected>Construccion</option>
+                  <option value="contratista" >Contratista</option>
+                  <!-- <option value="contador">Contador</option> -->
+                  <option value="administrador" selected>Administrador</option>
+                  
+              </select>
+          </div>`;
+
+          break;
+
+      
+          default:
+            userEdit.innerHTML += `        <div class="">
+            <label for="rol">Rol del usuario:</label>
+                <select name="rol" id="rol" required>
+                    <option value="construccion" selected>Construccion</option>
+                    <option value="contratista" >Contratista</option>
+                    <option value="contador" selected>Contador</option>
+                    <option value="administrador" >Administrador</option>
+                    
+                </select>
+            </div>`;
+  
+            break;
       }
+
+
+
+    }
         
 
 
