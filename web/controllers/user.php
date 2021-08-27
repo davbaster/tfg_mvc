@@ -10,7 +10,7 @@ class User extends SessionController{
         parent::__construct();
 
         $this->user = $this->getUserSessionData();
-        error_log("user " . $this->user->getName());
+        error_log("user " . $this->user->getNombre());
     }
 
 
@@ -92,6 +92,7 @@ class User extends SessionController{
             $user->setTelefono($telefono);
             $user->setDireccion($direccion);
             $user->setCuentaBancaria($cuentaBancaria);
+            $user->setEstado('activo');
 
             
             
@@ -164,6 +165,7 @@ class User extends SessionController{
                 $user->setApellido1($apellido1);
                 $user->setApellido2($apellido2);
                 $user->setRol($rol); 
+                $user->setEstado('activo'); 
 
                 //llena variables opcionales
                 $user->setTelefono($telefono);
@@ -280,7 +282,7 @@ class User extends SessionController{
 
         if($res){//SI RES tiene un resultado
             //$this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PAGOS_PAGAR]);//TODO AGREGAR A LISTA
-            $user->setEstado($estado);
+            $user->setEstado('inactivo');
             //GUARDA al usuario en la BD
             if ($user->update()){
                 error_log('USER_CONTROLLER::desactivarUsuario -> Cedula existe, y se ha desactivado el usuario');
@@ -375,13 +377,13 @@ class User extends SessionController{
 
     //actualiza el password del usuario
     function updatePassword(){
-        if(!$this->existPOST(['current_password', 'new_password'])){//sino existe
+        if(!$this->existPOST(['contrasena', 'nuevaContrasena'])){//sino existe
             $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
             return;
         }
 
-        $current = $this->getPost('current_password');
-        $new     = $this->getPost('new_password');
+        $current = $this->getPost('contrasena');
+        $new     = $this->getPost('nuevaContrasena');
 
         if(empty($current) || empty($new)){//si alguno esta vacio
             $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD_EMPTY]);
@@ -393,7 +395,7 @@ class User extends SessionController{
             return;
         }
 
-        //validar que el current es el mismo que el guardado
+        //validar que el current (password proporcionado para validar usuario) es el mismo que el guardado
         $newHash = $this->model->comparePasswords($current, $this->user->getCedula());//metodo de userModel
         if($newHash){
             //si lo es actualizar con el nuevo
@@ -411,6 +413,45 @@ class User extends SessionController{
             return;
         }
     }
+
+
+    //Genera un nuevo password para el usuario
+    //usualmente es hecho por el administrador
+    function generarPassword(){
+        if(!$this->existPOST(['cedula','contrasena'])){//sino existe
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
+            return;
+        }
+
+        $cedula = $this->getPost('cedula');
+        $new     = $this->getPost('nuevaContrasena');
+
+        if(empty($new) || empty($cedula)){//si alguno esta vacio
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD_EMPTY]);
+            return;
+        }
+
+        $user = new UserModel();
+
+        if($user->get($cedula)){
+            //si existe el usuario, actualizar con el nuevo
+            $user->setContrasena($new);
+            
+            if($user->update()){//si se actualizo
+                $this->redirect('user', ['success' => SuccessMessages::SUCCESS_USER_UPDATEPASSWORD]);
+            }else{
+                //error
+                $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
+            }
+        }else{
+            //si el hash es falso, password actual incorrecto
+            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
+            return;
+        }
+    }
+
+
+
 
 
     //Codigo para funcionalidad futura

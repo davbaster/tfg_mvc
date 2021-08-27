@@ -68,7 +68,7 @@
                                     de
                                     $<?php 
                                         //budget es la cantidad asignado al contrato
-                                        echo number_format($user->getBudget(),2) . ' te quedan del contrato';
+                                        //echo number_format($user->getBudget(),2) . ' te quedan del contrato';
                                     ?>
                                 </span>
                             </div>

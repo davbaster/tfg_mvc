@@ -14,6 +14,7 @@ class UserModel extends Model implements IModel {
     private $contrasena;
     private $rol;
     private $foto;
+    private $estado;
 
     public function __construct(){
 
@@ -31,6 +32,7 @@ class UserModel extends Model implements IModel {
         $this->contrasena ='';
         $this->rol = '';
         $this->foto = '';
+        $this->estado = '';
         
 
 
@@ -40,7 +42,7 @@ class UserModel extends Model implements IModel {
     public function save(){
         try{
             // preparando la sentencia
-            $query = $this->prepare('INSERT INTO users (cedula, nombre, apellido1,apellido2,telefono,direccion,cuentaBancaria,email,contrasena,rol,foto) VALUES (:cedula,:nombre,:apellido1,:apellido2,:telefono,:direccion,:cuentaBancaria,:email,:contrasena,:rol,:foto)');
+            $query = $this->prepare('INSERT INTO users (cedula, nombre, apellido1,apellido2,telefono,direccion,cuentaBancaria,email,contrasena,rol,foto,estado) VALUES (:cedula,:nombre,:apellido1,:apellido2,:telefono,:direccion,:cuentaBancaria,:email,:contrasena,:rol,:foto)');
 
             // referenciando los placeholders
             $query->execute([
@@ -54,7 +56,8 @@ class UserModel extends Model implements IModel {
                 'email' => $this->email,
                 'contrasena' => $this->contrasena,
                 'rol' => $this->rol, //puede ponerse como enum, buscar si se inserta diferente
-                'foto' => $this->foto
+                'foto' => $this->foto,
+                'estado' => $this->estado
             ]);
 
             return true;
@@ -92,6 +95,7 @@ class UserModel extends Model implements IModel {
                 $this->setContrasenaSinHash($user['contrasena']);
                 $nuevoUsuario->setRol($user['rol']);
                 $nuevoUsuario->setFoto($user['foto']);
+                $nuevoUsuario->setEstado($user['estado']);
 
                 // guarda el usuario en el array $items
                 array_push($items, $nuevoUsuario);
@@ -175,7 +179,8 @@ class UserModel extends Model implements IModel {
                                     email = :email,
                                     contrasena = :contrasena,
                                     rol = :rol,
-                                    foto = :foto
+                                    foto = :foto,
+                                    estado = :estado
                                     WHERE cedula = :cedula');
             // ejecutando sentencia
             $query->execute([
@@ -190,7 +195,8 @@ class UserModel extends Model implements IModel {
                 'email' => $this->email,
                 'contrasena' => $this->contrasena, //password ya en formato de hash //posible que tengamos que aplicar hash aqui
                 'rol' => $this->rol,
-                'foto' => $this->foto
+                'foto' => $this->foto,
+                'estado' => $this->estado
             ]);
 
                 return true;
@@ -221,6 +227,7 @@ class UserModel extends Model implements IModel {
         $this->contrasena    =     $array['contrasena'];
         $this->setRol             ( $array['rol'] ) ;
         $this->setFoto            ( $array['foto'] ) ;
+        
         //$this->fechaIngreso            ( $array['fechaIngreso'] ) ;
         //$this->estado            ( $array['estado'] ) ;
 
@@ -241,7 +248,7 @@ class UserModel extends Model implements IModel {
         $array['rol']               = $this->rol;
         $array['foto']              = $this->foto;
         //$array['fechaIngreso'] = $this->fechaIngreso;
-        //$array['estado'] = $this->estado;
+        $array['estado']            = $this->estado;
 
         return $array;
     }
@@ -314,6 +321,7 @@ class UserModel extends Model implements IModel {
     }
     public function setRol($rol){ $this->rol = $rol;}
     public function setFoto($foto){ $this->foto = $foto;}
+    public function setEstado($estado){ $this->estado = $estado;}
 
 
 
@@ -323,10 +331,6 @@ class UserModel extends Model implements IModel {
         // vericar que tiene ID y quien lo usa, porque creo que esta sin uso
         return $this->id;
     }
-
-    public function getBudget(){return $this->budget;} //TODO podria ser getContrato
-
-    public function getName(){ return $this->name;}
 
 
     public function getCedula(){ return $this->cedula;}
@@ -340,6 +344,7 @@ class UserModel extends Model implements IModel {
     public function getContrasena(){ return $this->contrasena;}
     public function getRol(){ return $this->rol;}
     public function getFoto(){return $this->foto;}
+    public function getEstado(){return $this->estado;}
 
     // encrypta password para ser almacenado en la base de datos
     private function getHashedPassword ($password){

@@ -1,23 +1,8 @@
-//compara si los passwords son iguales
-var verificarContrasenaIgual = function() {
-    if (document.getElementById('confcontrasena').value ==
-      document.getElementById('contrasena').value) {
-      document.getElementById('message').style.color = 'green';
-      document.getElementById('message').innerHTML = 'Contrase&ntilde;a confirmada correctamente';
-      document.getElementById("btnEnviar").disabled = false;
-    } else {
-      document.getElementById('message').style.color = 'red';
-      document.getElementById('message').innerHTML = 'Contrase&ntilde;a no es igual';
-      // document.getElementById("confcontrasena").required = true;
-      document.getElementById("btnEnviar").disabled = true;
-    }
-  }
-
-
-  //se activa cuando se seleccina una opcion del combobox
+  //se activa cuando se seleccina una opcion del combobox de roles
   document.getElementById('rol').onchange = verificarSeleccionMenuDesplegable;
 
-  //esconde o muestra codigo html en la pagina
+  //esconde o muestra datos opcionales del usuario
+  //muestra los datos opcionales si el rol no es construccion
   function verificarSeleccionMenuDesplegable(){
     const datosOpcional = document.getElementById('datos_opcional');
     var value = this.value;
@@ -31,66 +16,7 @@ var verificarContrasenaIgual = function() {
 
 
 
-//ACTUALIZAR CONTRASENA FORMULARIO Y METODOS
-function actualizarContrasena(cedula){
-  event.preventDefault();
-  
-  const value = event.currentTarget.value //value contien la PeticionPagoID/planilla que esta seleccionada 
 
-  const background = document.createElement('div');
-  const panel = document.createElement('div');
-  const titlebar = document.createElement('div');
-  const closeButton = document.createElement('a');
-  const closeButtonText = document.createElement('i');
-  const ajaxcontent = document.createElement('div');
-
-
-  background.setAttribute('id', 'background-container');
-  panel.setAttribute('id', 'panel-container');
-  titlebar.setAttribute('id', 'title-bar-container');
-  closeButton.setAttribute('class', 'close-button');
-  //closeButton.setAttribute('href', '#');
-  closeButtonText.setAttribute('class', 'material-icons');
-  ajaxcontent.setAttribute('id', 'ajax-content');
-
-  background.appendChild(panel);
-  panel.appendChild(titlebar);
-  panel.appendChild(ajaxcontent);
-  titlebar.appendChild(closeButton);
-  closeButton.appendChild(closeButtonText);
-  closeButtonText.appendChild(document.createTextNode('close'));
-  document.querySelector('#main-container').appendChild(background);
-
-  closeButton.addEventListener('click', e =>{
-    background.remove();
-  });
-
-  
-  
-  ajaxcontent.innerHTML=
-
-  `
-  <form action="<?php echo constant('URL'). '/user/updatePassword' ?>" method="POST">
-    <div class="section">
-        <input type="text" name="cedula" id="cedula" value="" hidden>
-
-        <label for="contrasena">Password actual</label>
-        <input type="password" onkeyup='check();' name="password" id="password" autocomplete="off" required>
-
-        <label for="newcontrasena">Nuevo password</label>
-        <input type="password"  onkeyup='check();' name="newcontrasena" id="newcontrasena" autocomplete="off" required>
-
-        <label for="confcontrasena">Confirmar password</label>
-        <input type="password"  onkeyup='check();' name="confpassword" id="confpassword" autocomplete="off" required>
-
-        <span id='message'></span>
-        <div><input type="submit" id="btnEnviar" value="Cambiar password" /></div>
-        
-    </div>
-  </form>
-  `;
-  
-};
 
 
 
@@ -129,6 +55,53 @@ function verificarCedula(){
   }
     
 };
+
+
+//ACTUALIZAR CONTRASENA FORMULARIO Y METODOS
+function actualizarContrasena(cedula){
+  
+    
+  
+  userContainerView.innerHTML=
+
+  `
+  <form action='/user/generarPassword/' method="POST">
+    <div class="section">
+        <input type="text" name="cedula" id="cedula" value="${cedula}" hidden>
+
+        <label for="contrasena">Nuevo Password</label>
+        <input type="password" name="contrasena" id="contrasena" autocomplete="off" required>
+
+        <label for="confcontrasena">Confirmar Password</label>
+        <input type="password"  onkeyup='verificarContrasenaIgual();' name="confcontrasena" id="confcontrasena" autocomplete="off" required>
+
+        <span id='message'></span>
+        <div><input type="submit" id="btnEnviar" value="Cambiar password" /></div>
+        <div class="">
+          <a id="btnCancel href="#" onclick="cerrarFormulario(userContainerView)">Cancelar</a>
+        </div>
+        
+    </div>
+  </form>
+  `;
+  
+};
+
+
+//compara si los passwords son iguales
+function verificarContrasenaIgual() {
+  if (document.getElementById('confcontrasena').value ==
+    document.getElementById('contrasena').value) {
+    document.getElementById('message').style.color = 'green';
+    document.getElementById('message').innerHTML = 'Contrase&ntilde;a confirmada correctamente';
+    document.getElementById("btnEnviar").disabled = false;
+  } else {
+    document.getElementById('message').style.color = 'red';
+    document.getElementById('message').innerHTML = 'Contrase&ntilde;a no es igual';
+    // document.getElementById("confcontrasena").required = true;
+    document.getElementById("btnEnviar").disabled = true;
+  }
+}
 
 
 
@@ -426,12 +399,24 @@ function dibujarTabla(){
         <div class="">
             <a id="verUsuario href="#" onclick="editar(data)">Editar Informacion</a>
         </div>
+          `;
+
+        //entre si tiene accesso al sistema, por lo que tiene contrase;a
+        if( data[0].rol != "construccion" ){
+
+          userContainerView.innerHTML += `
+          <div class="">
+            <a id="verUsuario href="#" onclick="actualizarContrasena(${data[0].cedula})">Generar Contrase&ntilde;a</a>
+          </div>
+          `;
+
+        }
+
+        userContainerView.innerHTML += `
         <div class="">
-          <a id="verUsuario href="#" onclick="actualizarContrasena(${data[0].cedula})">Actualizar Contrasena</a>
-         </div>
-        <div class="">
-            <a id="verUsuario href="#" onclick="cerrarFormulario(userContainerView)">Cerrar</a>
+          <a id="verUsuario href="#" onclick="cerrarFormulario(userContainerView)">Cerrar</a>
         </div>`;
+
         
       }
 
