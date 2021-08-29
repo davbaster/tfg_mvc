@@ -58,27 +58,27 @@ function verificarCedula(){
 
 
 //ACTUALIZAR CONTRASENA FORMULARIO Y METODOS
-function actualizarContrasena(cedula){
+function desplegarFormularioContrasena(cedula){
   
     
   
   userContainerView.innerHTML=
 
   `
-  <form action='/user/generarPassword/' method="POST">
+  <form action='' method="POST">
     <div class="section">
         <input type="text" name="cedula" id="cedula" value="${cedula}" hidden>
 
         <label for="contrasena">Nuevo Password</label>
-        <input type="password" name="contrasena" id="contrasena" autocomplete="off" required>
+        <input type="password" name="contrasenaGen" id="contrasenaGen" autocomplete="off" required>
 
         <label for="confcontrasena">Confirmar Password</label>
-        <input type="password"  onkeyup='verificarContrasenaIgual();' name="confcontrasena" id="confcontrasena" autocomplete="off" required>
+        <input type="password"  onkeyup='verificarContrasenaIgual();' name="confcontrasenaGen" id="confcontrasenaGen" autocomplete="off" required>
 
-        <span id='message'></span>
-        <div><input type="submit" id="btnEnviar" value="Cambiar password" /></div>
+        <span id='messageGen'></span>
+        <div><input type="submit" id="btnEnviarGen" value="Guardar Contrase&ntilde;a"  onclick="generarContrasena(${cedula})"/></div>
         <div class="">
-          <a id="btnCancel href="#" onclick="cerrarFormulario(userContainerView)">Cancelar</a>
+          <a id="btnCancel href="#" onclick="CANCELAR HACER METODO(${cedula})">Cancelar</a>
         </div>
         
     </div>
@@ -90,16 +90,16 @@ function actualizarContrasena(cedula){
 
 //compara si los passwords son iguales
 function verificarContrasenaIgual() {
-  if (document.getElementById('confcontrasena').value ==
-    document.getElementById('contrasena').value) {
-    document.getElementById('message').style.color = 'green';
-    document.getElementById('message').innerHTML = 'Contrase&ntilde;a confirmada correctamente';
-    document.getElementById("btnEnviar").disabled = false;
+  if (document.getElementById('confcontrasenaGen').value ==
+    document.getElementById('contrasenaGen').value) {
+    document.getElementById('messageGen').style.color = 'green';
+    document.getElementById('messageGen').innerHTML = 'Contrase&ntilde;a confirmada correctamente';
+    document.getElementById("btnEnviarGen").disabled = false;
   } else {
-    document.getElementById('message').style.color = 'red';
-    document.getElementById('message').innerHTML = 'Contrase&ntilde;a no es igual';
+    document.getElementById('messageGen').style.color = 'red';
+    document.getElementById('messageGen').innerHTML = 'Contrase&ntilde;a no es igual';
     // document.getElementById("confcontrasena").required = true;
-    document.getElementById("btnEnviar").disabled = true;
+    document.getElementById("btnEnviarGen").disabled = true;
   }
 }
 
@@ -226,6 +226,36 @@ function dibujarTabla(){
       renderUser(data);
       userContainerView.removeAttribute("hidden");
 
+      };
+
+
+    // Esta funcion es llamada desde el boton guardar generarContrasena.
+    //se usa asincrona para que no recargue toda la pagina, 
+    //Esta funcion al ser asyncrona usa promises
+    //https://web.dev/promises/ , https://stackoverflow.com/questions/37533929/how-to-return-data-from-promise
+    async function generarContrasena(cedula){
+
+      event.preventDefault();
+      
+      nueva = document.getElementById('confcontrasenaGen').value;
+  
+      data = await fetch(`http://localhost:41062/www/user/generarContrasena/${cedula}/${nueva}/`)
+      .then(res =>res.json())
+      .then(json => json);
+      this.copydata = [...this.data];
+      console.table(data);
+      renderUser(data);
+      userContainerView.removeAttribute("hidden");
+
+      if(data[0].actualizada){//si contrasena actualizada
+
+        alert(data[0].mensaje);
+        //userContainerView.removeAttribute("hidden");
+
+      }else{
+        alert(data[0].mensaje);
+      }
+  
       };
 
 
@@ -406,7 +436,7 @@ function dibujarTabla(){
 
           userContainerView.innerHTML += `
           <div class="">
-            <a id="verUsuario href="#" onclick="actualizarContrasena(${data[0].cedula})">Generar Contrase&ntilde;a</a>
+            <a id="verUsuario href="#" onclick="desplegarFormularioContrasena(${data[0].cedula})">Generar Contrase&ntilde;a</a>
           </div>
           `;
 

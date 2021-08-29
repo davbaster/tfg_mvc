@@ -415,40 +415,85 @@ class User extends SessionController{
     }
 
 
-    //Genera un nuevo password para el usuario
+    //Genera un nuevo password para el usuario usando respuestas JSON
     //usualmente es hecho por el administrador
-    function generarPassword(){
-        if(!$this->existPOST(['cedula','contrasena'])){//sino existe
-            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
-            return;
-        }
+    function generarContrasena($params){
+        error_log("USER_CONTROLLER::Buscar()");
+        
+        if($params === NULL) $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD_EMPTY]);//
+        $cedula = $params[0];
+        $password = $params[1];
 
-        $cedula = $this->getPost('cedula');
-        $new     = $this->getPost('nuevaContrasena');
+        if(empty($password) || empty($cedula)){//si alguno esta vacio
+            $res = [];
+            array_push($res, [ 'actualizada' => 'false', 'mensaje' => 'Hubo un error guardando la contrase&ntilde;a' ]);
+            $this->getUserJSON($res);
 
-        if(empty($new) || empty($cedula)){//si alguno esta vacio
-            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD_EMPTY]);
-            return;
+            //return;
         }
 
         $user = new UserModel();
+        $res = $user->get($cedula);
 
-        if($user->get($cedula)){
-            //si existe el usuario, actualizar con el nuevo
-            $user->setContrasena($new);
+
+        if($res){
+            //si existe el usuario, actualizar el password
+            $user->setContrasena($password);
             
-            if($user->update()){//si se actualizo
-                $this->redirect('user', ['success' => SuccessMessages::SUCCESS_USER_UPDATEPASSWORD]);
+            if($user->update()){//si se actualizo la info del usuario
+                
+                $res = [];
+                array_push($res, [ 'actualizada' => 'true', 'mensaje' => 'La contraseña se guardó correctamente.' ]);
+                $this->getUserJSON($res);//envia el mensaje como json
+
+
             }else{
-                //error
-                $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
+                //no se actualizo
+                $res = [];
+                array_push($res, [ 'actualizada' => 'false', 'mensaje' => 'Hubo un error guardando la contraseña' ]);
+                $this->getUserJSON($res);
+
             }
-        }else{
-            //si el hash es falso, password actual incorrecto
-            $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
-            return;
         }
     }
+
+
+
+    //Genera un nuevo password para el usuario usando respuestas POST
+    //usualmente es hecho por el administrador
+    //metodo usando POST
+    // function generarPassword(){
+    //     if(!$this->existPOST(['cedula','contrasena'])){//sino existe
+    //         $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
+    //         return;
+    //     }
+
+    //     $cedula = $this->getPost('cedula');
+    //     $new     = $this->getPost('nuevaContrasena');
+
+    //     if(empty($new) || empty($cedula)){//si alguno esta vacio
+    //         $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD_EMPTY]);
+    //         return;
+    //     }
+
+    //     $user = new UserModel();
+
+    //     if($user->get($cedula)){
+    //         //si existe el usuario, actualizar con el nuevo
+    //         $user->setContrasena($new);
+            
+    //         if($user->update()){//si se actualizo
+    //             $this->redirect('user', ['success' => SuccessMessages::SUCCESS_USER_UPDATEPASSWORD]);
+    //         }else{
+    //             //error
+    //             $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
+    //         }
+    //     }else{
+    //         //si el hash es falso, password actual incorrecto
+    //         $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
+    //         return;
+    //     }
+    // }
 
 
 

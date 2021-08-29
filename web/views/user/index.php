@@ -10,7 +10,7 @@
     <!-- <link rel="stylesheet" href="<?php //echo constant('URL') ?>/public/css/history.css"> -->
 </head>
 <body>
-    <?php require_once 'views/header.php'; ?>
+    <?php require_once 'views/dashboard/header.php'; ?>
 
     <div id="main-container">
         <?php $this->showMessages() ?>
