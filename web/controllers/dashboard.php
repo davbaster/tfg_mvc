@@ -37,6 +37,8 @@ class Dashboard extends SessionController{
         $pagosPendientes            = $this->getPagosPorCancelar();
 
         $pagosRecientes             = $this->getPagosRecientes();
+
+        $peticionEstadistica       = $this->pagosOpenEstadistica($peticionesOpen[0]->getId());
         
 
         $this->view->render('dashboard/index', [
@@ -46,7 +48,8 @@ class Dashboard extends SessionController{
             'petiPendientesAprobar'     => $petiPendientesAprobar,
             'pagosRecientes'            => $pagosRecientes,
             'petiRecientes'             => $petiRecientes,
-            'peticionesOpen'             => $peticionesOpen
+            'peticionesOpen'             => $peticionesOpen,
+            'peticionEstadistica'        =>$peticionEstadistica   
             
             
         ]);
@@ -139,22 +142,52 @@ class Dashboard extends SessionController{
         return $res;
     }
 
-        //devuelve un array con los pagos Open dado un peticionPagoId
-        function pagosOpenPerIdPeticion($peticionPagoId){
-            error_log('PAGOSCONTROLLER::pagosOpenPerIdPeticion()');
-            
-            $res = [];
-    
-            $joinModel = new JoinPagosPeticionesModel();
-            $pagosJoin = $joinModel->getAllPagosOpen($peticionPagoId);//cambie de getAllPagos a getAllPagosAutorizados
-    
-            foreach ($pagosJoin as $p) {
-                array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
-            }
-    
-            return $res;
-    
+    //devuelve un array con los pagos Open dado un peticionPagoId
+    function pagosOpenPerIdPeticion($peticionPagoId){
+        error_log('PAGOSCONTROLLER::pagosOpenPerIdPeticion()');
+        
+        $res = [];
+
+        $joinModel = new JoinPagosPeticionesModel();
+        $pagosJoin = $joinModel->getAllPagosOpen($peticionPagoId);//cambie de getAllPagos a getAllPagosAutorizados
+
+        foreach ($pagosJoin as $p) {
+            array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
         }
+
+        return $res;
+
+    }
+
+
+
+    //devuelve un array con los pagos Open dado un peticionPagoId
+    function pagosOpenEstadistica($peticionPagoId){
+        error_log('PAGOSCONTROLLER::pagosOpenEstadistica()');
+
+        if($peticionPagoId === NULL) $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO]);//TODO AGREGAR A LISTA
+        
+        $res = [];
+        $montoTotal = 0;
+        $cantPagos = 0;
+
+        $joinModel = new JoinPagosPeticionesModel();
+        $pagosOpen = $joinModel->getAllPagosOpen($peticionPagoId);//cambie de getAllPagos a getAllPagosAutorizados
+
+        foreach ($pagosOpen as $p) {
+
+            $montoTotal+= $p->getAmount();
+            $cantPagos++;
+        }
+
+        $array = ["montoTotal" => $montoTotal, "cantPagos" => $cantPagos ];
+
+        array_push($res, $array );
+       
+
+        return $res;
+
+    }
 
 
 
@@ -229,6 +262,20 @@ class Dashboard extends SessionController{
     
             $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO_ENVIAR]);
         }
+    }
+
+
+    //Recibe un array con datos en formato json
+    //envia los datos codificados como json a la vista
+    function sendInfoJSON($arrayJSON){
+        error_log('DASHBOARDCONTROLLER::sendInfoJSON()');
+
+
+        
+        header("HTTP/1.1 200 OK");
+        header('Content-Type: application/json');
+        echo json_encode($arrayJSON);
+
     }
 
 

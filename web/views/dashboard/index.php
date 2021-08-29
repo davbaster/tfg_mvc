@@ -12,6 +12,7 @@
     $petiPendientesAprobar     = $this->d['petiPendientesAprobar'];
     $petiRecientes            = $this->d['petiRecientes'];
     $peticionesOpen            = $this->d['peticionesOpen'];
+    $peticionEstadistica       = $this->d['peticionEstadistica'];
 
     $rol                        = $user->getRol();
 
@@ -50,11 +51,11 @@
                                 
                              <?php
                                 //total pagado del contrato $user->getBudget() = monto del contrato
-                               if($totalThisMonth == NULL){
+                               if($peticionesOpen[0]->getMonto() == NULL){
                                    echo 'Hubo un problema al cargar la informacion';
                                }else{?>
-                                    <span class="<?php echo ($user->getBudget() < $totalThisMonth)? 'broken': '' ?>">$<?php
-                                   echo number_format($totalThisMonth, 2);?>
+                                    <span class="<?php echo ($peticionesOpen[0]->getMonto() < $peticionEstadistica[0]['montoTotal']  )? 'Sobregirado': '' ?>">¢<?php
+                                   echo number_format($peticionEstadistica[0]['montoTotal'] , 2);?>
                                     </span>
                                 <?php }?>
                                 
@@ -66,9 +67,9 @@
                             <div class="total-budget">
                                 <span class="total-budget-text">
                                     de
-                                    $<?php 
+                                    ¢<?php 
                                         //budget es la cantidad asignado al contrato
-                                        //echo number_format($user->getBudget(),2) . ' te quedan del contrato';
+                                        echo  $peticionesOpen[0]->getMonto();
                                     ?>
                                 </span>
                             </div>
@@ -83,9 +84,9 @@
                                             <?php
                                                 $gap = $user->getBudget() - $totalThisMonth;
                                                 if ($gap < 0) {
-                                                    echo "-$" . number_format(abs($user->getBudget() - $totalThisMonth), 2);
+                                                    echo "-¢" . number_format(abs($user->getBudget() - $totalThisMonth), 2);
                                                 }else{
-                                                    echo "$" . number_format($user->getBudget() - $totalThisMonth, 2);
+                                                    echo "¢" . number_format($user->getBudget() - $totalThisMonth, 2);
                                                 }
                                             ?>
                                         </span> 
@@ -104,7 +105,7 @@
                                 if($totalThisMonth == NULL){
                                     echo 'Hubo un problema al cargar la informacion';
                                 }else{?>
-                                        <span>$<?php
+                                        <span>¢<?php
                                             echo number_format($maxExpensesThisMonth, 2);?>
                                         </span>
                                 <?php }?>
@@ -144,7 +145,7 @@
                                             </div>
 
                                             
-                                            <div class="title category-total">$<?php echo $p->getMonto(); ?></div>
+                                            <div class="title category-total">¢<?php echo $p->getMonto(); ?></div>
                                         </div>
 
 
@@ -171,7 +172,7 @@
                                             <div class="content category-name">
                                                 <?php echo $p['nombre'] . ' ' . $p['apellido1']; ?>
                                             </div>
-                                            <div class="title category-total">$<?php echo $p['monto']; ?></div>
+                                            <div class="title category-total">¢<?php echo $p['monto']; ?></div>
                                         </div>
 
 
