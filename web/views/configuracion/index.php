@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="<?php echo constant('URL') ?>/public/css/user.css">
 </head>
 <body>
-    <?php require_once 'views/header.php'; ?>
+    <?php require_once 'views/dashboard/header.php'; ?>
 
     <div id="main-container">
         <?php $this->showMessages() ?>
@@ -35,7 +35,7 @@
             <div id="user-section-container">
                 
                 <section id="info-user-container">
-                    <form action=<?php echo constant('URL'). '/user/updateName' ?> method="POST">
+                    <form action=<?php echo constant('URL'). '/configuracion/updateName' ?> method="POST">
                         <div class="section">
                             <label for="name">Nombre</label>
                             <input type="text" name="name" id="name" autocomplete="off" required value="<?php echo $user->getNombre() ?>">
@@ -43,7 +43,7 @@
                         </div>
                     </form>
 
-                    <form action="<?php echo constant('URL'). '/user/updatePhoto' ?>" method="POST" enctype="multipart/form-data">
+                    <form action="<?php echo constant('URL'). '/configuracion/updatePhoto' ?>" method="POST" enctype="multipart/form-data">
                         <div class="section">
                             <label for="photo">Foto de perfil</label>
                             <?php
@@ -61,13 +61,17 @@
                 </section>
 
                 <section id="password-user-container">
-                    <form action="<?php echo constant('URL'). '/user/updatePassword' ?>" method="POST">
+                    <form action="<?php echo constant('URL'). '/configuracion/updatePassword' ?>" method="POST">
                         <div class="section">
-                            <label for="current_password">Password actual</label>
-                            <input type="password" onkeyup='check();' name="current_password" id="current_password" autocomplete="off" required>
+                            <label for="contrasenaActual">Password actual</label>
+                            <input type="password" name="contrasenaActual" id="contrasenaActual" autocomplete="off" required>
 
-                            <label for="new_password">Nuevo password</label>
-                            <input type="password"  onkeyup='check();' name="new_password" id="new_password" autocomplete="off" required>
+                            <label for="contrasena">Nuevo password</label>
+                            <input type="password"  name="contrasena" id="contrasena" autocomplete="off" required>
+
+                            <label for="confcontrasena">Confirmar password</label>
+                            <input type="password"  onkeyup='verificarContrasena();' name="confcontrasena" id="confcontrasena" autocomplete="off" required>
+
                             <span id='message'></span>
                             <div><input type="submit" id="btnEnviar" value="Cambiar password" /></div>
                             
@@ -79,7 +83,7 @@
                     <form action="user/updateBudget" method="POST">
                         <div class="section">
                             <label for="budget">Definir presupuesto</label>
-                            <div><input type="number" name="budget" id="budget" autocomplete="off" required value="<?php echo $user->getBudget() ?>"></div>
+                            <div><input type="number" name="budget" id="budget" autocomplete="off" required value="<?php //echo $user->getBudget() ?>"></div>
                             <div><input type="submit" value="Actualizar presupuesto" /></div>
                         </div>
                     </form>
@@ -92,7 +96,7 @@
     
     <!-- <script> -->
     <script src="public/js/configuracion_dashboard.js"></script>
-    <script src="public/js/tools.js"></script> 
+    <script src="public/js/configuracion_tools.js"></script> 
     
         
 

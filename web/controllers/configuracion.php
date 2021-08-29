@@ -10,7 +10,7 @@ class Configuracion extends SessionController{
         parent::__construct();
 
         $this->user = $this->getUserSessionData();
-        error_log("CONFIGURACION_CONTROLLER " . $this->user->getName());
+        error_log("CONFIGURACION_CONTROLLER " . $this->user->getNombre());
     }
 
 
@@ -47,28 +47,34 @@ class Configuracion extends SessionController{
 
     //actualiza el password del usuario
     function updatePassword(){
-        if(!$this->existPOST(['current_password', 'new_password'])){//sino existe
+        if(!$this->existPOST(['contrasenaActual', 'confcontrasena'])){//sino existe
             $this->redirect('configuracion', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
             return;
         }
 
-        $current = $this->getPost('current_password');
-        $new     = $this->getPost('new_password');
+        $current = $this->getPost('contrasenaActual');
+        $new     = $this->getPost('confcontrasena');
 
         if(empty($current) || empty($new)){//si alguno esta vacio
             $this->redirect('configuracion', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD_EMPTY]);
             return;
         }
 
-        if($current === $new){//si son iguales
-            $this->redirect('configuracion', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD_THESAME]);
-            return;
-        }
 
+        $user = new UserModel();
         //validar que el current es el mismo que el guardado
-        $newHash = $this->model->comparePasswords($current, $this->user->getCedula());//metodo de userModel
-        if($newHash){
-            //si lo es actualizar con el nuevo
+        $autorizado = $user->comparePasswords($current, $this->user->getCedula());//metodo de userModel
+        if($autorizado){
+
+            if($current === $new){//si son iguales
+                $this->redirect('configuracion', ['error' => ErrorMessages::ERROR_USER_UPDATEPASSWORD_THESAME]);
+                return;
+            }
+
+
+
+
+            //si se verifico la contrasena, y la nueva contrasena no es igual a la anterior
             $this->user->setContrasena($new);
             
             if($this->user->update()){//si se actualizo
