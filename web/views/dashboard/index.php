@@ -41,7 +41,7 @@
                         </span>
                     </div>
                     <div class="cards-container">
-                        <div class="card w-100">
+                        <div class="card w-50">
                             <div class="total-budget">
                                 <span class="total-budget-text">
                                     Balance General de la Planilla     

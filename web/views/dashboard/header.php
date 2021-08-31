@@ -24,7 +24,7 @@
         <li><a href="peticionespago">Planillas</a></li>
         <li><a href="pagos">Pagos</a></li>
         <li><a href="user">Usuarios</a></li>
-        <!-- <li><a href="<?php //echo constant('URL'); ?>/user">Configuracion</a></li> -->
+        <li><a href="reportes">Reportes</a></li>
         <li><a href="configuracion">Configuracion</a></li>
         <li><a href="logout">Salir</a></li>
     </ul>

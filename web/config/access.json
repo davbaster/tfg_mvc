@@ -40,6 +40,11 @@
             "role":"administrador"
         },
         {
+            "site": "reportes",
+            "access": "private",
+            "role":"administrador"
+        },
+        {
             "site": "configuracion",
             "access": "private",
             "role":"administrador"
