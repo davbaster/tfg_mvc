@@ -231,11 +231,24 @@ label{
 .card{
     border-radius: 10px;
     padding: 10px;
-    
     margin: 5px;
     display: inline-block;
     vertical-align: top;
 }
+
+.card-normal{
+    background-color: coral;
+}
+
+.card-active{
+    /* offset-x | offset-y | blur-radius | spread-radius | color */
+    /* box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2); */
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    background-color: rgba(241, 159, 81, 0.808);
+    /* reduciendo tamano del card */
+    transform: scale(0.98);
+}
+
 .card-g1{
     flex-grow: 1;
 }

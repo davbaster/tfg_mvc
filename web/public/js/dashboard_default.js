@@ -29,25 +29,25 @@ function peticionCard(e){
 
       case 'peticionPagoOpenFecha':
             $value = target.parentElement.lastElementChild.lastElementChild.value;
-            resaltarSeleccion(target.id)
+            resaltarSeleccion(target.parentElement.id)
             getContentPeticionPago($value);
             break;
 
       case 'peticionPagoOpenTitulo':
             $value = target.parentElement.lastElementChild.lastElementChild.value;
-            resaltarSeleccion(target.id)
+            resaltarSeleccion(target.parentElement.id)
             getContentPeticionPago($value);
             break;
 
       case 'peticionPagoOpenMonto':
             $value = target.parentElement.lastElementChild.lastElementChild.value;
-            resaltarSeleccion(target.id)
+            resaltarSeleccion(target.parentElement.id)
             getContentPeticionPago($value);
             break;
 
       case 'peticionPagoOpenPlanilla':
             $value = target.parentElement.lastElementChild.lastElementChild.value;
-            resaltarSeleccion(target.id)
+            resaltarSeleccion(target.parentElement.id)
             getContentPeticionPago($value);
             break;
 
@@ -90,16 +90,19 @@ function resaltarSeleccion($id){
 
   var idOject = "#"+$id
 
-  var seleccionActual = document.getElementsByClassName("active");
+  var seleccionActual = document.getElementsByClassName("card-active");
   var nuevaSeleccion = document.querySelector(idOject);
 
   //entre si hay una seleccion previa
   if (seleccionActual.length != 0) {
-    seleccionActual[0].classList.remove("active");
+    
+    seleccionActual[0].classList.add("card-normal")
+    seleccionActual[0].classList.remove("card-active");//se remueve la clase al final, sino no podremos agregar la clase nueva
   }
   
+  nuevaSeleccion.classList.remove("card-normal");
+  nuevaSeleccion.classList.add("card-active");
 
-  nuevaSeleccion.classList.add("active");
 
 
 

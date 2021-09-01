@@ -131,7 +131,7 @@
                             }else{
                                     foreach($petiPendientesAprobar as $p){ ?>
                                         <!-- Agregar un onClick para llamar a una funcion con popup -->
-                                        <div class="card w-30 bs-1" style="background-color: coral" id=peticionPago>
+                                        <div class="card card-normal w-30 bs-1" id=peticionPago>
                                             <div class="content category-name">
                                                 <?php echo $p->getFechaCreacion(); ?>
                                             </div>
@@ -165,7 +165,7 @@
                             }else{
                                     foreach($pagosPendientes as $p){ ?>
 
-                                        <div class="card w-30 bs-1" style="background-color: coral" >
+                                        <div class="card card-normal w-30 bs-1" >
                                             <div class="content category-name">
                                                 <?php echo $p['fecha']; ?>
                                             </div>
@@ -231,7 +231,7 @@
                                 }else{
                                         foreach($peticionesOpen  as $p){ ?>
                                             <!-- Agregar un onClick para llamar a una funcion con popup -->
-                                            <div class="card w-30 bs-1 peticion-open-card" style="background-color: coral" id=<?php echo "peticionPagoOpenCard" . $p->getId() ?> >
+                                            <div class="card card-normal w-30 bs-1 peticion-open-card" id=<?php echo "peticionPagoOpenCard" . $p->getId() ?> >
                                                 <div class="content category-name peticion-open-fecha" id=<?php echo "peticionPagoOpenFecha" . $p->getId() ?>>   
                                                     <?php echo $p->getFechaCreacion(); ?>
                                                 </div>
