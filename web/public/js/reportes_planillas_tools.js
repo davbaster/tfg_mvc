@@ -1,28 +1,3 @@
-  // //se activa cuando se seleccina una opcion del combobox de roles
-  // document.getElementById('rol').onchange = verificarSeleccionMenuDesplegable;
-
-  // //esconde o muestra datos opcionales del usuario
-  // //muestra los datos opcionales si el rol no es construccion
-  // function verificarSeleccionMenuDesplegable(){
-  //   const datosOpcional = document.getElementById('datos_opcional');
-  //   var value = this.value;
-  //   if(value == 'administrador' || value == 'contratista' ){
-  //     //agregar required a los campos contrasena, confcontrasena
-  //     datosOpcional.removeAttribute("hidden");
-  //   }else{
-  //     datosOpcional.setAttribute("hidden", true);
-  //   }
-  // }
-
-
-
-
-
-
-
-
-
-
 
 
   // LOGICA PARA RELLENAR UNA TABLA CON DATOS QUE VIENEN DE UN JSON DEL SERVIDOR
@@ -31,58 +6,60 @@
 
 var data = [];
 var copydata = [];
-const btnBuscar                 = document.querySelector('#btnBuscar');
-const userContainerViewPagos    = document.querySelector('#user-container-view-pagos');
-const userContainerEdit         = document.querySelector('#user-container-edit');
-const userEdit                  = document.querySelector('#user-edit');
+const btnBuscarPlanillas                     = document.querySelector('#btnBuscarPlanillas');
+const userContainerViewPlanillas    = document.querySelector('#user-container-view-planillas');
+//const userContainerEdit             = document.querySelector('#user-container-edit');
+//const userEdit                      = document.querySelector('#user-edit');
 // const message                   = document.querySelector('#message');
 
 
 
-function verificarCedulaPagos(){
-  event.preventDefault();
-  const cedula = document.querySelector('#cedula_buscar_pagos').value;
+function verificarCedulaPlanillas(){
+  // event.preventDefault();
+  const cedula = document.querySelector('#cedula_buscar_planillas').value;
   //const apellidoBusc = document.querySelector('#apellido1_buscar').value;
 
   if(cedula === '' || cedula === null){
     //message.innerHTML= ``;
-    userContainerViewPagos.innerHTML = `Ingrese un n&uacute;mero de c&eacute;dula sin guiones o espacios`;
+    userContainerViewPlanillas.innerHTML = `Ingrese un n&uacute;mero de c&eacute;dula sin guiones o espacios`;
       //alert('Ingrese un numero de cedula sin guiones o espacios');
   }else{
 
     // this.datacopy = [...this.data]; 
-    userContainerViewPagos.innerHTML = '';
-    getResultadosBusquedaPagos(cedula);
+    userContainerViewPlanillas.innerHTML = '';
+    getResultadosBusquedaPlanillas(cedula);
   }
     
 };
 
 
+
 //verificacion de datos correctos en campo cedula
-if(btnBuscarPagos){
-  btnBuscarPagos.addEventListener('click', verificarCedulaPagos, false);
+if(btnBuscarPlanillas){
+  btnBuscarPlanillas.addEventListener('click', verificarCedulaPlanillas, false);
 }
 
-  
+
+
 
 
  //localhost se deberia cambiar por la direccion del servidor
 //recolecta datos pedidos al servidor y luego los manda a renderData para ser escritos en la vista
-async function getResultadosBusquedaPagos(id){
+async function getResultadosBusquedaPlanillas(id){
 
   event.preventDefault();
         
-  data = await fetch(`http://localhost:41062/www/reportes/buscarPagos/${id}`) 
+  data = await fetch(`http://localhost:41062/www/reportes/buscarPlanillas/${id}`) 
   .then(res =>res.json())
   .then(json => json);
   this.copydata = [...this.data];
  
-  renderResultadosPagos(data);
+  renderResultadosPlanillas(data);
 }
 
 
 //pone nuevas filas con informacion en la tabla
-function renderResultadosPagos(data){
+function renderResultadosPlanillas(data){
   
   
   let total = 0;
@@ -90,17 +67,17 @@ function renderResultadosPagos(data){
   if (data[0].cedula == 'false') {
     
 
-    userContainerViewPagos.innerHTML = data[0].mensaje;
+    userContainerViewPlanillas.innerHTML = data[0].mensaje;
     
   } else {
 
-    dibujarTabla();//dibuja la tabla sin resultados
-    var databody = document.querySelector('#databody');//busca el body de la tabla recien dibujada
+    dibujarTablaPlanillas();//dibuja la tabla sin resultados
+    var databodyPlanillas = document.querySelector('#databodyPlanillas');//busca el body de la tabla recien dibujada
 
-    databody.innerHTML = '';
+    databodyPlanillas.innerHTML = '';
     data.forEach(item => { 
        
-                databody.innerHTML += `<tr>
+      databodyPlanillas.innerHTML += `<tr>
                 <td>${item.cedula}</td>
                 <td>${item.nombre}</td>
                 <td>${item.adeudado}</td>
@@ -114,11 +91,11 @@ function renderResultadosPagos(data){
 }
 
 //dibuja una estructura de tabla
-function dibujarTabla(){
+function dibujarTablaPlanillas(){
 
-  var tableContainer = document.querySelector('#table-pagos-container-right-side');
+  var tableContainerPlanillas = document.querySelector('#table-planillas-container-right-side');
 
-  tableContainer.innerHTML =
+  tableContainerPlanillas.innerHTML =
   `<table width="100%" cellpadding="0">
       <thead>
           <tr>
@@ -127,7 +104,7 @@ function dibujarTabla(){
           <th>Cantidad</th>
           </tr>
       </thead>
-    <tbody id="databody">
+    <tbody id="databodyPlanillas">
         
     </tbody>
   </table>`;
@@ -138,7 +115,7 @@ function dibujarTabla(){
     //se usa asincrona para que no recargue toda la pagina, 
     //Esta funcion al ser asyncrona usa promises
     //https://web.dev/promises/ , https://stackoverflow.com/questions/37533929/how-to-return-data-from-promise
-    async function ver(id){
+    async function verPlanilla(id){
 
       event.preventDefault();
       
@@ -148,7 +125,7 @@ function dibujarTabla(){
       .then(json => json);
       this.copydata = [...this.data];
       console.table(data);
-      renderUser(data);
+      renderPlanilla(data);
       userContainerViewPagos.removeAttribute("hidden");
   
       };
@@ -168,7 +145,7 @@ function dibujarTabla(){
 
 
       //inyecta codigo html con la informacion de un usuario
-      function renderUser(data){
+      function renderPlanilla(data){
         
 
         userContainerViewPagos.innerHTML = 

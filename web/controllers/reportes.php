@@ -1,6 +1,6 @@
 <?php
 
-//require_once 'models/usermodel.php'; //TODO borrar si no se ocupa
+require_once 'models/joinpagospeticionesmodel.php'; //TODO borrar si no se ocupa
 
 class Reportes extends SessionController{
 
@@ -53,12 +53,12 @@ class Reportes extends SessionController{
             //BUSCAR USUARIO
     //Busca un usuario usando la cedula
     function buscarPagos($params){
-        error_log("USER_CONTROLLER::Buscar()");
+        error_log("REPORTES_CONTROLLER::BuscarPagos()");
         
-        if($params === NULL) $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_BUSCAR]);//
+        if($params === NULL) $this->redirect('reportes', ['error' => ErrorMessages::ERROR_USER_BUSCAR]);//
         $id = $params[0];
-        $user = new UserModel();
-        $res = $user->get($id);
+        //$user = new UserModel();
+        //$res = $user->get($id);
 
 
         error_log('PAGOSCONTROLLER::getPagosHistoryJSON()');
@@ -66,14 +66,25 @@ class Reportes extends SessionController{
         $res = [];
 
         $joinModel = new JoinPagosPeticionesModel();
-        $peticiones = $joinModel->getAllPagosHechos($id);//devuelve todos los pagos pagados dado un id.
+        $pagos = $joinModel->getAllPagosHechos($id);//devuelve todos los pagos pagados dado un id.
 
-        foreach ($peticiones as $p) {
-            array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+
+        if($pagos){//SI RES tiene un resultado
+            //$this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PAGOS_PAGAR]);//TODO AGREGAR A LISTA
+            
+            
+            foreach ($pagos as $p) {
+                array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+            }
+            $this->getUserJSON($res);
+          
+
+        }else{
+            //$this->redirect('user', ['error' => ErrorMessages::ERROR_USER_BUSCAR_NOEXISTE]);
+           
+            array_push($res, [ 'cedula' => 'false', 'mensaje' => 'El n&uacute;mero de c&eacute;dula provisto no tuvo resultados' ]);
+            $this->getUserJSON($res);
         }
-        header("HTTP/1.1 200 OK");
-        header('Content-Type: application/json');
-        echo json_encode($res);
 
 
 

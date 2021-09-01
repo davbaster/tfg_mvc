@@ -202,7 +202,7 @@ class JoinPagosPeticionesModel extends Model {
           //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
           //$query = $this->prepare('SELECT expenses.id as expense_id, title, category_id, amount, date, id_user, categories.id, name, color  FROM expenses INNER JOIN categories WHERE expenses.category_id = categories.id AND expenses.id_user = :userid ORDER BY date');
             //$query = $this->prepare('SELECT pagos.id as pago_id, estado_pago, peticion_pago_id, amount, date, cedula, peticiones_pago.id FROM pagos INNER JOIN peticiones_pago WHERE pagos.peticion_pago_id = peticiones_pago.id AND pagos.id_user = :userId ORDER BY date');
-            $query = 'SELECT 
+            $query = $this->prepare('SELECT 
                         p.id as id_pago, 
                         p.estado_pago as estado,
                         p.cedula as cedula_empleado, 
@@ -218,10 +218,10 @@ class JoinPagosPeticionesModel extends Model {
                     INNER JOIN users AS u ON p.cedula = u.cedula
                     INNER JOIN peticiones_pago AS p2 ON p.peticion_pago_id  = p2.id        
                     WHERE p.peticion_pago_id = p2.id AND p.cedula = :cedula AND  p.estado_pago = :estado
-                    ORDER BY p.cedula';
+                    ORDER BY p.cedula');
 
             
-            $query->execute(["userId" => $cedula,
+            $query->execute(["cedula" => $cedula,
                             "estado" => $estado]);
 
             //$p es un arreglo que guarda las filas del query anterior, filas de un join
