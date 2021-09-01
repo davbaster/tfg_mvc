@@ -64,7 +64,7 @@
                 <section id="planillas-search-container">
                     <form action="" method="">
                             <div class="section">
-                                <label for="cedula_pagos">Busqueda por cedula:</label>
+                                <label for="cedula_planillas">Busqueda por cedula:</label>
                                 <input type="number" name="cedula_buscar_planillas" id="cedula_buscar_planillas" autocomplete="off">
 
                                 <!-- <label for="new_password">Busqueda por Primer Apellido</label>
@@ -77,7 +77,7 @@
                     
                     <div id="table-planillas-container-right-side">
                     </div>
-                    <div id="planillas-container-view">
+                    <div id="planillas-container-view"></div>
 
                 </section>
 

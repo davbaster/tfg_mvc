@@ -1,6 +1,7 @@
 <?php
 
-require_once 'models/joinpagospeticionesmodel.php'; //TODO borrar si no se ocupa
+require_once 'models/joinpagospeticionesmodel.php'; 
+require_once 'models/joinpeticionesusermodel.php';
 
 class Reportes extends SessionController{
 
@@ -50,8 +51,8 @@ class Reportes extends SessionController{
     }
 
 
-            //BUSCAR USUARIO
-    //Busca un usuario usando la cedula
+    //BUSCAR PAGOS hechos a un usuario dado
+    //Busca todos los pagos hechos a un usuario, pagos en estado pagado
     function buscarPagos($params){
         error_log("REPORTES_CONTROLLER::BuscarPagos()");
         
@@ -74,6 +75,46 @@ class Reportes extends SessionController{
             
             
             foreach ($pagos as $p) {
+                array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+            }
+            $this->getUserJSON($res);
+          
+
+        }else{
+            //$this->redirect('user', ['error' => ErrorMessages::ERROR_USER_BUSCAR_NOEXISTE]);
+           
+            array_push($res, [ 'cedula' => 'false', 'mensaje' => 'El n&uacute;mero de c&eacute;dula provisto no tuvo resultados' ]);
+            $this->getUserJSON($res);
+        }
+
+
+
+    }
+
+
+
+    //BUSCAR PLANILLAS hechas por usuario dado
+    //Busca todos las planillas hechas (peticionesPago) por un usuario, en estado autorizado/pagada
+    function buscarPlanillas($params){
+        error_log("REPORTES_CONTROLLER::buscarPlanillas()");
+        
+        if($params === NULL) $this->redirect('reportes', ['error' => ErrorMessages::ERROR_USER_BUSCAR]);//
+        $id = $params[0];
+
+
+        error_log('PAGOSCONTROLLER::getPagosHistoryJSON()');
+        
+        $res = [];
+
+        $joinModel = new JoinPeticionesUserModel();
+        $planillas = $joinModel->getAllPeticionesAutorizadasDadoUsuario($id);//devuelve todos los pagos pagados dado un id.
+
+
+        if($planillas){//SI RES tiene un resultado
+            //$this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PAGOS_PAGAR]);//TODO AGREGAR A LISTA
+            
+            
+            foreach ($planillas as $p) {
                 array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
             }
             $this->getUserJSON($res);
