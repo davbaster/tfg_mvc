@@ -12,31 +12,42 @@ function peticionCard(e){
     e = e || window.event;
     var target = e.target || e.srcElement;
 
-    switch (target.id){
+    $value = target.value;
+    var id = target.id;
+
+    var idNoNumbers = id.replace(/[0-9]/g, '');
+
+
+    switch (idNoNumbers){
 
       case 'peticionPagoOpenCard':
             $value = target.lastElementChild.lastElementChild.value;
-            // target.classList.add('active'); //ver el elemento seleccionado resaltado
+            //target.classList.add('active'); //ver el elemento seleccionado resaltado
+            resaltarSeleccion(target.id)
             getContentPeticionPago($value);
             break;
 
       case 'peticionPagoOpenFecha':
             $value = target.parentElement.lastElementChild.lastElementChild.value;
+            resaltarSeleccion(target.id)
             getContentPeticionPago($value);
             break;
 
       case 'peticionPagoOpenTitulo':
             $value = target.parentElement.lastElementChild.lastElementChild.value;
+            resaltarSeleccion(target.id)
             getContentPeticionPago($value);
             break;
 
       case 'peticionPagoOpenMonto':
             $value = target.parentElement.lastElementChild.lastElementChild.value;
+            resaltarSeleccion(target.id)
             getContentPeticionPago($value);
             break;
 
       case 'peticionPagoOpenPlanilla':
             $value = target.parentElement.lastElementChild.lastElementChild.value;
+            resaltarSeleccion(target.id)
             getContentPeticionPago($value);
             break;
 
@@ -70,8 +81,27 @@ function renderData(data){
 
   newPagoBtn.setAttribute("value", $idPlanilla);
   
+}
 
+//recibe un id del objeto al que se le hizo click, para resaltarlo
+//busca el objeto previo que estaba resaltado para quitarle la clase active.
+//Debe resaltar el objeto parent //TODO
+function resaltarSeleccion($id){
+
+  var idOject = "#"+$id
+
+  var seleccionActual = document.getElementsByClassName("active");
+  var nuevaSeleccion = document.querySelector(idOject);
+
+  //entre si hay una seleccion previa
+  if (seleccionActual.length != 0) {
+    seleccionActual[0].classList.remove("active");
+  }
   
-  
+
+  nuevaSeleccion.classList.add("active");
+
+
+
 }
 

@@ -231,18 +231,18 @@
                                 }else{
                                         foreach($peticionesOpen  as $p){ ?>
                                             <!-- Agregar un onClick para llamar a una funcion con popup -->
-                                            <div class="card w-30 bs-1 peticion-open-card" style="background-color: coral" id=peticionPagoOpenCard >
-                                                <div class="content category-name peticion-open-fecha" id=peticionPagoOpenFecha>
+                                            <div class="card w-30 bs-1 peticion-open-card" style="background-color: coral" id=<?php echo "peticionPagoOpenCard" . $p->getId() ?> >
+                                                <div class="content category-name peticion-open-fecha" id=<?php echo "peticionPagoOpenFecha" . $p->getId() ?>>   
                                                     <?php echo $p->getFechaCreacion(); ?>
                                                 </div>
-                                                <div class="content category-name peticion-open-titulo" id=peticionPagoOpenTitulo>
+                                                <div class="content category-name peticion-open-titulo" id=<?php echo "peticionPagoOpenTitulo" . $p->getId() ?>> 
                                                     <!-- descripcion de la planilla  -->
                                                     <?php echo $p->getNombre(); ?>
                                                 </div>
-                                                <div class="content category-name peticion-open-monto" id=peticionPagoOpenMonto>¢<?php echo $p->getMonto(); ?></div>
-                                                <div class="content category-name peticion-open-planilla"  id=peticionPagoOpenPlanilla> 
+                                                <div class="content category-name peticion-open-monto" id=<?php echo "peticionPagoOpenMonto" . $p->getId() ?>>¢<?php echo $p->getMonto(); ?></div> 
+                                                <div class="content category-name peticion-open-planilla"  id=<?php echo "peticionPagoOpenPlanilla" . $p->getId() ?>>   
                                                     <!-- ID de la planilla -->
-                                                    <input type="hidden" name="idPeticionPago" id="idPeticionEscondida" value="<?php echo $p->getId() ?>">
+                                                    <input type="hidden" name="idPeticionPago" id="<?php echo "idPeticionEscondida" . $p->getId() ?>" value="<?php echo $p->getId() ?>"> 
                                                 </div>
                                             </div>
 
