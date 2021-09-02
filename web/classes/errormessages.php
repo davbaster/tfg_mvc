@@ -29,6 +29,8 @@ class ErrorMessages{
     const ERROR_USER_UPDATEUSER = "e0023";
     const ERROR_USER_DISABLE  = "e0024";
     const ERROR_USER_UPDATEPASSWORD_EMPTY  = "e0025";
+    const ERROR_PRESTAMOS_NEWPRESTAMO_EMPTY  = "e0026"; 
+    const ERROR_PRESTAMOS_PAGAR  = "e0027"; 
    
 
     private $errorList = [];
@@ -62,7 +64,9 @@ class ErrorMessages{
             ErrorMessages::ERROR_PETICIONPAGO_RECHAZAR      => 'Error al rechazar Planilla. Hubo un problema.',
             ErrorMessages::ERROR_USER_UPDATEUSER            => 'Error al actualizar el usuario. Hubo un problema.',
             ErrorMessages::ERROR_USER_DISABLE            => 'Error al deshabilitar el usuario. No hay datos suficientes.',
-            ErrorMessages::ERROR_USER_UPDATEPASSWORD_EMPTY   => 'Error al actualizar la clave. Faltan datos.'
+            ErrorMessages::ERROR_USER_UPDATEPASSWORD_EMPTY   => 'Error al actualizar la clave. Faltan datos.',
+            ErrorMessages::ERROR_PRESTAMOS_NEWPRESTAMO_EMPTY    => 'Error al crear el prestamo. Faltan datos.', 
+            ErrorMessages::ERROR_PRESTAMOS_PAGAR                => 'Error al rebajar el prestamo.'
             
         ];
 

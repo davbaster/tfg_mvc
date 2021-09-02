@@ -17,6 +17,7 @@ class SuccessMessages{
     const SUCCESS_PETICIONPAGO_RECHAZAR = "s5029";
     const SUCCESS_USER_UPDATEUSER       = "s5030";
     const SUCCESS_USER_DISABLED         = "s5031";
+    const SUCCESS_PRESTAMOS_NEWPRESTAMO         = "s5032";
 
 
     private $successList = [];
@@ -36,7 +37,8 @@ class SuccessMessages{
             SuccessMessages::SUCCESS_PETICIONPAGO_ENVIAR => 'Planilla enviada para revision satisfactoriamente',
             SuccessMessages::SUCCESS_PETICIONPAGO_RECHAZAR => 'Planilla rechazada satisfactoriamente',
             SuccessMessages::SUCCESS_USER_UPDATEUSER => 'Usuario actualizado satisfactoriamente',
-            SuccessMessages::SUCCESS_USER_DISABLED => 'Usuario desactivado satisfactoriamente'
+            SuccessMessages::SUCCESS_USER_DISABLED => 'Usuario desactivado satisfactoriamente',
+            SuccessMessages::SUCCESS_PRESTAMOS_NEWPRESTAMO => 'Prestamo creado satisfactoriamente'
         ];
     }
 
