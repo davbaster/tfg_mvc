@@ -2,19 +2,22 @@
 
 class JoinPrestamosUserModel extends Model {
 
-    private $peticionId;
-    private $descripcion; 
+    private $id;
+    private $peticionPagoId;
+    private $pagoId;
+    private $cedula; 
     private $estado;//open->pendiente->autorizada->pagada
-    private $cedula;
-    private $nombre;
-    private $apellido1; 
-    private $apellido2; 
-    
     private $monto;
     private $fechaCreacion;//fecha en que se creo el pago
     private $fechaAprobacion;
     private $fechaPago;
     private $detalles;
+
+
+
+    private $nombre;
+    private $apellido1; 
+    private $apellido2; 
 
 
     public function __construct()
