@@ -26,6 +26,11 @@
             "role":"administrador"
         },
         {
+            "site": "prestamos",
+            "access": "private",
+            "role":"administrador"
+        },
+        {
             "site": "peticionespago",
             "access": "private",
             "role":"administrador"

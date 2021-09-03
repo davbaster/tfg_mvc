@@ -76,6 +76,27 @@ class Dashboard extends SessionController{
     }
 
 
+         // carga VISTA para nuevas peticion pago UI en DASHBOARD 
+         function viewNewPrestamoDialog($peticionId){
+            
+            $peticionPago = $this->getPeticionPagoArray($peticionId[0]); //recibe una peticion en formato Array 
+            $user = new UserModel();
+            $usuarios = $user->getAll(); //todos los trabajadores Activos que pueden trabajar en una planilla
+                                                         
+    
+            //$this->view->render('peticionespago/agregarpago', [
+            $this->view->render('dashboard/agregarprestamo', [
+    
+                'user'                                      => $this->user,
+                'peticionAbiertaSeleccionada'               => $peticionPago,
+                'usuarios'                                  => $usuarios
+    
+                
+            ]);
+        }
+
+
+
     //obtiene la lista de expenses y $n tiene el número de expenses por transacción
      private function getPagos($n = 0){
         if($n < 0) return NULL;

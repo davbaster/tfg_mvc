@@ -72,14 +72,18 @@ async function getContentPeticionPago(id){
 
 function renderData(data){
   const newPagoBtn = document.querySelector('#new-pago');
+  const newPrestamoBtnRender = document.querySelector('#new-prestamo');
   const cerrarPeticionPagoBtn = document.querySelector('#cerrar-peticion-pago');
+
   $idPlanilla = data[0].id_planilla;
   
-  //cerrarPeticionPagoBtn.value = $idPlanilla; //asignar valor del card (planilla seleccionada) al boton de cerrar planilla, 
-  cerrarPeticionPagoBtn.setAttribute("value", $idPlanilla);
-  //newPagoBtn.value = $idPlanilla;//asigna al boton de crear pago el valor del card (planilla seleccionada)
 
-  newPagoBtn.setAttribute("value", $idPlanilla);
+  cerrarPeticionPagoBtn.setAttribute("value", $idPlanilla);//asigna al boton de cerrar planilla el valor del card (planilla seleccionada)
+
+
+  newPagoBtn.setAttribute("value", $idPlanilla);//asigna al boton de crear prestamo el valor del card (planilla seleccionada)
+
+  newPrestamoBtnRender.setAttribute("value", $idPlanilla);
   
 }
 
