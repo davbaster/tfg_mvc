@@ -110,8 +110,60 @@ class UserModel extends Model implements IModel {
         }
     }
 
+
+
+    //devuelve todos los usuarios activos
+    public function getAllActive(){
+        $items = [];
+        $estado = "activo";
+
+        try {
+
+            $query = $this->prepare('SELECT * FROM users WHERE estado = :estado ');
+
+
+
+            $query->execute([
+                'estado' => $estado
+            ]);
+
+            // user es puntero elemento actual
+            // PDO::FETCH_ASSOC devuelve un objeto transformado
+            //setPasswordSinHash para cuando llenamos un usuario con la info de la BD
+            while($user = $query->fetch(PDO::FETCH_ASSOC)){
+                // $this = new UserModel(); si se usa da PHP Fatal error:  Cannot re-assign $this
+                $nuevoUsuario = new UserModel();
+
+                // cambie $this por $nuevoUsuario
+                $nuevoUsuario->setCedula($user['cedula']);
+                $nuevoUsuario->setNombre($user['nombre']);
+                $nuevoUsuario->setApellido1($user['apellido1']);
+                $nuevoUsuario->setApellido2($user['apellido2']);
+                $nuevoUsuario->setTelefono($user['telefono']);
+                $nuevoUsuario->setDireccion($user['direccion']);
+                $nuevoUsuario->setCuentaBancaria($user['cuentaBancaria']);
+                $nuevoUsuario->setEmail($user['email']);
+                //$nuevoUsuario->setContrasena($user['contrasena']);//esta volviendo a hashear la contrasena
+                $this->setContrasenaSinHash($user['contrasena']);
+                $nuevoUsuario->setRol($user['rol']);
+                $nuevoUsuario->setFoto($user['foto']);
+                $nuevoUsuario->setEstado($user['estado']);
+
+                // guarda el usuario en el array $items
+                array_push($items, $nuevoUsuario);
+            }
+
+            return $items;
+
+        }catch(PDOException $e){
+            error_log('USERMODEL::getAll->PDOException ' . $e);
+            return false;
+
+        }
+    }
+
     // busca cedula en BD
-    //setPasswordSinHash para cuando llenamos un usuario con la info de la BD
+    //devuelve un objeto del tipo user, o falso si no se encontro el user en el DB
     public function get($cedula){
 
         try {
@@ -229,7 +281,7 @@ class UserModel extends Model implements IModel {
         $this->setFoto            ( $array['foto'] ) ;
         
         //$this->fechaIngreso            ( $array['fechaIngreso'] ) ;
-        //$this->estado            ( $array['estado'] ) ;
+        $this->setEstado            ( $array['estado'] ) ;
 
     }
 

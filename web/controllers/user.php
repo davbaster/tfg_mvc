@@ -270,21 +270,87 @@ class User extends SessionController{
 
 
 
-    //
+    //Cambia el estado de un usuario de activo a inactivo en la BD
+    //Devuelve la informacion del usuario recientemente actualizado en formato JSON
     function deshabilitarUsuario($params){
+        error_log("USER_CONTROLLER::deshabilitarUsuario()");
+        
+        if($params === NULL) $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_DISABLE]);//ejecuta si no hay parametros
+
+        $id = $params[0];
+        $cedulaUsuarioActual = $this->user->getCedula();
+        
+        //$iguales = strcmp($id , $cedulaUsuarioActual);//cedulas iguales devuelve 0
+
+        //evita que un mismo usuario deshabilite su cuenta
+        if( $id == $cedulaUsuarioActual ){
+            $res = [];
+            //$this->redirect('user', ['error' => ErrorMessages::ERROR_USER_DISABLE_SAME]);//ejecuta si cedulas iguales
+
+            array_push($res, [ 'cedula' => 'false', 'mensaje' => 'Un usuario no puede deshabilitar su propia cuenta.' ]);
+            $this->getUserJSON($res);
+            
+
+        }else{//cedula no es igual al del usuario actual
+
+            $user = new UserModel();
+            $user->get($id);
+
+
+            if($user){//SI RES tiene un resultado
+                //$this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PAGOS_PAGAR]);//TODO AGREGAR A LISTA
+                $user->setEstado('inactivo');
+                //GUARDA al usuario en la BD
+                if ($user->update()){
+
+                    $res = [];
+                    error_log('USER_CONTROLLER::desactivarUsuario -> Cedula existe, y se ha desactivado el usuario');
+
+                    array_push($res, $user->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+            
+                    //manda el usuario actualizado para volver ser escrito
+                    $this->getUserJSON($res);
+
+
+                }else{
+                    $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_DISABLE]);
+                }
+
+
+            }else{
+                //$this->redirect('user', ['error' => ErrorMessages::ERROR_USER_BUSCAR_NOEXISTE]);
+                $res = [];
+                array_push($res, [ 'cedula' => 'false', 'mensaje' => 'No se pudo inhabilitar el usuario con el n&uacute;mero de c&eacute;dula provisto' ]);
+                $this->getUserJSON($res);
+            }
+
+
+        } 
+
+
+        
+    }
+
+
+
+    //Cambia el estado de un usuario de inactivo a activo en la BD
+    //Devuelve la informacion del usuario recientemente actualizado en formato JSON
+    function habilitarUsuario($params){
         error_log("USER_CONTROLLER::deshabilitarUsuario()");
         
         if($params === NULL) $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_DISABLE]);//
         $id = $params[0];
         $user = new UserModel();
-        $res = $user->get($id);
+        $user->get($id);
 
 
-        if($res){//SI RES tiene un resultado
+        if($user){//SI RES tiene un resultado
             //$this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PAGOS_PAGAR]);//TODO AGREGAR A LISTA
-            $user->setEstado('inactivo');
+            $user->setEstado('activo');
             //GUARDA al usuario en la BD
             if ($user->update()){
+
+                $res = [];
                 error_log('USER_CONTROLLER::desactivarUsuario -> Cedula existe, y se ha desactivado el usuario');
 
                 array_push($res, $user->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
@@ -294,7 +360,7 @@ class User extends SessionController{
 
 
             }else{
-                $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_DISABLE]);
+                $this->redirect('user', ['error' => ErrorMessages::ERROR_USER_ENABLE]);
             }
 
 

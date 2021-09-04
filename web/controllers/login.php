@@ -43,10 +43,20 @@ class Login extends SessionController{
             //var_dump($user);//Debugging:  Revisando si el usuario viene con datos
 
             if ( $user != NULL ) {
-                // si se autentico el usuario
-                //inicializa, esta dentro de la clase session controller
-                error_log('Login::authenticate -> Cedula: ' . $user->getCedula() .', rol: ' . $user->getRol());
-                $this->initialize($user);
+
+                if ( $user->getEstado() == "inactivo" ) {
+
+                    error_log('Login::authenticate -> Usuario Inactivo: ' . $user->getCedula() .', rol: ' . $user->getRol());
+                    $this->redirect('', ['error' => ErrorMessages::ERROR_USER_DISABLED]);
+
+                }else {
+                    // si se autentico el usuario
+                    //inicializa, esta dentro de la clase session controller
+                    error_log('Login::authenticate -> Cedula: ' . $user->getCedula() .', rol: ' . $user->getRol());
+                    $this->initialize($user);
+                }
+
+
             }else{
                 // sino se pudo autenticar
                 // redirige a pagina de inicio

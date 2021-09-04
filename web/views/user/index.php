@@ -111,18 +111,7 @@
                     <!-- Tabla de resultados -->
                     
                     <div id="table-container-right-side">
-                        <!-- <table width="100%" cellpadding="0">
-                            <thead>
-                                <tr>
-                                <th data-sort="id">Cedula</th>
-                                <th data-sort="nombre" width="20%">Trabajador</th>
-                                <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="databody">
-                                
-                            </tbody>
-                        </table> -->
+
                     </div>
                     <div id="user-container-view">
                     </div>

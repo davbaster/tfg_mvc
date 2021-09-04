@@ -20,18 +20,21 @@ class ErrorMessages{
     const ERROR_PAGOS_NEWPAGO_EMPTY = "e0014";
     const ERROR_PETICIONPAGOS_NEWPETICION = "e0015";
     const ERROR_PETICIONPAGOS_NEWPETICION_EMPTY = "e0016";
-    const ERROR_PETICIONPAGO_AUTORIZAR = "e0017";
-    const ERROR_PETICIONPAGO_ENVIAR = "e0018";
-    const ERROR_USER_BUSCAR = "e0019";
-    const ERROR_USER_BUSCAR_NOEXISTE = "e0020"; 
-    const ERROR_PETICIONPAGO_BUSCAR = "e0021";
-    const ERROR_PETICIONPAGO_RECHAZAR = "e0022";
-    const ERROR_USER_UPDATEUSER = "e0023";
-    const ERROR_USER_DISABLE  = "e0024";
-    const ERROR_USER_UPDATEPASSWORD_EMPTY  = "e0025";
-    const ERROR_PRESTAMOS_NEWPRESTAMO_EMPTY  = "e0026"; 
-    const ERROR_PRESTAMOS_PAGAR  = "e0027"; 
-    const ERROR_PAGOS_GETPAGOS  = "e0028";
+    const ERROR_PETICIONPAGO_AUTORIZAR      = "e0017";
+    const ERROR_PETICIONPAGO_ENVIAR         = "e0018";
+    const ERROR_USER_BUSCAR                 = "e0019";
+    const ERROR_USER_BUSCAR_NOEXISTE        = "e0020"; 
+    const ERROR_PETICIONPAGO_BUSCAR         = "e0021";
+    const ERROR_PETICIONPAGO_RECHAZAR       = "e0022";
+    const ERROR_USER_UPDATEUSER             = "e0023";
+    const ERROR_USER_DISABLE                = "e0024";
+    const ERROR_USER_UPDATEPASSWORD_EMPTY   = "e0025";
+    const ERROR_PRESTAMOS_NEWPRESTAMO_EMPTY = "e0026"; 
+    const ERROR_PRESTAMOS_PAGAR             = "e0027"; 
+    const ERROR_PAGOS_GETPAGOS              = "e0028";
+    const ERROR_USER_ENABLE                 = "e0029";
+    const ERROR_USER_DISABLE_SAME           = "e0030"; 
+    const ERROR_USER_DISABLED                = "e0031";
 
     private $errorList = [];
 
@@ -67,8 +70,10 @@ class ErrorMessages{
             ErrorMessages::ERROR_USER_UPDATEPASSWORD_EMPTY   => 'Error al actualizar la clave. Faltan datos.',
             ErrorMessages::ERROR_PRESTAMOS_NEWPRESTAMO_EMPTY    => 'Error al crear el prestamo. Faltan datos.', 
             ErrorMessages::ERROR_PRESTAMOS_PAGAR                => 'Error al rebajar el prestamo.',
-            ErrorMessages::ERROR_PAGOS_GETPAGOS     => 'No se pudo obtener los pagos. Hubo un error'
-            
+            ErrorMessages::ERROR_PAGOS_GETPAGOS     => 'No se pudo obtener los pagos. Hubo un error', 
+            ErrorMessages::ERROR_USER_ENABLE     => 'No se pudo habilitar el usuario. Hubo un error.', 
+            ErrorMessages::ERROR_USER_DISABLE_SAME     => 'Un usuario no puede deshabilitar su propia cuenta.',
+            ErrorMessages::ERROR_USER_DISABLED     => 'El usuario esta desactivado, contacte a su administrador.'
         ];
 
     }

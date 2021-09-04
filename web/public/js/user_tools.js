@@ -152,7 +152,7 @@ function renderResultados(data){
                 databody.innerHTML += `<tr>
                 <td>${item.cedula}</td>
                 <td>${item.nombre}</td>
-                <td><a id="activarUsuario" href="#" onclick="activarUsuario(${item.cedula})">Activar</a><a id="verUsuario href="#" onclick="ver(${item.cedula})">Ver</a></td>
+                <td><a id="activarUsuario" href="#" onclick="habilitarUsuario(${item.cedula})">Activar </a><a id="verUsuario href="#" onclick="ver(${item.cedula})">Ver</a></td>
                 </tr>`;
 
                 break;
@@ -213,6 +213,9 @@ function dibujarTabla(){
       };
 
 
+    //manda a cambiar el estado de un usuario en el servidor
+    //recibe el dato del usuario actualizado en formato JSON
+    //manda a rendirizar en la vista los datos del usuario actualizado
     async function deshabilitarUsuario(id){
 
       event.preventDefault();
@@ -221,8 +224,36 @@ function dibujarTabla(){
       data = await fetch(`http://localhost:41062/www/user/deshabilitarUsuario/${id}`)
       .then(res =>res.json())
       .then(json => json);
-      this.copydata = [...this.data];
-      console.table(data);
+      // this.copydata = [...this.data];
+      // console.table(data);
+
+      if (data[0].cedula != "false") {//imprime usuario si no hubo un error
+
+        renderUser(data);
+        userContainerView.removeAttribute("hidden");
+        
+      } else {//despliega error
+
+        userContainerView.innerHTML = data[0].mensaje;
+        
+      }
+
+
+      };
+
+    //manda a cambiar el estado de un usuario en el servidor
+    //recibe el dato del usuario actualizado en formato JSON
+    //manda a rendirizar en la vista los datos del usuario actualizado
+    async function habilitarUsuario(id){
+
+      event.preventDefault();
+      
+
+      data = await fetch(`http://localhost:41062/www/user/habilitarUsuario/${id}`)
+      .then(res =>res.json())
+      .then(json => json);
+      // this.copydata = [...this.data];
+      // console.table(data);
       renderUser(data);
       userContainerView.removeAttribute("hidden");
 
@@ -275,7 +306,12 @@ function dibujarTabla(){
         userContainerView.setAttribute("hidden", true);//esconde el resultado de busqueda
 
 
-        userEdit.innerHTML = `<div class="">
+        userEdit.innerHTML = `
+        <hr>
+        <div class="">
+        <label for="estado">Estado: ${data[0].estado}</label>
+        <input type="text" name="estadoUser" id="estadoUser" value="${data[0].estado}" hidden></input>
+        </div>
         <label for="cedula">Cedula</label>
         <input type="text" name="cedula" id="cedula" required value="${data[0].cedula}"></input>
         </div>
@@ -317,7 +353,8 @@ function dibujarTabla(){
                 <input type="password" name="confcontrasena" id="confcontrasena" onkeyup='verificarContrasenaIgual()' value=""></input>
                 <span id='message'></span>
             </div>
-        </div>`;
+        </div>
+        <hr>`;
 
         switch (data[0].rol) {
 
@@ -396,7 +433,11 @@ function dibujarTabla(){
         
 
         userContainerView.innerHTML = 
-        `<div class="">
+        `<hr>
+        <div class="">
+        <label for="estado">Estado: ${data[0].estado}</label>
+        </div>
+        <div class="">
             <label for="cedula">Cedula: ${data[0].cedula}</label>
         </div>
         <div class="">
@@ -424,15 +465,11 @@ function dibujarTabla(){
             <label for="rol">Rol del usuario: ${data[0].rol}</label>
         </div>
         <div class="">
-            <a id="verUsuario href="#" onclick="deshabilitarUsuario(${data[0].cedula})">Deshabilitar Usuario</a>
-        </div>
-        <div class="">
             <a id="verUsuario href="#" onclick="editar(data)">Editar Informacion</a>
-        </div>
-          `;
+        </div>`;
 
         //entre si tiene accesso al sistema, por lo que tiene contrase;a
-        if( data[0].rol != "construccion" ){
+        if( data[0].rol != "construccion" & data[0].estado != "inactivo" ){
 
           userContainerView.innerHTML += `
           <div class="">
@@ -442,10 +479,26 @@ function dibujarTabla(){
 
         }
 
+        if( data[0].estado != "inactivo" ){
+
+          userContainerView.innerHTML += `
+          <div class="">
+            <a id="verUsuario href="#" onclick="desplegarFormularioContrasena(${data[0].cedula})">Generar Contrase&ntilde;a</a>
+          </div>
+          <div class="">
+            <a id="verUsuario href="#" onclick="deshabilitarUsuario(${data[0].cedula})">Deshabilitar Usuario</a>
+          </div>
+          `;
+
+        }
+
+
         userContainerView.innerHTML += `
         <div class="">
           <a id="verUsuario href="#" onclick="cerrarFormulario(userContainerView)">Cerrar</a>
-        </div>`;
+        </div>
+        <hr>
+        `;
 
         
       }

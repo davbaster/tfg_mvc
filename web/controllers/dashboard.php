@@ -61,7 +61,7 @@ class Dashboard extends SessionController{
         //$peticionesPago = $peticionModel->getAllPeticionesOpen($this->user->getCedula()); //recibe las peticiones en estado OPEN, osea no mandadas a autorizar todavia 
         $peticionesPago = $this->getPeticionPagoArray($peticionId[0]); //recibe las peticiones en estado OPEN, osea no mandadas a autorizar todavia 
         $user = new UserModel();
-        $usuarios = $user->getAll(); //todos los trabajadores que pueden trabajar en una planilla
+        $usuarios = $user->getAllActive(); //todos los trabajadores activos que pueden trabajar en una planilla
                                                      
 
         //$this->view->render('peticionespago/agregarpago', [
@@ -81,7 +81,7 @@ class Dashboard extends SessionController{
             
             $peticionPago = $this->getPeticionPagoArray($peticionId[0]); //recibe una peticion en formato Array 
             $user = new UserModel();
-            $usuarios = $user->getAll(); //todos los trabajadores Activos que pueden trabajar en una planilla
+            $usuarios = $user->getAllActive(); //todos los trabajadores Activos que pueden trabajar en una planilla
                                                          
     
             //$this->view->render('peticionespago/agregarpago', [
