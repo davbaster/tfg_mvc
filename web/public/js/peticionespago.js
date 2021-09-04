@@ -229,7 +229,7 @@
                 <label for="detalles">Detalles: ${data[0].detalles}</label>
             </div>
         </div>
-        <div class="view-info-pagos">
+        <div class="container-view-info-pagos" id="view-info-pagos_${data[0].id_planilla}">
         </div>
            `;
 
@@ -241,8 +241,10 @@
                 divInfoPeticion.innerHTML +=
                     `<div class="view-info-acciones">
                         <a id="verUsuario href="#" onclick="cerrarFormulario(${id})">Cerrar</a>
+                        <a id="verPagos" href="#" onclick="getDataPagos(${id})">Ver Pagos</a>
                         <a id="verUsuario href="#" onclick="rechazarPeticion(${id})">rechazar</a>
                         <a id="pagarItem" href="#" onclick="autorizarPago(${id})">Aprobar</a>
+                        
                     </div>`;
                 
                 break;
@@ -252,6 +254,7 @@
                 divInfoPeticion.innerHTML +=
                     `<div class="view-info-acciones">
                         <a id="verUsuario href="#" onclick="cerrarFormulario(${id})">Cerrar</a>
+                        <a id="verPagos" href="#" onclick="getDataPagos(${id})">Ver Pagos</a>
                     </div>`;
 
                 break;
@@ -262,25 +265,53 @@
 
 
     //rendiriza los pagos que pertenecen a una planilla
-    function renderPagosPlanilla(){
+    function renderPagosPlanilla(data, id){
+
+        var divId = `#view-info-pagos_${id}`;
+
+        const planillaInfoPagos = document.querySelector(divId);//div donde se van a mostrar el listado de pagos de la planilla
+        planillaInfoPagos.innerHTML = ``;
+
+        if (data[0].cedula == 'false') {
+    
+            planillaInfoPagos.innerHTML = data[0].mensaje;
+            
+        }else{
 
 
+            data.forEach(item => { 
 
-        `<div class="view-info-pagos">
-        </div>
-           `;
+                planillaInfoPagos.innerHTML += `
+    
+                <div class="pagos-items">
+                    <label for="nombre">Nombre: ${item.Nombre} ${item.apellido1} ${item.apellido2} </label>
+                </div>
+                <div class="pagos-items">
+                    <label for="apellido1">Monto: ${item.monto}</label>
+                </div>
+                <div class="pagos-items">
+                    <label for="detalles">Detalles: ${item.detalles}</label>
+                </div>
+                <hr>
+                `;
+    
+            });
+
+        }   
+
+        
 
     }
 
 
-    async function getDataPagos($id){
+    async function getDataPagos(id){
         
-        data = await fetch(`http://localhost:41062/www/pagos/getPagosDePlanilla/${id}`)
+        data = await fetch(`http://localhost:41062/www/pagos/getPagosPlanilla/${id}`)
         .then(res =>res.json())
         .then(json => json);
         this.copydata = [...this.data];
         console.table(data);
-        renderData(data);
+        renderPagosPlanilla(data, id);//data son los datos en formato json recibidos del servidor, id es el id de la planilla actual
     }
 
 

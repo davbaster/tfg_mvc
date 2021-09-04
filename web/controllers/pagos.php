@@ -88,17 +88,39 @@ class Pagos extends SessionController{
         $res = [];
 
         $joinModel = new JoinPagosPeticionesModel();
-        $pagosJoin = $joinModel->getAllPagosOpen($id);//devuelve todos los pagos de una planilla
+        $pagosJoin = $joinModel->getAllPagosPorPeticion($id);//devuelve todos los pagos de una planilla
 
-        foreach ($pagosJoin as $p) {
-            array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+  
+        if($pagosJoin){//SI  tiene un resultado
+            //$this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PAGOS_PAGAR]);//TODO AGREGAR A LISTA
+            
+            
+            foreach ($pagosJoin as $p) {
+                array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+            }
+            $this->sendJSON($res);
+          
+
+        }else{
+            //$this->redirect('user', ['error' => ErrorMessages::ERROR_USER_BUSCAR_NOEXISTE]);
+           
+            array_push($res, [ 'cedula' => 'false', 'mensaje' => 'La planilla no tiene pagos registrados.' ]);
+            $this->sendJSON($res);
         }
 
-        //TODO hacer verificacion de datos antes de enviar
-        //TODO hacer un metodo para enviar arrays como json, ver peticionespago controller
+    }
+
+
+
+    //manda un pago en formato json a la vista
+    //recibe un pago en formato array
+    function sendJSON($array){
+        error_log('PAGOS_CONTROLLER::sendJSON()');
+
+        
         header("HTTP/1.1 200 OK");
         header('Content-Type: application/json');
-        echo json_encode($res);
+        echo json_encode($array);
 
     }
 
