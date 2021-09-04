@@ -77,6 +77,33 @@ class Pagos extends SessionController{
 
     
 
+    //
+    //devuelve un array con los pagos Open dado un peticionPagoId
+    function getPagosPlanilla($params){
+        error_log('PAGOSCONTROLLER::getPagosPlanilla()');
+
+        if($params === NULL) $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PAGOS_GETPAGOS]);//TODO AGREGAR A LISTA
+        $id = $params[0];
+        
+        $res = [];
+
+        $joinModel = new JoinPagosPeticionesModel();
+        $pagosJoin = $joinModel->getAllPagosOpen($id);//devuelve todos los pagos de una planilla
+
+        foreach ($pagosJoin as $p) {
+            array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+        }
+
+        //TODO hacer verificacion de datos antes de enviar
+        //TODO hacer un metodo para enviar arrays como json, ver peticionespago controller
+        header("HTTP/1.1 200 OK");
+        header('Content-Type: application/json');
+        echo json_encode($res);
+
+    }
+
+
+
 
      // crea una lista con los meses donde hay pagos
      private function getDateList(){

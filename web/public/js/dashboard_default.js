@@ -81,15 +81,17 @@ function renderData(data){
   cerrarPeticionPagoBtn.setAttribute("value", $idPlanilla);//asigna al boton de cerrar planilla el valor del card (planilla seleccionada)
 
 
-  newPagoBtn.setAttribute("value", $idPlanilla);//asigna al boton de crear prestamo el valor del card (planilla seleccionada)
+  newPagoBtn.setAttribute("value", $idPlanilla);//asigna al boton de crear pago el valor del card (planilla seleccionada)
 
-  newPrestamoBtnRender.setAttribute("value", $idPlanilla);
+  newPrestamoBtnRender.setAttribute("value", $idPlanilla);//asigna al boton de crear prestamo el valor del card (planilla seleccionada)
+
+  //Actualizar los datos de planilla en expenses-summary//TODO 
   
 }
 
 //recibe un id del objeto al que se le hizo click, para resaltarlo
 //busca el objeto previo que estaba resaltado para quitarle la clase active.
-//Debe resaltar el objeto parent //TODO
+//Debe resaltar el objeto parent/card 
 function resaltarSeleccion($id){
 
   var idOject = "#"+$id

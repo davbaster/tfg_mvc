@@ -48,33 +48,20 @@ class Prestamos extends SessionController{
             return;
         }
 
-        $pago = new PagosModel();
+        $prestamo = new PrestamosModel();
 
-        $pago->setEstadoPago('open');
-        $pago->setCedula($this->getPost('cedula'));
-        $pago->setAmount((float)$this->getPost('amount'));//float castea el valor a float
-        $pago->setFechaPago('');
-        $pago->setPeticionPagoId($this->getPost('peticion_pago_id'));//setPeticionPagoId
-        $pago->setDetalles($this->getPost('detalles'));
+        $prestamo->setEstado('open');
+        $prestamo->setCedula($this->getPost('cedula'));
+        $prestamo->setMonto((float)$this->getPost('monto'));//float castea el valor a float
+        //$pago->setFechaPago('');
+        $prestamo->setPeticionPagoId($this->getPost('peticion_pago_id'));//setPeticionPagoId
+        $prestamo->setRequestedBy($this->user->getCedula());//contratista que pidio el adelanto de salario
+        $prestamo->setDetalles($this->getPost('detalles'));
         //$pago->setUserId($this->user->getId());
 
-        $pago->save();
+        $prestamo->save();
         $this->redirect('dashboard', ['success' => SuccessMessages::SUCCESS_PRESTAMOS_NEWPRESTAMO]);
     }
-
-
-     // carga vista para nuevas peticion pago UI
-     function create(){
-        //$peticionPago = new PeticionesPagoModel();
-        $joinModel = new JoinPagosPeticionesModel(); //join entre pagos y peticiones
-
-        $this->view->render('prestamos/create', [
-            "peticionPago" => $peticionPago->getAll(), //sirve para crear un pago basado en las planillas
-            //"peticionesPagoIdAprobadas" => $joinModel->getAllPagosAutorizados(),
-            "user" => $this->user
-        ]);
-    } 
-
 
 
     //carga en un arreglo todos los IDs de las peticiones de pago que vienen del joinPagosPeticionesModel
@@ -118,7 +105,8 @@ class Prestamos extends SessionController{
 
     // devuelve todos los elementos de un arreglo como si fuera un JSON para las llamadas AJAX
     //funciona como una API simple
-    function getPagosHistoryJSON(){
+    //TODOD acondicionar para prestamos
+    function getPrestamosHistoryJSON(){
         error_log('PAGOSCONTROLLER::getPagosHistoryJSON()');
         
         $res = [];

@@ -160,7 +160,7 @@
                     </td>
                     </tr>
                     <tr>
-                        <div class="hide" id="info_${item.id_planilla}" value="${item.id_planilla}"></div>
+                        <div class="planilla-container hide" id="info_${item.id_planilla}" value="${item.id_planilla}"></div>
                     </tr>
                     `;
                     
@@ -178,7 +178,7 @@
                         <a class="btnVer show" id="btnVerItem_${item.id_planilla}" href="#" onclick="ver(${item.id_planilla})">Ver</a>
                     </td>                  
                     </tr>
-                    <div class="hide" id="info_${item.id_planilla}" value="${item.id_planilla}"></div>
+                    <div class="planilla-container hide" id="info_${item.id_planilla}" value="${item.id_planilla}"></div>
                     `;
                     
                     break;
@@ -229,6 +229,8 @@
                 <label for="detalles">Detalles: ${data[0].detalles}</label>
             </div>
         </div>
+        <div class="view-info-pagos">
+        </div>
            `;
 
 
@@ -237,7 +239,7 @@
             case "pendiente":
 
                 divInfoPeticion.innerHTML +=
-                    `<div class="">
+                    `<div class="view-info-acciones">
                         <a id="verUsuario href="#" onclick="cerrarFormulario(${id})">Cerrar</a>
                         <a id="verUsuario href="#" onclick="rechazarPeticion(${id})">rechazar</a>
                         <a id="pagarItem" href="#" onclick="autorizarPago(${id})">Aprobar</a>
@@ -248,7 +250,7 @@
             default:
 
                 divInfoPeticion.innerHTML +=
-                    `<div class="">
+                    `<div class="view-info-acciones">
                         <a id="verUsuario href="#" onclick="cerrarFormulario(${id})">Cerrar</a>
                     </div>`;
 
@@ -257,6 +259,29 @@
         
         
       }
+
+
+    //rendiriza los pagos que pertenecen a una planilla
+    function renderPagosPlanilla(){
+
+
+
+        `<div class="view-info-pagos">
+        </div>
+           `;
+
+    }
+
+
+    async function getDataPagos($id){
+        
+        data = await fetch(`http://localhost:41062/www/pagos/getPagosDePlanilla/${id}`)
+        .then(res =>res.json())
+        .then(json => json);
+        this.copydata = [...this.data];
+        console.table(data);
+        renderData(data);
+    }
 
 
 
