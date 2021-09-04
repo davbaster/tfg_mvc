@@ -197,7 +197,7 @@
 
         divInfoPeticion.innerHTML =
 
-        `<div class="view-info">
+        `<div class="planilla-item view-info">
             <div class="">
                 <label for="planillaId">Planilla No.: ${data[0].id_planilla}</label>
             </div>
@@ -229,7 +229,7 @@
                 <label for="detalles">Detalles: ${data[0].detalles}</label>
             </div>
         </div>
-        <div class="container-view-info-pagos" id="view-info-pagos_${data[0].id_planilla}">
+        <div class="planilla-item" id="view-info-pagos_${data[0].id_planilla}">
         </div>
            `;
 
@@ -239,7 +239,7 @@
             case "pendiente":
 
                 divInfoPeticion.innerHTML +=
-                    `<div class="view-info-acciones">
+                    `<div class="planilla-item" id="view-info-acciones">
                         <a id="verUsuario href="#" onclick="cerrarFormulario(${id})">Cerrar</a>
                         <a id="verPagos" href="#" onclick="getDataPagos(${id})">Ver Pagos</a>
                         <a id="verUsuario href="#" onclick="rechazarPeticion(${id})">rechazar</a>
@@ -252,7 +252,7 @@
             default:
 
                 divInfoPeticion.innerHTML +=
-                    `<div class="view-info-acciones">
+                    `<div class="planilla-item" id="view-info-acciones">
                         <a id="verUsuario href="#" onclick="cerrarFormulario(${id})">Cerrar</a>
                         <a id="verPagos" href="#" onclick="getDataPagos(${id})">Ver Pagos</a>
                     </div>`;
@@ -284,10 +284,10 @@
                 planillaInfoPagos.innerHTML += `
     
                 <div class="pagos-items">
-                    <label for="nombre">Nombre: ${item.Nombre} ${item.apellido1} ${item.apellido2} </label>
+                    <label for="nombre">Nombre: ${item.nombre} ${item.apellido1} ${item.apellido2} </label>
                 </div>
                 <div class="pagos-items">
-                    <label for="apellido1">Monto: ${item.monto}</label>
+                    <label for="apellido1">Monto: ${item.adeudado}</label>
                 </div>
                 <div class="pagos-items">
                     <label for="detalles">Detalles: ${item.detalles}</label>
