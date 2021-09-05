@@ -2,6 +2,7 @@
 
 require_once 'models/joinpagospeticionesmodel.php';
 require_once 'models/peticionespagomodel.php';
+require_once 'models/joinprestamosusermodel.php';
 require_once 'models/pagosmodel.php';
 
 
@@ -50,7 +51,7 @@ class Prestamos extends SessionController{
 
         $prestamo = new PrestamosModel();
 
-        $prestamo->setEstado('open');
+        $prestamo->setEstado('pendiente');
         $prestamo->setCedula($this->getPost('cedula'));
         $prestamo->setMonto((float)$this->getPost('monto'));//float castea el valor a float
         //$pago->setFechaPago('');
@@ -106,20 +107,27 @@ class Prestamos extends SessionController{
     // devuelve todos los elementos de un arreglo como si fuera un JSON para las llamadas AJAX
     //funciona como una API simple
     //TODOD acondicionar para prestamos
-    function getPrestamosHistoryJSON(){
-        error_log('PAGOSCONTROLLER::getPagosHistoryJSON()');
+    function getPrestamos(){
+        error_log('PRESTAMOS_CONTROLLER::getPrestamos()');
         
         $res = [];
 
-        $joinModel = new JoinPagosPeticionesModel();
-        $peticiones = $joinModel->getAllPagosAutorizados();//cambie de getAllPagos a getAllPagosAutorizados
+        $model = new JoinPrestamosUserModel();
+        $prestamos = $model->getAllPrestamosPendientes();//devuelve todos los pagos de una planilla
 
-        foreach ($peticiones as $p) {
-            array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+        if($prestamos){//SI  tiene un resultado   
+            
+            foreach ($prestamos as $p) {
+                array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+            }
+            $this->sendJSON($res);
+          
+
+        }else{
+           
+            array_push($res, [ 'cedula' => 'false', 'mensaje' => 'No hay prestamos pendientes.' ]);
+            $this->sendJSON($res);
         }
-        header("HTTP/1.1 200 OK");
-        header('Content-Type: application/json');
-        echo json_encode($res);
 
     }
 

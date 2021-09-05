@@ -20,77 +20,35 @@
         <button class="tablink" onclick="openPage('Contact', this, 'blue')">Aprobadas</button>
         <button class="tablink" onclick="openPage('Historial', this, 'orange')">Historial</button>
 
+        <!-- ADELANTOS/PRESTAMOS SECTION -->
         <div id="Adelantos" class="tabcontent">
                   
             <div id="history-container" class="container">
                 
                 <div id="history-options">
                     <h2>Prestamos</h2>
-                    <!--//TODO mejora: dividir el filtro en a;o, mes, dia  -->
-                    <!-- //TODO mejora: hacer que los filtros sean cruzados entre si -->
-                    
-                    <div id="filters-container">
-                        <div class="filter-container">
-                            <select id="sdate" class="custom-select">
-                                <!-- va php code v11min51 -->
-                                <option value="">Ver todas las fechas</option>
-                                    <?php
-                                        $options = $fechas;
-                                        foreach ($options as $option) {
-                                            echo "<option value=$option >".$option."</option>";
-                                        }
-                                    ?>
-                            </select>
-                        </div>
-
-                        <div class="filter-container">
-                            <select id="scontratista" class="custom-select">
-                                <option value="">Todos los Contratistas</option>
-                                    <?php
-                                        $options = $contratistas;
-                                        foreach ($options as $option) {
-                                            // $valor = $option['nombre'] .' '. $option['apellido1'] ;
-                                            echo "<option value=$option >".$option ."</option>";
-                                        }
-                                    ?>
-                                
-                            </select>
-                        </div>
-
-                        <div class="filter-container">
-                            <select id="sestado" class="custom-select">
-                                <option value="">Todos los estados</option>
-
-                                <option value="autorizado" >Autorizado</option>;
-                                    <option value="pendiente" >Pendiente</option>;
-                                    <option value="pagado" >Pagado</option>;
-
-                                
-                            </select>
-                        </div>
-                    </div>   
                 </div>
                 
-                <div id="table-container">
+                <div id="table-container" class="table-container">
                     <table width="100%" cellpadding="0">
                         <thead>
                             <tr>
-                            <th >ID</th>
-                            <th data-titulo="Contratista:" width="20%">Contratista</th>
+                            <th >ID Prestamo</th>
+                            <th data-titulo="Contratista:" width="20%">Trabajador</th>
                             <th data-titulo="Fecha:">Fecha</th>
-                            <th data-titulo="Monto:">Cantidad</th>
+                            <th data-titulo="Monto:">Monto</th>
                             <th data-titulo="Estado:">Estado</th>
                             <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="databody">
+                        <tbody id="databody-prestamos">
                             
                         </tbody>
                     </table>
                 </div>
                 
             </div>
-            <script src="public/js/peticiones_prestamos.js"></script>         
+                    
         </div><!--FIN DE ADELANTOS DE PAGO/PRESTAMOS  -->
             
 
@@ -156,7 +114,7 @@
                     </div>   
                 </div>
                 
-                <div id="table-container">
+                <div id="table-container" class="table-container">
                     <table width="100%" cellpadding="0">
                         <thead>
                             <tr>
@@ -175,7 +133,7 @@
                 </div>
                 
             </div>
-            <script src="public/js/peticionespago.js"></script>
+            
                                         
         </div><!--FIN DE HISTORIAL  -->
 
@@ -191,3 +149,5 @@
 
 
 <script src="public/js/peticionespago_dashboard.js"></script>
+<script src="public/js/peticionespago_prestamos.js"></script> 
+<script src="public/js/peticionespago.js"></script>
