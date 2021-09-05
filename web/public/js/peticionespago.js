@@ -150,11 +150,11 @@
                 case "pendiente":
 
                     databody.innerHTML += `<tr>
-                    <td>${item.id_planilla}</td>
-                    <td>${item.nombre}</td>
-                    <td>${item.fecha_creacion}</td>
-                    <td>¢${item.monto}</td>
-                    <td>${item.estado}</td>
+                    <td data-titulo="Numero:">${item.id_planilla}</td>
+                    <td data-titulo="Nombre:">${item.nombre}</td>
+                    <td data-titulo="Fecha Creacion:">${item.fecha_creacion}</td>
+                    <td data-titulo="Monto:">¢${item.monto}</td>
+                    <td data-titulo="Estado:">${item.estado}</td>
                     <td>
                         <a class="btnVer show" id="btnVerItem_${item.id_planilla}" href="#" onclick="ver(${item.id_planilla})">Ver</a>
                     </td>
@@ -169,11 +169,11 @@
             
                 default:
                     databody.innerHTML += `<tr>
-                    <td>${item.id_planilla}</td>
-                    <td>${item.nombre}</td>
-                    <td>${item.fecha_creacion}</td>
-                    <td>¢${item.monto}</td>
-                    <td>${item.estado}</td>
+                    <td data-titulo="Numero:">${item.id_planilla}</td>
+                    <td data-titulo="Nombre:">${item.nombre}</td>
+                    <td data-titulo="Fecha Creacion:">${item.fecha_creacion}</td>
+                    <td data-titulo="Monto:">¢${item.monto}</td>
+                    <td data-titulo="Estado:">${item.estado}</td>
                     <td>
                         <a class="btnVer show" id="btnVerItem_${item.id_planilla}" href="#" onclick="ver(${item.id_planilla})">Ver</a>
                     </td>                  

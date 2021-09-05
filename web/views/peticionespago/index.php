@@ -78,11 +78,11 @@
                         <table width="100%" cellpadding="0">
                             <thead>
                                 <tr>
-                                <th data-sort="id">ID</th>
-                                <th data-sort="title" width="20%">Contratista</th>
-                                <th data-sort="date">Fecha</th>
-                                <th data-sort="amount">Cantidad</th>
-                                <th data-sort="amount">Estado</th>
+                                <th data-titulo="Numero:">ID</th>
+                                <th data-titulo="Contratista:" width="20%">Contratista</th>
+                                <th data-titulo="Fecha:">Fecha</th>
+                                <th data-titulo="Monto:">Cantidad</th>
+                                <th data-titulo="Estado:">Estado</th>
                                 <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -164,11 +164,11 @@
                     <table width="100%" cellpadding="0">
                         <thead>
                             <tr>
-                            <th data-sort="id">ID</th>
-                            <th data-sort="title" width="20%">Contratista</th>
-                            <th data-sort="date">Fecha</th>
-                            <th data-sort="amount">Cantidad</th>
-                            <th data-sort="amount">Estado</th>
+                            <th data-titulo="No.">ID</th>
+                            <th data-titulo="Contratista:" width="20%">Contratista</th>
+                            <th data-titulo="Fecha:">Fecha</th>
+                            <th data-titulo="Monto:">Cantidad</th>
+                            <th data-titulo="Estado:">Estado</th>
                             <th>Acciones</th>
                             </tr>
                         </thead>

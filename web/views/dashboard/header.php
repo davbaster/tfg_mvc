@@ -3,9 +3,12 @@
 <!-- <link rel="stylesheet" href="<?php //echo constant("URL"); ?>/public/css/dashboard.css"> -->
 
 <!-- DEVELOPMENT -->
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
 <link rel="stylesheet" href="public/css/default.css">
 <link rel="stylesheet" href="public/css/dashboard.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 
 
 <div id="header">
