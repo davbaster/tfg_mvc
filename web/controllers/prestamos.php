@@ -124,6 +124,53 @@ class Prestamos extends SessionController{
     }
 
 
+    //devuelve un array con los prestamos ligados a una peticionPagoId
+    function getPrestamosPlanilla($params){
+        error_log('PAGOSCONTROLLER::getPagosPlanilla()');
+
+        if($params === NULL) $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PAGOS_GETPAGOS]);//TODO AGREGAR A LISTA
+        $id = $params[0];
+        
+        $res = [];
+
+        $model = new PrestamosModel();
+        $prestamos = $model->getAllPrestamosPorPeticion($id);//devuelve todos los pagos de una planilla
+
+  
+        if($prestamos){//SI  tiene un resultado
+            //$this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PAGOS_PAGAR]);//TODO AGREGAR A LISTA
+            
+            
+            foreach ($prestamos as $p) {
+                array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+            }
+            $this->sendJSON($res);
+          
+
+        }else{
+            //$this->redirect('user', ['error' => ErrorMessages::ERROR_USER_BUSCAR_NOEXISTE]);
+           
+            array_push($res, [ 'cedula' => 'false', 'mensaje' => 'La planilla no tiene prestamos registrados.' ]);
+            $this->sendJSON($res);
+        }
+
+    }
+
+
+
+    //manda un prestamo en formato json a la vista
+    //recibe un prestamo en formato array
+    function sendJSON($array){
+        error_log('PAGOS_CONTROLLER::sendJSON()');
+
+        
+        header("HTTP/1.1 200 OK");
+        header('Content-Type: application/json');
+        echo json_encode($array);
+
+    }
+
+
 
 
     //cambia el estado de open a pagado

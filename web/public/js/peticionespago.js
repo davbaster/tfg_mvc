@@ -229,8 +229,8 @@
                 <label for="detalles">Detalles: ${data[0].detalles}</label>
             </div>
         </div>
-        <div class="planilla-item" id="view-info-pagos_${data[0].id_planilla}">
-        </div>
+        <div class="planilla-item" id="view-info-pagos_${data[0].id_planilla}"></div>
+        <div class="planilla-item" id="view-info-prestamos_${data[0].id_planilla}"></div>
            `;
 
 
@@ -241,9 +241,10 @@
                 divInfoPeticion.innerHTML +=
                     `<div class="planilla-item" id="view-info-acciones">
                         <a id="verUsuario href="#" onclick="cerrarFormulario(${id})">Cerrar</a>
-                        <a id="verPagos" href="#" onclick="getDataPagos(${id})">Ver Pagos</a>
                         <a id="verUsuario href="#" onclick="rechazarPeticion(${id})">rechazar</a>
                         <a id="pagarItem" href="#" onclick="autorizarPago(${id})">Aprobar</a>
+                        <a id="verPagos" href="#" onclick="getDataPagos(${id})">Ver Pagos</a>
+                        <a id="verPagos" href="#" onclick="getDataPrestamos(${id})">Ver Prestamos</a>
                         
                     </div>`;
                 
@@ -255,6 +256,7 @@
                     `<div class="planilla-item" id="view-info-acciones">
                         <a id="verUsuario href="#" onclick="cerrarFormulario(${id})">Cerrar</a>
                         <a id="verPagos" href="#" onclick="getDataPagos(${id})">Ver Pagos</a>
+                        <a id="verPagos" href="#" onclick="getDataPrestamos(${id})">Ver Prestamos</a>
                     </div>`;
 
                 break;
@@ -270,7 +272,7 @@
         var divId = `#view-info-pagos_${id}`;
 
         const planillaInfoPagos = document.querySelector(divId);//div donde se van a mostrar el listado de pagos de la planilla
-        planillaInfoPagos.innerHTML = ``;
+        planillaInfoPagos.innerHTML = `Pagos en esta planilla`;
 
         if (data[0].cedula == 'false') {
     
@@ -303,17 +305,66 @@
 
     }
 
+    //rendiriza los pagos que pertenecen a una planilla
+    function renderPrestamosPlanilla(data, id){
+
+        var divId = `#view-info-prestamos_${id}`;
+
+        const planillaInfoPrestamos = document.querySelector(divId);//div donde se van a mostrar el listado de pagos de la planilla
+        planillaInfoPrestamos.innerHTML = `Prestamos en esta planilla`;
+
+        if (data[0].cedula == 'false') {
+    
+            planillaInfoPrestamos.innerHTML = data[0].mensaje;
+            
+        }else{
+
+
+            data.forEach(item => { 
+
+                planillaInfoPrestamos.innerHTML += `
+                
+                <div class="pagos-items">
+                    <label for="cedula">Cedula: ${item.cedula}</label>
+                </div>
+                <div class="pagos-items">
+                    <label for="apellido1">Monto: ${item.monto}</label>
+                </div>
+                <div class="pagos-items">
+                    <label for="detalles">Detalles: ${item.detalles}</label>
+                </div>
+                <hr>
+                `;
+    
+            });
+
+        }   
+
+        
+
+    }
+
 
     async function getDataPagos(id){
         
         data = await fetch(`http://localhost:41062/www/pagos/getPagosPlanilla/${id}`)
         .then(res =>res.json())
         .then(json => json);
-        this.copydata = [...this.data];
-        console.table(data);
+        // this.copydata = [...this.data];
+        // console.table(data);
         renderPagosPlanilla(data, id);//data son los datos en formato json recibidos del servidor, id es el id de la planilla actual
     }
 
+    //pide al servidor todos los prestamos ligados a una peticionpago/planilla
+    //recibe los datos en formato json
+    //manda a rendirizar en pantall la informacion 
+    async function getDataPrestamos(id){
+        
+        data = await fetch(`http://localhost:41062/www/prestamos/getPrestamosPlanilla/${id}`)
+        .then(res =>res.json())
+        .then(json => json);
+        renderPrestamosPlanilla(data, id);//data son los datos en formato json recibidos del servidor, id es el id de la planilla actual
+    }
 
 
 

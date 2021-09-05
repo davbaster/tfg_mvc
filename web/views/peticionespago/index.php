@@ -21,8 +21,81 @@
         <button class="tablink" onclick="openPage('Historial', this, 'orange')">Historial</button>
 
         <div id="Home" class="tabcontent">
-        <h3>Adelantos de pago</h3>
-        <p>Home is where the heart is..</p>
+            <h3>Adelantos de pago</h3>
+            <!-- PAGINA ADELANTO DE PAGOS -->
+            <div id="Adelantos" class="tabcontent">
+                    
+                <div id="history-container" class="container">
+                    
+                    <div id="history-options">
+                        <h2>Historial de Planillas</h2>
+                        <!--//TODO mejora: dividir el filtro en a;o, mes, dia  -->
+                        <!-- //TODO mejora: hacer que los filtros sean cruzados entre si -->
+                        
+                        <div id="filters-container-prestamos">
+                            <div class="filter-container">
+                                <select id="sdate-prestamos" class="custom-select">
+                                    <!-- va php code v11min51 -->
+                                    <option value="">Ver todas las fechas</option>
+                                        <?php
+                                            $options = $fechas;
+                                            foreach ($options as $option) {
+                                                echo "<option value=$option >".$option."</option>";
+                                            }
+                                        ?>
+                                </select>
+                            </div>
+    
+                            <div class="filter-container">
+                                <select id="scontratista-prestamos" class="custom-select">
+                                    <option value="">Todos los Contratistas</option>
+                                        <?php
+                                            $options = $contratistas;
+                                            foreach ($options as $option) {
+                                                // $valor = $option['nombre'] .' '. $option['apellido1'] ;
+                                                echo "<option value=$option >".$option ."</option>";
+                                            }
+                                        ?>
+                                    
+                                </select>
+                            </div>
+    
+                            <div class="filter-container">
+                                <select id="sestado-prestamo" class="custom-select">
+                                    <option value="">Todos los estados</option>
+    
+                                    <option value="autorizado" >Autorizado</option>;
+                                        <option value="pendiente" >Pendiente</option>;
+                                        <option value="pagado" >Pagado</option>;
+    
+                                    
+                                </select>
+                            </div>
+                        </div>   
+                    </div>
+                    
+                    <div id="table-container-prestamos">
+                        <table width="100%" cellpadding="0">
+                            <thead>
+                                <tr>
+                                <th data-sort="id">ID</th>
+                                <th data-sort="title" width="20%">Contratista</th>
+                                <th data-sort="date">Fecha</th>
+                                <th data-sort="amount">Cantidad</th>
+                                <th data-sort="amount">Estado</th>
+                                <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="databody-prestamos">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+                                            
+            </div><!--FIN DE ADELANTOS DE PAGO  -->
+            
         </div>
 
         <div id="News" class="tabcontent">
@@ -106,8 +179,8 @@
                 </div>
                 
             </div>
-
-        </div>
+                                        
+        </div><!--FIN DE HISTORIAL  -->
 
         <script src="public/js/peticionespago.js"></script>
 

@@ -117,6 +117,10 @@ class PagosModel extends Model implements IModel {
         }
     }
 
+
+    
+
+
     
    
     public function get($id){
