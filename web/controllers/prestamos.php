@@ -190,6 +190,35 @@ class Prestamos extends SessionController{
     }
 
 
+
+        //devuelve un array con prestamos Rechazados
+        function getPrestamosRechazados(){
+            error_log('PRESTAMOS_CONTROLLER::getPrestamosRechazados()');
+            
+            $res = [];
+    
+            $model = new JoinPrestamosUserModel();
+            $prestamos = $model->getAllPrestamosRechazados();//devuelve todos los pagos de una planilla
+    
+            if($prestamos){//SI  tiene un resultado   
+                
+                foreach ($prestamos as $p) {
+                    array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+                }
+               
+              
+    
+            }else{
+               
+                array_push($res, [ 'cedula' => 'empty', 'mensaje' => 'No hay prestamos rechazados.' ]);
+                
+            }
+
+            return $res;//devuelve objeto en forma de array
+    
+        }
+
+
     //devuelve un array con los prestamos ligados a una peticionPagoId
     function getPrestamosPlanilla($params){
         error_log('PAGOSCONTROLLER::getPagosPlanilla()');
@@ -286,7 +315,7 @@ class Prestamos extends SessionController{
 
 
     //devuelve un array con los datos de un prestamo dado un id de prestamo
-    function rechazar($params){
+    function rechazarPrestamo($params){
         error_log('PRESTAMOS_CONTROLLER::rechazar()');
 
         if($params === NULL) $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PAGOS_GETPAGOS]);//TODO AGREGAR A LISTA

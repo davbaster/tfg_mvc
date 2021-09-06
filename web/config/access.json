@@ -21,14 +21,29 @@
             "role":"contratista"
         },
         {
+            "site": "dashboard",
+            "access": "private",
+            "role":"supervisor"
+        },
+        {
             "site": "pagos",
+            "access": "private",
+            "role":"administrador"
+        },
+        {
+            "site": "pagos",
+            "access": "private",
+            "role":"supervisor"
+        },
+        {
+            "site": "prestamos",
             "access": "private",
             "role":"administrador"
         },
         {
             "site": "prestamos",
             "access": "private",
-            "role":"administrador"
+            "role":"supervisor"
         },
         {
             "site": "peticionespago",
@@ -53,12 +68,23 @@
             "site": "configuracion",
             "access": "private",
             "role":"administrador"
+        },
+        {
+            "site": "configuracion",
+            "access": "private",
+            "role":"contratista"
+        },
+        {
+            "site": "configuracion",
+            "access": "private",
+            "role":"supervisor"
         }
     ],
 
     "default-sites": {
         "contratista": "dashboard",
-        "administrador": "dashboard"
+        "administrador": "dashboard",
+        "supervisor": "dashboard"
     }
 }
 

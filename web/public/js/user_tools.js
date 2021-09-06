@@ -363,10 +363,10 @@ function dibujarTabla(){
               userEdit.innerHTML += `        <div class="">
               <label for="rol">Rol del usuario:</label>
                   <select name="rol" id="rol" required>
-                      <option value="construccion">Construccion</option>
+                      <option value="construccion" selected>Construccion</option>
                       <option value="contratista">Contratista</option>
-                      <!-- <option value="contador">Contador</option> -->
-                      <option value="administrador" selected>Administrador</option>
+                      <option value="supervisor">Supervisor</option>
+                      <option value="administrador" >Administrador</option>
                       
                   </select>
               </div>`;
@@ -380,7 +380,7 @@ function dibujarTabla(){
                   <select name="rol" id="rol" required>
                       <option value="construccion">Construccion</option>
                       <option value="contratista" selected>Contratista</option>
-                      <!-- <option value="contador">Contador</option> -->
+                      <option value="supervisor">Supervisor</option>
                       <option value="administrador" selected>Administrador</option>
                       
                   </select>
@@ -396,7 +396,7 @@ function dibujarTabla(){
               <select name="rol" id="rol" required>
                   <option value="construccion" selected>Construccion</option>
                   <option value="contratista" >Contratista</option>
-                  <!-- <option value="contador">Contador</option> -->
+                  <option value="supervisor">Supervisor</option>
                   <option value="administrador" selected>Administrador</option>
                   
               </select>
@@ -411,7 +411,7 @@ function dibujarTabla(){
                 <select name="rol" id="rol" required>
                     <option value="construccion" selected>Construccion</option>
                     <option value="contratista" >Contratista</option>
-                    <option value="contador" selected>Contador</option>
+                    <option value="supervisor">Supervisor</option>
                     <option value="administrador" >Administrador</option>
                     
                 </select>

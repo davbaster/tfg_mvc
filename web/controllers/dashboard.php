@@ -1,6 +1,7 @@
 <?php
 
 require_once 'models/pagosmodel.php';
+require_once 'controllers/prestamos.php';
 require_once 'models/peticionespagomodel.php';
 require_once 'models/joinpagospeticionesmodel.php'; 
 require_once 'models/joinpeticionesusermodel.php';
@@ -40,6 +41,9 @@ class Dashboard extends SessionController{
 
         $peticionEstadistica       = $this->pagosOpenEstadistica($peticionesOpen[0]->getId());
         
+        $prestamoController = new Prestamos();
+        $prestamosRechazados  = $prestamoController->getPrestamosRechazados();
+
 
         $this->view->render('dashboard/index', [
             'user'                      => $this->user,
@@ -49,8 +53,8 @@ class Dashboard extends SessionController{
             'pagosRecientes'            => $pagosRecientes,
             'petiRecientes'             => $petiRecientes,
             'peticionesOpen'             => $peticionesOpen,
-            'peticionEstadistica'        =>$peticionEstadistica   
-            
+            'peticionEstadistica'        =>$peticionEstadistica,    
+            'prestamosRechazados'        =>$prestamosRechazados
             
         ]);
     }

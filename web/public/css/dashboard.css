@@ -6,7 +6,7 @@ h2{
 
 
 
-#expenses-container, #dashboard-container{
+#structure-container, #dashboard-container{
     display: grid;
     grid-template-columns: 65% 35%;
     grid-template-rows: 100%;
@@ -105,10 +105,10 @@ h2{
     padding: 10px 0;
 }
 
-#expenses-category{
+#display-information-category{
     padding: 0 40px 40px 40px;
 }
-#expenses-category #categories-container{
+#display-information-category #categories-container{
     display: flex;
     flex-wrap: wrap;
 }
@@ -122,21 +122,21 @@ h2{
 .w-70{width: calc(70% - 60px);}
 .w-100{width: 100%}
 
-#expenses-summary{
+#planillas-summary{
     background-color: rgb(34, 46, 63);
     color: white;
     padding: 40px;
 }
-#expenses-summary .total-expense{
+#planillas-summary .total-expense{
     font-size: 32px;
     font-weight: bolder;
 }
 
-#expenses-summary .total-budget{
+#planillas-summary .total-amount{
     padding: 10px 0;
 }
 
-#expenses-summary .total-budget .total-budget-text{
+#planillas-summary .total-amount .total-amount-text{
     font-size: 14px;
     color:rgb(160, 189, 229);
 }

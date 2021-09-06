@@ -86,7 +86,7 @@
                             <select name="rol" id="rol" required>
                                 <option value="construccion">Construccion</option>
                                 <option value="contratista">Contratista</option>
-                                <!-- <option value="contador">Contador</option> -->
+                                <option value="supervisor">Supervisor</option>
                                 <option value="administrador">Administrador</option>
                                 
                             </select>

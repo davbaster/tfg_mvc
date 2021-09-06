@@ -257,6 +257,10 @@ class SessionController extends Controller {
 
             case 'administrador':
                 $this->redirect($this->defaultSites['administrador'], []);
+
+            case 'supervisor':
+                $this->redirect($this->defaultSites['administrador'], []);
+
                 
                 break;
             default:
