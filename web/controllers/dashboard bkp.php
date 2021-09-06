@@ -1,7 +1,6 @@
 <?php
 
 require_once 'models/pagosmodel.php';
-require_once 'controllers/prestamos.php';
 require_once 'models/peticionespagomodel.php';
 require_once 'models/joinpagospeticionesmodel.php'; 
 require_once 'models/joinpeticionesusermodel.php';
@@ -41,9 +40,6 @@ class Dashboard extends SessionController{
 
         $peticionEstadistica       = $this->pagosOpenEstadistica($peticionesOpen[0]->getId());
         
-        $prestamoController = new Prestamos();
-        $prestamosRechazados  = $prestamoController->getPrestamosRechazados();
-
 
         $this->view->render('dashboard/index', [
             'user'                      => $this->user,
@@ -53,8 +49,8 @@ class Dashboard extends SessionController{
             'pagosRecientes'            => $pagosRecientes,
             'petiRecientes'             => $petiRecientes,
             'peticionesOpen'             => $peticionesOpen,
-            'peticionEstadistica'        =>$peticionEstadistica,    
-            'prestamosRechazados'        =>$prestamosRechazados
+            'peticionEstadistica'        =>$peticionEstadistica   
+            
             
         ]);
     }
@@ -65,7 +61,7 @@ class Dashboard extends SessionController{
         //$peticionesPago = $peticionModel->getAllPeticionesOpen($this->user->getCedula()); //recibe las peticiones en estado OPEN, osea no mandadas a autorizar todavia 
         $peticionesPago = $this->getPeticionPagoArray($peticionId[0]); //recibe las peticiones en estado OPEN, osea no mandadas a autorizar todavia 
         $user = new UserModel();
-        $usuarios = $user->getAllActive(); //todos los trabajadores activos que pueden trabajar en una planilla
+        $usuarios = $user->getAll(); //todos los trabajadores que pueden trabajar en una planilla
                                                      
 
         //$this->view->render('peticionespago/agregarpago', [
@@ -78,27 +74,6 @@ class Dashboard extends SessionController{
             
         ]);
     }
-
-
-         // carga VISTA para nuevas peticion pago UI en DASHBOARD 
-         function viewNewPrestamoDialog($peticionId){
-            
-            $peticionPago = $this->getPeticionPagoArray($peticionId[0]); //recibe una peticion en formato Array 
-            $user = new UserModel();
-            $usuarios = $user->getAllActive(); //todos los trabajadores Activos que pueden trabajar en una planilla
-                                                         
-    
-            //$this->view->render('peticionespago/agregarpago', [
-            $this->view->render('dashboard/agregarprestamo', [
-    
-                'user'                                      => $this->user,
-                'peticionAbiertaSeleccionada'               => $peticionPago,
-                'usuarios'                                  => $usuarios
-    
-                
-            ]);
-        }
-
 
 
     //obtiene la lista de expenses y $n tiene el número de expenses por transacción
@@ -250,32 +225,6 @@ class Dashboard extends SessionController{
         ]);
     }
 
-
-
-        //VistaenviarAutorizarPeticion
-        // carga vista para la creacion de una nueva peticion de pago/planilla
-    //manda las peticiones de pago en estado Open, estas se les puede seguir metiendo pagos.
-    //bien implementada, deberia de mandar solo arrays con la informacion formateada.//TODO
-    function viewDialogModificarPeticionPago($params){
-
-        
-        if($params[0] === NULL) $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO]);//TODO AGREGAR A LISTA
-
-        $peticionPagoId = $params[0];
-
-        //$pagosJoin = new JoinPagosPeticionesModel();
-        $this->view->render('dashboard/modificarpeticionpago', [
-
-
-           "peticionAbiertaSeleccionada"      => $this->getPeticionPagoArray($peticionPagoId), //envia un objeto peticionuserJoinmodel en forma de array
-
-            "pagosOpenPerId"                  => $this->pagosOpenPerIdPeticion($peticionPagoId),
-         
-                                                        //TODO deberia utilizar metodo que traiga las peticiones pendientes de pago y como un arreglo de datos
-            "user"                            => $this->user
-        ]);
-    }
-
     //cierra la planilla, la accion la ejecuta el usuario contratista o un administrador
     //cambia el estado de una planilla de OPEN a PENDIENTE de autorizacion
     //deberia refrescar la pagina para que refleje las planillas pendientes de autorizacion por parte del administrador.
@@ -312,47 +261,6 @@ class Dashboard extends SessionController{
         }else{
     
             $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO_ENVIAR]);
-        }
-    }
-
-
-
-    //cierra la planilla, la accion la ejecuta el usuario contratista o un administrador
-    //cambia el estado de una planilla de OPEN a PENDIENTE de autorizacion
-    //deberia refrescar la pagina para que refleje las planillas pendientes de autorizacion por parte del administrador.
-    function actualizarPeticionPago(){
-        error_log("DASHBOARD_CONTROLLER::actualizarPeticionPago()");
-
-
-        if ($this->existPOST(['peticionPago_id'])) {
-            $peticionPagoId = $this->getPost('peticionPago_id');
-            $monto = $this->getPost('monto');
-            $descripcion = $this->getPost('descripcion');
-                
-            
-            if($peticionPagoId === NULL) $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO_ACTUALIZAR]);
-            
-           
-            $peticionPagoModel = new PeticionesPagoModel();
-       
-            $peticionPagoModel->get($peticionPagoId);
-
-            // actualizando la informacion
-            $peticionPagoModel->setEstado("open");//cambia estado planilla a open, se ocuparia si el estado estuviera en rechazado, sino no
-            $peticionPagoModel->setMonto($monto);
-            $peticionPagoModel->setDescripcion($descripcion);
-            $res = $peticionPagoModel->update();//CAMBIAR ESTADO
-
-            if($res){//SI RES tiene un resultado
-                $this->redirect('dashboard', ['success' => SuccessMessages::SUCCESS_PETICIONPAGO_ACTUALIZAR]);
-               
-
-            }else{
-                $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO_ACTUALIZAR]);
-            }
-        }else{
-    
-            $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO_ACTUALIZAR]);
         }
     }
 

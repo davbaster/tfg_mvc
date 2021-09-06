@@ -34,7 +34,7 @@ class JoinPeticionesUserModel extends Model {
            //WHERE p2.fecha_pago as fechaPago,
             $query = $this->prepare('SELECT 
                         p2.id as id_planilla,
-                        p2.nombre as descripcion,  
+                        p2.descripcion as descripcion,  
                         p2.estado as estado, 
                         p2.cedula as cedula_contratista, 
                         u.nombre as nombre, 
@@ -78,7 +78,7 @@ class JoinPeticionesUserModel extends Model {
            //WHERE p2.fecha_pago as fechaPago,
             $query = $this->prepare('SELECT 
                         p2.id as id_planilla,
-                        p2.nombre as descripcion,  
+                        p2.descripcion as descripcion,  
                         p2.estado as estado, 
                         p2.cedula as cedula_contratista, 
                         u.nombre as nombre, 
@@ -126,7 +126,7 @@ class JoinPeticionesUserModel extends Model {
                //WHERE p2.fecha_pago as fechaPago,
                 $query = $this->prepare('SELECT 
                             p2.id as id_planilla,
-                            p2.nombre as descripcion,  
+                            p2.descripcion as descripcion,  
                             p2.estado as estado, 
                             p2.cedula as cedula_contratista, 
                             u.nombre as nombre, 
@@ -174,7 +174,7 @@ class JoinPeticionesUserModel extends Model {
             //WHERE p2.fecha_pago as fechaPago,
             $query = $this->prepare('SELECT 
                         p2.id as id_planilla,
-                        p2.nombre as descripcion,  
+                        p2.descripcion as descripcion,  
                         p2.estado as estado, 
                         p2.cedula as cedula_contratista, 
                         u.nombre as nombre, 
@@ -222,7 +222,7 @@ class JoinPeticionesUserModel extends Model {
            //WHERE p2.fecha_pago as fechaPago,
             $query = $this->prepare('SELECT 
                         p2.id as id_planilla,
-                        p2.nombre as descripcion,  
+                        p2.descripcion as descripcion,  
                         p2.estado as estado, 
                         p2.cedula as cedula_contratista, 
                         u.nombre as nombre, 
@@ -271,7 +271,7 @@ class JoinPeticionesUserModel extends Model {
            //WHERE p2.fecha_pago as fechaPago,
             $query = $this->prepare('SELECT 
                         p2.id as id_planilla,
-                        p2.nombre as descripcion, 
+                        p2.descripcion as descripcion, 
                         p2.estado as estado, 
                         p2.cedula as cedula_contratista, 
                         u.nombre as nombre, 
@@ -319,7 +319,7 @@ class JoinPeticionesUserModel extends Model {
            //WHERE p2.fecha_pago as fechaPago,
             $query = $this->prepare('SELECT 
                         p2.id as id_planilla,
-                        p2.nombre as descripcion, 
+                        p2.descripcion as descripcion, 
                         p2.estado as estado, 
                         p2.cedula as cedula_contratista, 
                         u.nombre as nombre, 
@@ -398,6 +398,7 @@ class JoinPeticionesUserModel extends Model {
 
 
     public function getPeticionPagoId(){return $this->peticionId;}
+    public function getDescripcion(){return $this->descripcion;}
     public function getEstado(){return $this->estado;}
     public function getCedula(){return $this->cedula;}
     public function getNombre(){return $this->nombre;}

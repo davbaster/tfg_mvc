@@ -31,11 +31,6 @@
             "role":"administrador"
         },
         {
-            "site": "pagos",
-            "access": "private",
-            "role":"supervisor"
-        },
-        {
             "site": "prestamos",
             "access": "private",
             "role":"administrador"
@@ -49,10 +44,11 @@
             "site": "peticionespago",
             "access": "private",
             "role":"administrador"
-        },{
+        },
+        {
             "site": "peticionespago",
             "access": "private",
-            "role":"contratista"
+            "role":"supervisor"
         },
         {
             "site": "user",

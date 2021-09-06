@@ -272,7 +272,7 @@ class PeticionesPago extends SessionController{
 
         $peticionPago = new PeticionesPagoModel();
 
-        $peticionPago->setNombre($this->getPost('nombre_planilla'));
+        $peticionPago->setDescripcion($this->getPost('nombre_planilla'));
         $peticionPago->setMonto((float)$this->getPost('amount'));//float castea el valor a float
         $peticionPago->setCedula($this->getPost('cedula'));//setPeticionPagoId
         $peticionPago->setEstado("open"); //open =Peticion de pago recientemete abierta

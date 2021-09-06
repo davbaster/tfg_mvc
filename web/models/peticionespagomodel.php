@@ -4,7 +4,7 @@ class PeticionesPagoModel extends Model implements IModel {
 
 
     private $id; //id de peticionPago
-    private $nombre; //nombre del significativo para el usuario para que identifique la planilla.
+    private $descripcion; //nombre del significativo para el usuario para que identifique la planilla.
     private $cedula; //usuario con rol de contratista, usuario que creo la peticion de pago
     private $fechaCreacion;//fecha en que se crea la peticion de pago
     private $idContrato; //TODO se va a usar si se crea modulo contratos
@@ -29,7 +29,7 @@ class PeticionesPagoModel extends Model implements IModel {
         parent::__construct();
 
          $this->id = ''; 
-         $this->nombre = ''; 
+         $this->descripcion = ''; 
          $this->cedula = ''; 
          $this->fechaCreacion = '';
          $this->idContrato = ''; 
@@ -41,13 +41,13 @@ class PeticionesPagoModel extends Model implements IModel {
 
 
     public function save(){
-        //LOG: agregue variable nombre al insert INTO
+        //LOG: agregue variable descripcion al insert INTO
         try{
-            $query = $this->prepare('INSERT INTO peticiones_pago (nombre, cedula, id_contrato, monto, estado, detalles) 
-                                    VALUES(:nombre,:cedula,  :idContrato, :monto, :estado, :detalles)');
+            $query = $this->prepare('INSERT INTO peticiones_pago (descripcion, cedula, id_contrato, monto, estado, detalles) 
+                                    VALUES(:descripcion,:cedula,  :idContrato, :monto, :estado, :detalles)');
             $query->execute([
                 // 'id' => $this->id,
-                'nombre' => $this->nombre, 
+                'descripcion' => $this->descripcion, 
                 'cedula' => $this->cedula, 
                 // 'fechaCreacion' => $this->fechaCreacion,
                 'idContrato' => $this->idContrato,
@@ -121,10 +121,10 @@ class PeticionesPagoModel extends Model implements IModel {
 
     //
     public function update(){
-        //LOG: agregue variable nombre
+        //LOG: agregue variable descripcion
         try{
             $query = $this->db->connect()->prepare('UPDATE peticiones_pago SET 
-                                                    nombre = :nombre,
+                                                    descripcion = :descripcion,
                                                     cedula = :cedula, 
                                                     fecha_creacion = :fechaCreacion,  
                                                     id_contrato = :idContrato, 
@@ -133,7 +133,7 @@ class PeticionesPagoModel extends Model implements IModel {
                                                     detalles = :detalles WHERE id = :id');
             $query->execute([
                 'id' => $this->id,
-                'nombre' => $this->nombre,
+                'descripcion' => $this->descripcion,
                 'cedula' => $this->cedula, 
                 'fechaCreacion' => $this->fechaCreacion,
                 'idContrato' => $this->idContrato,
@@ -154,7 +154,7 @@ class PeticionesPagoModel extends Model implements IModel {
     public function from($array){
 
         $this->setId                ($array['id']) ;
-        $this->setNombre           ($array['nombre'] ) ;
+        $this->setDescripcion       ($array['descripcion'] ) ;
         $this->setCedula            ($array['cedula'] ) ;
         $this->setFechaCreacion     ( $array['fecha_creacion'] ) ;
         $this->setIdContrato        ( $array['id_contrato'] ) ;
@@ -329,7 +329,7 @@ class PeticionesPagoModel extends Model implements IModel {
     //setters
 
     public function setId($id){$this->id = $id;}
-    public function setNombre($nombre){$this->nombre = $nombre;}
+    public function setDescripcion($descripcion){$this->descripcion = $descripcion;}
     public function setCedula($cedula){$this->cedula = $cedula;}
     public function setFechaCreacion($fechaCreacion){$this->fechaCreacion = $fechaCreacion;} //color
     public function setIdContrato($idContrato){$this->idContrato = $idContrato;}
@@ -346,7 +346,7 @@ class PeticionesPagoModel extends Model implements IModel {
 
     //getters
     public function getId(){return $this->id;}
-    public function getNombre(){ return $this->nombre;}
+    public function getDescripcion(){ return $this->descripcion;}
     public function getCedula(){ return $this->cedula;}
     public function getFechaCreacion(){ return $this->fechaCreacion;}
     public function getIdContrato(){ return $this->idContrato;}

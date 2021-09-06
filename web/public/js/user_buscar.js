@@ -197,57 +197,6 @@
     };
 
 
-    //TODO function futura par ordenar alfabeticamente por nombre de empleado
-    // function sortBy(name){
-    //     this.copydata = [...this.data];
-    //     let res;
-    //     switch(name){
-    //         case 'title':
-    //             res = this.copydata.sort(compareTitle);
-    //         break;
-                
-    //         case 'category':
-    //             res = this.copydata.sort(compareCategory);
-    //             break;
-
-    //         case 'date':
-    //             res = this.copydata.sort(compareDate);
-    //             break;
-                    
-    //         case 'amount':
-    //             res = this.copydata.sort(compareAmount);
-    //             break;
-
-    //             default:
-    //             res = this.copydata;
-    //     }
-
-    //     renderData(res);
-    // }
-
-
-    //TODO function futura par ordenar por montons, planilla_ID, etc
-    // function compareTitle(a, b){
-    //     if(a.expense_title.toLowerCase() > b.expense_title.toLowerCase()) return 1;
-    //     if(b.expense_title.toLowerCase() > a.expense_title.toLowerCase()) return -1;
-    //     return 0;
-    // }
-    // function compareCategory(a, b){
-    //     if(a.category_name.toLowerCase() > b.category_name.toLowerCase()) return 1;
-    //     if(b.category_name.toLowerCase() > a.category_name.toLowerCase()) return -1;
-    //     return 0;
-    // }
-    // function compareAmount(a, b){
-    //     if(a.amount > b.amount) return 1;
-    //     if(b.amount > a.amount) return -1;
-    //     return 0;
-    // }
-    // function compareDate(a, b){
-    //     if(a.date > b.date) return 1;
-    //     if(b.date > a.date) return -1;
-    //     return 0;
-    // }
-
 
         
  
