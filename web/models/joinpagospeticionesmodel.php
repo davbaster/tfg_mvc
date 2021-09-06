@@ -321,13 +321,14 @@ class JoinPagosPeticionesModel extends Model {
             return $items;//devuelve un arreglo de objetos de JoinPagosPeticionesModel
 
         }catch(PDOException $e){
-            echo $e;
+            error_log("JOINPAGOSPETICIONES_MODEL::getAllPagosPendientes: " . $e);
+            
         }
     }
 
 
     //devuelve pagos pendientes de pago y pagados
-    public function getAllPagosAutorizados(){
+    public function getAllPagosNoOpen(){
         $items = [];
         $estadoPendiente = "pendiente";
         $estadoPagado = "pagado";
@@ -364,7 +365,49 @@ class JoinPagosPeticionesModel extends Model {
             return $items;//devuelve un arreglo de objetos de JoinPagosPeticionesModel
 
         }catch(PDOException $e){
-            echo $e;
+            error_log("JOINPAGOSPETICIONES_MODEL::getAllPagosNoOpen: " . $e);
+        }
+    }
+
+
+    //devuelve pagos pendientes de pago y pagados
+    public function getAllPagosAutorizados(){
+        $items = [];
+        $estado = "autorizado";
+
+        try{
+          //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
+            $query = $this->prepare('SELECT p.id as id_pago,
+                             p.estado_pago as estado, 
+                             p.cedula as cedula_empleado, 
+                             u.nombre as nombre, 
+                             u.apellido1 as apellido1,
+                             u.apellido1 as apellido2, 
+                             p.amount as adeudado, 
+                             p.peticion_pago_id as planilla_id, 
+                             p.fecha_creacion as fechaCreacion,
+                             p.fecha_pago as fechaPago,
+                             p.detalles as detalles
+                    FROM pagos AS p
+                    INNER JOIN users AS u ON p.cedula = u.cedula
+                    INNER JOIN peticiones_pago AS p2 ON p.peticion_pago_id  = p2.id
+                    WHERE p.estado_pago = :estado    
+                    ORDER BY p.cedula');
+            
+            
+            $query->execute(["estado" => $estado]);
+
+            //$p es un arreglo que guarda las filas del query anterior, filas de un join
+            while($p = $query->fetch(PDO::FETCH_ASSOC)){
+                $item = new JoinPagosPeticionesModel();
+                $item->from($p);//va rellenando el objeto del tipo JoinPagosPeticionesModel con la info de las filas guardadas en $p
+                array_push($items, $item);
+            }
+
+            return $items;//devuelve un arreglo de objetos de JoinPagosPeticionesModel
+
+        }catch(PDOException $e){
+            error_log("JOINPAGOSPETICIONES_MODEL::getAllPagosAutorizados: " . $e);
         }
     }
 
@@ -408,7 +451,7 @@ class JoinPagosPeticionesModel extends Model {
             return $items;//devuelve un arreglo de objetos de JoinPagosPeticionesModel
 
         }catch(PDOException $e){
-            echo $e;
+            error_log("JOINPAGOSPETICIONES_MODEL::getPagosRecientes: " . $e);
         }
     }
 

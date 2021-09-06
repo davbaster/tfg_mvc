@@ -12,7 +12,7 @@
         <!-- <li><a href="<?php //echo constant('URL'); ?>/dashboard">Home</a></li> -->
         
         <!--DEVELOPMENT  -->
-        <li><a href="dashboard">Home</a></li>
+        <li><a href="dashboard">Inicio</a></li>
    </ul>
     
 </div>

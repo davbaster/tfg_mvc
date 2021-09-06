@@ -23,9 +23,9 @@
         <!-- <li><a href="<?php //echo constant('URL'); ?>/logout">Salir</a></li> -->
         
         <!--DEVELOPMENT  -->
-        <li><a href="dashboard">Home</a></li>
-        <li><a href="peticionespago">Planillas</a></li>
-        <li><a href="pagos">Pagos</a></li>
+        <li><a href="dashboard">Principal</a></li>
+        <li><a href="peticionespago">Supervisor</a></li>
+        <li><a href="pagos">Planillas</a></li>
         <li><a href="user">Usuarios</a></li>
         <li><a href="reportes">Reportes</a></li>
         <li><a href="configuracion">Configuracion</a></li>

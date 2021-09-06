@@ -163,6 +163,33 @@ class Prestamos extends SessionController{
     }
 
 
+
+    //devuelve un array con prestamos aprobados
+    function getPrestamosAutorizados(){
+        error_log('PRESTAMOS_CONTROLLER::getPrestamos()');
+        
+        $res = [];
+
+        $model = new JoinPrestamosUserModel();
+        $prestamos = $model->getAllPrestamosAutorizados();//devuelve todos los pagos de una planilla
+
+        if($prestamos){//SI  tiene un resultado   
+            
+            foreach ($prestamos as $p) {
+                array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+            }
+            $this->sendJSON($res);
+          
+
+        }else{
+           
+            array_push($res, [ 'cedula' => 'false', 'mensaje' => 'No hay prestamos aprobados.' ]);
+            $this->sendJSON($res);
+        }
+
+    }
+
+
     //devuelve un array con los prestamos ligados a una peticionPagoId
     function getPrestamosPlanilla($params){
         error_log('PAGOSCONTROLLER::getPagosPlanilla()');
@@ -214,7 +241,7 @@ class Prestamos extends SessionController{
 
     //devuelve un array con los datos de un prestamo dado un id de prestamo
     function autorizar($params){
-        error_log('PAGOSCONTROLLER::autorizar()');
+        error_log('PRESTAMOS_CONTROLLER::autorizar()');
 
         if($params === NULL) $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PAGOS_GETPAGOS]);//TODO AGREGAR A LISTA
         $idPrestamo = $params[0];
@@ -227,7 +254,7 @@ class Prestamos extends SessionController{
     
         if($prestamo){//SI  tiene un resultado
             
-            $prestamo->setEstado("aprobado");
+            $prestamo->setEstado("autorizado");
             $prestamo->setApprover($this->user->getCedula());//obtiene la cedula del usuario actual
             $prestamo->setFechaAprobacion(date("Y/m/d"));
             
@@ -251,6 +278,99 @@ class Prestamos extends SessionController{
             //no existe un prestamo
             
             array_push($res, [ 'cedula' => 'false', 'mensaje' => 'La planilla no tiene prestamos registrados.' ]);
+            $this->sendJSON($res);
+        }
+
+    }
+
+
+
+    //devuelve un array con los datos de un prestamo dado un id de prestamo
+    function rechazar($params){
+        error_log('PRESTAMOS_CONTROLLER::rechazar()');
+
+        if($params === NULL) $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PAGOS_GETPAGOS]);//TODO AGREGAR A LISTA
+        $idPrestamo = $params[0];
+        
+        $res = [];
+
+        $model = new PrestamosModel();
+        $prestamo = $model->get($idPrestamo);//devuelve todos los pagos de una planilla
+
+    
+        if($prestamo){//SI  tiene un resultado
+            
+            $prestamo->setEstado("rechazado");
+            //$prestamo->setApprover($this->user->getCedula());//obtiene la cedula del usuario actual
+            //$prestamo->setFechaAprobacion(date("Y/m/d"));
+            
+            if ($prestamo->update()) {# si se pudo actualizar
+
+                $modelPrestamo = new JoinPrestamosUserModel();
+                $prestamo = $modelPrestamo->get($idPrestamo);//devuelve un prestamo con la informacion de usuario
+
+                array_push($res, $prestamo->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+        
+                $this->sendJSON($res);
+                
+            }else {
+                array_push($res, [ 'cedula' => 'false', 'mensaje' => 'Error aprobando el prestamo. Intente de nuevo.' ]);
+                $this->sendJSON($res);
+            }
+            
+            
+
+        }else{
+            //no existe un prestamo
+            
+            array_push($res, [ 'cedula' => 'false', 'mensaje' => 'La planilla no tiene prestamos registrados.' ]);
+            $this->sendJSON($res);
+        }
+
+    }
+
+
+
+    //devuelve un array con los datos de un prestamo pagado dado un id de prestamo
+    //cambia de estado el prestamo a pagado
+    function pagar($params){
+        error_log('PRESTAMOS_CONTROLLER::rechazar()');
+
+        if($params === NULL) $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PAGOS_GETPAGOS]);//TODO AGREGAR A LISTA
+        $idPrestamo = $params[0];
+        
+        $res = [];
+
+        $model = new PrestamosModel();
+        $prestamo = $model->get($idPrestamo);//devuelve todos los pagos de una planilla
+
+    
+        if($prestamo){//SI  tiene un resultado
+            
+            $prestamo->setEstado("pagado");
+            //$prestamo->setApprover($this->user->getCedula());//obtiene la cedula del usuario actual
+            $prestamo->setFechaPago(date("Y/m/d"));
+            
+            if ($prestamo->update()) {# si se pudo actualizar
+
+                $modelPrestamo = new JoinPrestamosUserModel();
+                $prestamo = $modelPrestamo->get($idPrestamo);//devuelve un prestamo con la informacion de usuario
+
+                array_push($res, $prestamo->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+        
+                $this->sendJSON($res);
+                
+            }else {
+                array_push($res, [ 'cedula' => 'false', 'mensaje' => 'Error pagando el prestamo. Intente de nuevo.' ]);
+                $this->sendJSON($res);
+            }
+            
+            
+
+        }else{
+            //no existe un prestamo
+            
+            array_push($res, [ 'cedula' => 'false', 'mensaje' => 'No hay prestamos con este ID.' ]);
             $this->sendJSON($res);
         }
 

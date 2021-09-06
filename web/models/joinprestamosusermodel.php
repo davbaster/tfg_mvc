@@ -129,6 +129,63 @@ class JoinPrestamosUserModel extends Model {
     }
 
 
+
+
+
+    //Lista peticiones pendientes, autorizadas. Todos los estados
+    //lISTA TODOS LOS PRESTAMOS PENDIENTES DE AUTORIZAR para 
+    public function getAllPrestamosAutorizados(){
+        $items = [];
+
+        $estado = "autorizado";
+
+        try{
+          //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
+           //WHERE p2.fecha_pago as fechaPago,
+            $query = $this->prepare('SELECT 
+                        pr.id as id_prestamo,
+                        pr.peticion_pago_id as peticion_pago_id ,
+                        pr.pago_id as id_pago, 
+                        pr.cedula as cedula,
+                        pr.estado as estado,  
+                        pr.monto as monto,
+                        pr.fecha_creacion as fecha_creacion,
+                        pr.fecha_aprobacion as fecha_aprobacion,
+                        pr.fecha_pago as fechaPago, 
+                        pr.approver as aprobadoPor,
+                        pr.requestedBy as pedidoPor,
+                        pr.detalles as detalles,  
+                        u.nombre as nombre, 
+                        u.apellido1 as apellido1, 
+                        u.apellido2 as apellido2
+                        
+                        
+                        
+                    FROM prestamos AS pr
+                    INNER JOIN users AS u ON pr.cedula = u.cedula      
+                    WHERE pr.estado = :estado
+                    ORDER BY pr.cedula');
+
+            
+            
+            $query->execute(["estado" => $estado]);
+
+            //$p es un arreglo que guarda las filas del query anterior, filas de un join
+            while($p = $query->fetch(PDO::FETCH_ASSOC)){
+                $item = new JoinPrestamosUserModel();
+                $item->from($p);//va rellenando el objeto del tipo JoinPagosPeticionesModel con la info de las filas guardadas en $p
+                array_push($items, $item);//va rellenando el objeto del tipo JoinPagosPeticionesModel con la info de las filas guardadas en $p
+            }
+
+            return $items;//devuelve un arreglo de objetos de JoinPagosPeticionesModel
+
+        }catch(PDOException $e){
+            error_log('JOINPRESTAMOSUSER_MODEL::getAllPrestamosPendientes => ' . $e);
+            echo $e;
+        }
+    }
+
+
        
 
 

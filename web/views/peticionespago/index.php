@@ -15,10 +15,10 @@
 <div id="main-container">
     <div id="user-container" class="container">
 
-        <button class="tablink" onclick="openPage('Adelantos', this, 'red') " id="defaultOpen">Adelantos </button>
-        <button class="tablink" onclick="openPage('News', this, 'green')" >Pendientes</button>
-        <button class="tablink" onclick="openPage('Contact', this, 'blue')">Aprobadas</button>
-        <button class="tablink" onclick="openPage('Historial', this, 'orange')">Historial</button>
+        <button class="tablink" onclick="openPage('Adelantos', this, 'red') " id="defaultOpen">Prestamos Pendientes </button>
+        <!-- <button class="tablink" onclick="openPage('News', this, 'green')" >Pendientes</button>
+        <button class="tablink" onclick="openPage('Contact', this, 'blue')">Aprobadas</button> -->
+        <button class="tablink" onclick="openPage('Historial', this, 'orange')">Planillas Pendientes</button>
 
         <!-- ADELANTOS/PRESTAMOS SECTION -->
         <div id="Adelantos" class="tabcontent">
@@ -26,7 +26,7 @@
             <div id="history-container" class="container">
                 
                 <div id="history-options">
-                    <h2>Prestamos</h2>
+                    <h2>Prestamos pendientes de autorizacion</h2>
                 </div>
                 
                 <div id="table-container" class="table-container">
@@ -68,7 +68,7 @@
             <div id="history-container" class="container">
                 
                 <div id="history-options">
-                    <h2>Historial de Planillas</h2>
+                    <h2>Planillas pendientes de autorizacion</h2>
                     <!--//TODO mejora: dividir el filtro en a;o, mes, dia  -->
                     <!-- //TODO mejora: hacer que los filtros sean cruzados entre si -->
                     

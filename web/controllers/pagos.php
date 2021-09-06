@@ -186,6 +186,24 @@ class Pagos extends SessionController{
     }
 
 
+        // devuelve todos los elementos de un arreglo como si fuera un JSON para las llamadas AJAX
+    //funciona como una API simple
+    function getPagosAutorizados(){
+        error_log('PAGOSCONTROLLER::getPagosHistoryJSON()');
+        
+        $res = [];
+
+        $joinModel = new JoinPagosPeticionesModel();
+        $peticiones = $joinModel->getAllPagosAutorizados();//cambie de getAllPagos a getAllPagosAutorizados
+
+        foreach ($peticiones as $p) {
+            array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+        }
+        header("HTTP/1.1 200 OK");
+        header('Content-Type: application/json');
+        echo json_encode($res);
+
+    }
 
 
     // devuelve todos los elementos de un arreglo como si fuera un JSON para las llamadas AJAX
@@ -196,7 +214,7 @@ class Pagos extends SessionController{
         $res = [];
 
         $joinModel = new JoinPagosPeticionesModel();
-        $peticiones = $joinModel->getAllPagosAutorizados();//cambie de getAllPagos a getAllPagosAutorizados
+        $peticiones = $joinModel->getAllPagosNoOpen();//cambie de getAllPagos a getAllPagosAutorizados
 
         foreach ($peticiones as $p) {
             array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
@@ -232,40 +250,7 @@ class Pagos extends SessionController{
         }
     }
     
-    // //getExpensesJSON
-    // function getPagosJSON(){
 
-    //     header('Content-Type: application/json');
-
-    //     $res = [];
-    //     $peticionesPagoIds     = $this->getPeticionesPagoIds();//esta en esta misma clase, linea 67
-    //     $peticionPagoNames  = $this->getPeticionPagoList(); //linea 105
-    //     $categoryColors = $this->getCategoryColorList();
-
-    //     //acomodando informacion para google chart
-    //     array_unshift($peticionPagoNames, 'mes');
-    //     array_unshift($categoryColors, 'categorias');
-    //     /* array_unshift($categoryNames, 'categorias');
-    //     array_unshift($categoryColors, NULL); */
-
-    //     $months = $this->getDateList();
-
-    //     //itera entre los ids y los meses para acomodar los pagos
-    //     //crea matriz
-    //     for($i = 0; $i < count($months); $i++){
-    //         $item = array($months[$i]);
-    //         for($j = 0; $j < count($peticionesPagoIds); $j++){
-    //             $total = $this->getTotalByMonthAndCategory( $months[$i], $peticionesPagoIds[$j]);
-    //             array_push( $item, $total );
-    //         }   
-    //         array_push($res, $item);
-    //     }
-        
-    //     array_unshift($res, $peticionPagoNames);
-    //     array_unshift($res, $categoryColors);
-        
-    //     echo json_encode($res);
-    // }
 
 
     //getTotalByMonthAndCategory
