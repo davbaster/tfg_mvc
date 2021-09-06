@@ -36,19 +36,25 @@ class JoinPrestamosUserModel extends Model {
           //regresa la union de donde la peticion_pago_id es igual al id de la tabla peticiones_pago con el usuario dado $userId
            //WHERE p2.fecha_pago as fechaPago,
             $query = $this->prepare('SELECT 
-                        p2.id as id_planilla,
-                        p2.nombre as descripcion,  
-                        p2.estado as estado, 
-                        p2.cedula as cedula_contratista, 
+                        pr.id as id_prestamo,
+                        pr.peticion_pago_id as peticion_pago_id,
+                        pr.pago_id as id_pago, 
+                        pr.cedula as cedula,
+                        pr.estado as estado,  
+                        pr.monto as monto,
+                        pr.fecha_creacion as fecha_creacion,
+                        pr.fecha_aprobacion as fecha_aprobacion,
+                        pr.fecha_pago as fechaPago, 
+                        pr.approver as aprobadoPor,
+                        pr.requestedBy as pedidoPor,
+                        pr.detalles as detalles,  
                         u.nombre as nombre, 
                         u.apellido1 as apellido1, 
-                        u.apellido2 as apellido2,
-                        p2.monto as monto, 
-                        p2.fecha_creacion as fechaCreacion,
-                        p2.detalles as detalles
-                    FROM peticiones_pago AS p2
-                    INNER JOIN users AS u ON p2.cedula = u.cedula      
-                    WHERE p2.id = :id');
+                        u.apellido2 as apellido2
+
+                    FROM prestamos AS pr
+                    INNER JOIN users AS u ON pr.cedula = u.cedula      
+                    WHERE pr.id = :id');
 
             
             //$query->execute(['']);
@@ -56,14 +62,14 @@ class JoinPrestamosUserModel extends Model {
 
             //$p es un arreglo que guarda las filas del query anterior, filas de un join
             $p = $query->fetch(PDO::FETCH_ASSOC);
-                $item = new JoinPeticionesUserModel();
-                $item->from($p);//va rellenando el objeto del tipo JoinPagosPeticionesModel con la info de las filas guardadas en $p
+                $item = new JoinPrestamosUserModel();
+                $item->from($p);//va rellenando el objeto del tipo JoinPrestamosUserModel con la info de las filas guardadas en $p
 
 
             return $item;//devuelve un objeto JoinPagosPeticionesModel
 
         }catch(PDOException $e){
-            error_log('JOINPAGOSPETICIONESMODEL::getAllPeticionesAutorizadas => ' . $e);
+            error_log('JOINPRESTAMOSUSERMODEL::get => ' . $e);
             echo $e;
         }
     }

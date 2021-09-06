@@ -102,6 +102,37 @@ class Prestamos extends SessionController{
     }
 
 
+    //devuelve un array con los datos de un prestamo dado un id de prestamo
+    function buscar($params){
+        error_log('PAGOSCONTROLLER::getPagosPlanilla()');
+
+        if($params === NULL) $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PAGOS_GETPAGOS]);//TODO AGREGAR A LISTA
+        $idPrestamo = $params[0];
+        
+        $res = [];
+
+        $model = new JoinPrestamosUserModel();
+        $prestamo = $model->get($idPrestamo);//devuelve todos los pagos de una planilla
+
+  
+        if($prestamo){//SI  tiene un resultado
+            //$this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PAGOS_PAGAR]);//TODO AGREGAR A LISTA
+            
+            
+           
+            array_push($res, $prestamo->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+        
+            $this->sendJSON($res);
+          
+
+        }else{
+            //no existe un prestamo
+           
+            array_push($res, [ 'cedula' => 'false', 'mensaje' => 'La planilla no tiene prestamos registrados.' ]);
+            $this->sendJSON($res);
+        }
+
+    }
 
 
     // devuelve todos los elementos de un arreglo como si fuera un JSON para las llamadas AJAX
@@ -179,6 +210,47 @@ class Prestamos extends SessionController{
     }
 
 
+
+
+    //devuelve un array con los datos de un prestamo dado un id de prestamo
+    function autorizar($params){
+        error_log('PAGOSCONTROLLER::getPagosPlanilla()');
+
+        if($params === NULL) $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PAGOS_GETPAGOS]);//TODO AGREGAR A LISTA
+        $idPrestamo = $params[0];
+        
+        $res = [];
+
+        $model = new PrestamosModel();
+        $prestamo = $model->get($idPrestamo);//devuelve todos los pagos de una planilla
+
+    
+        if($prestamo){//SI  tiene un resultado
+            
+            $prestamo->setEstado("aprobado");
+            $prestamo->setApprover($this->user->getCedula());//obtiene la cedula del usuario actual
+            
+            if ($prestamo->save()) {# si se pudo actualizar
+
+                array_push($res, $prestamo->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+        
+                $this->sendJSON($res);
+                
+            }else {
+                array_push($res, [ 'cedula' => 'false', 'mensaje' => 'Error aprobando el prestamo. Intente de nuevo.' ]);
+                $this->sendJSON($res);
+            }
+            
+            
+
+        }else{
+            //no existe un prestamo
+            
+            array_push($res, [ 'cedula' => 'false', 'mensaje' => 'La planilla no tiene prestamos registrados.' ]);
+            $this->sendJSON($res);
+        }
+
+    }
 
 
     //cambia el estado de open a pagado
