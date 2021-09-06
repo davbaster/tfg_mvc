@@ -214,7 +214,7 @@ class Prestamos extends SessionController{
 
     //devuelve un array con los datos de un prestamo dado un id de prestamo
     function autorizar($params){
-        error_log('PAGOSCONTROLLER::getPagosPlanilla()');
+        error_log('PAGOSCONTROLLER::autorizar()');
 
         if($params === NULL) $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PAGOS_GETPAGOS]);//TODO AGREGAR A LISTA
         $idPrestamo = $params[0];
@@ -229,8 +229,12 @@ class Prestamos extends SessionController{
             
             $prestamo->setEstado("aprobado");
             $prestamo->setApprover($this->user->getCedula());//obtiene la cedula del usuario actual
+            $prestamo->setFechaAprobacion(date("Y/m/d"));
             
-            if ($prestamo->save()) {# si se pudo actualizar
+            if ($prestamo->update()) {# si se pudo actualizar
+
+                $modelPrestamo = new JoinPrestamosUserModel();
+                $prestamo = $modelPrestamo->get($idPrestamo);//devuelve un prestamo con la informacion de usuario
 
                 array_push($res, $prestamo->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
         
