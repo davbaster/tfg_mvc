@@ -87,7 +87,7 @@ async function desplegarFormularioCerrarPeticion(){
   });
 
   
-  const html = await getContentDialogoEnviarPeticionPago(value);
+  const html = await getContentDialogoCerrarPeticionPago(value);
   ajaxcontent.innerHTML+= html;
   
 };
@@ -136,7 +136,7 @@ async function desplegarFormularioEditarPeticion(){
 
 
 //localhost se deberia cambiar por la direccion del servidor
-async function getContentDialogoEnviarPeticionPago(id){
+async function getContentDialogoCerrarPeticionPago(id){
   const html = await fetch(`http://localhost:41062/www/dashboard/viewDialogCerrarPeticionPago/${id}`).then(res => res.text());
   return html;   
 }

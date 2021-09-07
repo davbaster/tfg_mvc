@@ -36,6 +36,7 @@ class ErrorMessages{
     const ERROR_USER_DISABLE_SAME           = "e0030"; 
     const ERROR_USER_DISABLED               = "e0031";
     const ERROR_PETICIONPAGO_ACTUALIZAR     = "e0032";
+    const ERROR_PRESTAMOS                   = "e0033";
 
 
     private $errorList = [];
@@ -76,7 +77,8 @@ class ErrorMessages{
             ErrorMessages::ERROR_USER_ENABLE     => 'No se pudo habilitar el usuario. Hubo un error.', 
             ErrorMessages::ERROR_USER_DISABLE_SAME     => 'Un usuario no puede deshabilitar su propia cuenta.',
             ErrorMessages::ERROR_USER_DISABLED     => 'El usuario esta desactivado, contacte a su administrador.',
-            ErrorMessages::ERROR_PETICIONPAGO_ACTUALIZAR     => 'Error al actualizar la planilla.'
+            ErrorMessages::ERROR_PETICIONPAGO_ACTUALIZAR     => 'Error al actualizar la planilla.',
+            ErrorMessages::ERROR_PRESTAMOS    => 'Error al obtener informacion de los prestamos.'
         ];
 
     }

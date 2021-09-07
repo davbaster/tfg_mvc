@@ -11,7 +11,8 @@
     //$peticionesPago                     = $this->d['peticionesPagoAbiertasPorUsuario'];
     
     $peticionPago                       = $this->d['peticionAbiertaSeleccionada'];
-    $pagosOpen                          = $this->d['pagosOpenPerId'];  //contiene los pagos asignados a esta peticionPago
+    $pagosOpen                          = $this->d['pagosOpenPerId'];  //contiene los pagos asignados a esta peticionPago 
+    $prestamos                          = $this->d['prestamosPerId'];
     $usuarios                           = $this->d['usuarios'];
 
 ?>
@@ -38,7 +39,7 @@
     </div>
     <div class="section">
         <!-- aqui va a ir la lista de trabajadores que esta incluida en la planilla -->
-        <label for="trabajadores">Trabajadores</label>
+        <label for="trabajadores">Trabajadores a pagar:</label>
         <!-- <div><input type="text" name="nombre_planilla" autocomplete="off" required></div> -->
         <select name="trabajador" id="">
             <?php 
@@ -53,7 +54,41 @@
                     }
                  }else {
             ?>
-                   <option name="pagoId" value="" disabled><?php echo "No hay trabajadores en la planilla" ?></option> 
+                   <option name="pagoId" value="" ><?php echo "Necesita un pago para enviar la planilla" ?></option>
+
+            <?php
+                 }
+               
+            ?>
+
+
+            </select>
+    </div>
+    
+    <!-- SECCION LISTA DE PRESTAMOS -->
+    <div class="section">
+        <!-- aqui va a ir la lista de trabajadores que esta incluida en la planilla -->
+        <label for="prestamos">Prestamos en esta planilla:</label>
+        <!-- <div><input type="text" name="nombre_planilla" autocomplete="off" required></div> -->
+        <select name="prestamo" id="">
+            <?php 
+                if (!empty($prestamos)) {
+                    //for each
+                    foreach ($prestamos as $p) {
+                        $nombre =  $p['nombre'].' '.$p['apellido1'].' '.$p['apellido2'];
+
+                        $prestamoPendiente = ($p['estado'] == "pendiente") ? true : false ;
+
+            ?>
+
+                        <!-- value contiene la peticionesPagoID , getNombre = titulo de la planilla -->
+                        <option name="prestamoId" value="<?php echo $p['id_prestamo'] ?>"><?php echo $nombre .' ¢'. $p['monto'].' Estado:'. $p['estado'] ?></option> 
+            <?php
+                    }
+                 }else {
+            ?>
+                   <option name="prestamoId" value=""><?php echo "No hay prestamos en la planilla" ?></option>
+
             <?php
                  }
                
@@ -63,10 +98,29 @@
             </select>
     </div> 
   
+    <!-- SECCION BOTON ENVIAR -->
+    <?php 
+        if (!empty($pagosOpen) & (!$prestamoPendiente)) {
+    ?>
+            <!--Debe de haber al menos un pago en la planilla para poder cerrarse  -->
+            <!--No debe de haber prestamos pendientes de aprobacion  -->
+            <div class="center">
+                <input type="submit" value="Eviar Planilla">
+            </div>
+    <?php
+            }else {
+
+                
+    ?>          <!-- Deshabilitar boton de enviar -->
+                <div class="center">
+                    <input type="submit" value="Eviar Planilla" disabled> 
+                </div>
+    <?php
+                   
+            }     
+    ?>
     
-    <div class="center">
-        <input type="submit" value="Eviar Planilla">
-    </div>
+
 
 
 </form>

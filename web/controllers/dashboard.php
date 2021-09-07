@@ -250,13 +250,12 @@ class Dashboard extends SessionController{
         //$pagosJoin = new JoinPagosPeticionesModel();
         $this->view->render('dashboard/cerrarpeticionpago', [
 
-           //"peticionesPagoAbiertasPorUsuario" => $peticionJoin->getAllPeticionesOpen($this->user->getCedula()), //este metodo trae todas las peticiones de pago como objetos, 
-
-           //"peticionAbiertaSeleccionada" => $peticionJoin->getPeticionOpen($idPlanilla),//envia un objeto peticionuserJoinmodel 
 
            "peticionAbiertaSeleccionada"      => $this->getPeticionPagoArray($peticionPagoId), //envia un objeto peticionuserJoinmodel en forma de array
 
             "pagosOpenPerId"                  => $this->pagosOpenPerIdPeticion($peticionPagoId),
+
+            "prestamosPerId"                  => $this->getPrestamosPerIdArray($peticionPagoId), //TODO
          
                                                         //TODO deberia utilizar metodo que traiga las peticiones pendientes de pago y como un arreglo de datos
             "user"                            => $this->user
@@ -265,8 +264,8 @@ class Dashboard extends SessionController{
 
 
 
-        //VistaenviarAutorizarPeticion
-        // carga vista para la creacion de una nueva peticion de pago/planilla
+
+    // carga vista para la modificacion de una peticion de pago/planilla
     //manda las peticiones de pago en estado Open, estas se les puede seguir metiendo pagos.
     //bien implementada, deberia de mandar solo arrays con la informacion formateada.//TODO
     function viewDialogModificarPeticionPago($params){
@@ -372,8 +371,8 @@ class Dashboard extends SessionController{
 
     //Recibe un array con datos en formato json
     //envia los datos codificados como json a la vista
-    function sendInfoJSON($arrayJSON){
-        error_log('DASHBOARDCONTROLLER::sendInfoJSON()');
+    function sendToViewAsJSON($arrayJSON){
+        error_log('DASHBOARDCONTROLLER::sendToViewAsJSON()');
 
 
         
@@ -398,10 +397,8 @@ class Dashboard extends SessionController{
 
         
         array_push($res, $peticion->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
-        
-        header("HTTP/1.1 200 OK");
-        header('Content-Type: application/json');
-        echo json_encode($res);
+    
+        $this->sendToViewAsJSON($res);
 
     }
 
@@ -426,11 +423,41 @@ class Dashboard extends SessionController{
 
     
 
+    //************PRESTAMOS******************** */
+    //
+    //***************************************** */
 
 
-    //***************************************** */
-    //      FIN METODOS PARA PETICIONESPAGO
-    //***************************************** */
+    //devuelve prestamos en un array Imitando a un Json
+    function getPrestamosPerIdArray($peticionId){
+        error_log('DASHBOARD_CONTROLLER::getPrestamosPerIdArray()');
+        
+
+        if($peticionId === NULL) $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PRESTAMOS]);
+
+        $res = [];
+
+        $joinModel = new JoinPrestamosUserModel();
+        $prestamos = $joinModel->getAllPrestamosPerPeticionPago($peticionId);//devuelve la peticion dado un id
+
+        
+        if($prestamos){//SI  tiene un resultado   
+                
+            foreach ($prestamos as $p) {
+                array_push($res, $p->toArray());//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json
+            }
+           
+          
+
+        }else{
+            //Tiene que estar empty el array para que sirva la logica de la vista
+            // array_push($res, [ 'cedula' => 'empty', 'mensaje' => 'Esta planilla no tiene prestamos.' ]);
+            
+        }
+
+        return $res;//devuelve objeto en forma de array
+
+    }
 
 
 
