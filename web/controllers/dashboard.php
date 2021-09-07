@@ -223,6 +223,19 @@ class Dashboard extends SessionController{
     //
     //***************************************** */
 
+
+    // carga vista para la creacion de una nueva peticion de pago/planilla
+    //manda las peticiones de pago en estado Open, estas se les puede seguir metiendo pagos.
+    //bien implementada, deberia de mandar solo arrays con la informacion formateada.//TODO
+    function viewDialogCrearPeticionPago(){
+        $peticionModel = new PeticionesPagoModel();
+        $this->view->render('dashboard/agregarpeticionpago', [
+           // "peticionespago" => $peticionModel->getAll(), //este metodo trae todas las peticiones de pago como objetos, 
+                                                        //TODO deberia utilizar metodo que traiga las peticiones pendientes de pago y como un arreglo de datos
+            "user" => $this->user
+        ]);
+    }
+
     //VistaenviarAutorizarPeticion
         // carga vista para la creacion de una nueva peticion de pago/planilla
     //manda las peticiones de pago en estado Open, estas se les puede seguir metiendo pagos.

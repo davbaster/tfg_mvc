@@ -51,11 +51,6 @@
             "role":"supervisor"
         },
         {
-            "site": "peticionespago",
-            "access": "private",
-            "role":"contratista"
-        },
-        {
             "site": "user",
             "access": "private",
             "role":"administrador"
