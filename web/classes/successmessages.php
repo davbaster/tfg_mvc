@@ -35,11 +35,11 @@ class SuccessMessages{
             SuccessMessages::SUCCESS_PETICIONPAGOS_NEWPETICION => 'Nueva planilla creada satisfactoriamente',
             SuccessMessages::SUCCESS_PETICIONPAGOS_DELETE => 'Peticion de pago borrada satisfactoriamente',
             SuccessMessages::SUCCESS_PETICIONPAGO_AUTORIZAR => 'Planilla autorizada satisfactoriamente',
-            SuccessMessages::SUCCESS_PETICIONPAGO_ENVIAR => 'Planilla enviada para revision satisfactoriamente',
+            SuccessMessages::SUCCESS_PETICIONPAGO_ENVIAR => 'Planilla enviada para revision con exito.',
             SuccessMessages::SUCCESS_PETICIONPAGO_RECHAZAR => 'Planilla rechazada satisfactoriamente',
             SuccessMessages::SUCCESS_USER_UPDATEUSER => 'Usuario actualizado satisfactoriamente',
             SuccessMessages::SUCCESS_USER_DISABLED => 'Usuario desactivado satisfactoriamente',
-            SuccessMessages::SUCCESS_PRESTAMOS_NEWPRESTAMO => 'Prestamo creado satisfactoriamente',
+            SuccessMessages::SUCCESS_PRESTAMOS_NEWPRESTAMO => 'Peticion de adelanto de pago enviado a revision.',
             SuccessMessages::SUCCESS_PETICIONPAGO_ACTUALIZAR => 'Planilla actualizada satisfactoriamente'
         ];
     }

@@ -31,18 +31,5 @@
         <li><a href="configuracion">Configuracion</a></li>
         <li><a href="logout">Salir</a></li>
     </ul>
-    <!-- <div id="profile-container">
-        <a href="user">
-            <div class="name"></div>
-            <div class="photo">
-            </div>
-        </a>
-        <div id="submenu">
-            <ul>
-                <li><a href="user">Ver perfil</a></li>
-                <li class='divisor'></li>
-                <li><a href="logout">Cerrar sesión</a></li>
-            </ul>
-        </div>
-    </div> -->
+
 </div>

@@ -74,6 +74,7 @@ function renderData(data){
   const newPagoBtn = document.querySelector('#new-pago');
   const newPrestamoBtnRender = document.querySelector('#new-prestamo');
   const cerrarPeticionPagoBtn = document.querySelector('#cerrar-peticion-pago');
+  const modifyPeticionPagoBtn = document.querySelector('#modify-peticion-pago');
 
   $idPlanilla = data[0].id_planilla;
   
@@ -84,6 +85,8 @@ function renderData(data){
   newPagoBtn.setAttribute("value", $idPlanilla);//asigna al boton de crear pago el valor del card (planilla seleccionada)
 
   newPrestamoBtnRender.setAttribute("value", $idPlanilla);//asigna al boton de crear prestamo el valor del card (planilla seleccionada)
+
+  modifyPeticionPagoBtn.setAttribute("value", $idPlanilla);//asigna al boton de crear prestamo el valor del card (planilla seleccionada)
 
   //Actualizar los datos de planilla en expenses-summary//TODO 
   

@@ -118,13 +118,17 @@ class PeticionesPago extends SessionController{
     //autoriza una peticionPago para ser pagada,
     //cambia el estado de la peticionPago/planilla de open a pendiente
     function autorizarPeticion($params){
-        error_log("PagosCONTROLLER::Pagar()");
+        error_log("PagosCONTROLLER::autorizarPeticion()");
         
         if($params === NULL) $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PETICIONPAGO_AUTORIZAR]);//TODO AGREGAR A LISTA
         $id = $params[0];
         //error_log("Pagos::delete() id = " . $id);
-        // $pago = new PagosModel();
-        // $pago->get($id);
+        // $planilla = new PeticionesPagoModel();
+        // $planilla->get($id);
+        // $planilla->setEstado("autorizado");
+
+
+
         $this->model->get($id);
         $this->model->setEstado("autorizado");
 
@@ -147,7 +151,7 @@ class PeticionesPago extends SessionController{
                 //cambia el estado a pendiente de pago
                                                 
                 //$p->get($id);
-                $p->setEstadoPago("pendiente");
+                $p->setEstadoPago("autorizado");
                 $p->update();//CAMBIA ESTADO
             }
 
