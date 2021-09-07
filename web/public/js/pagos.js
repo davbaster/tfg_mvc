@@ -4,8 +4,8 @@
 
     var data = [];
     var copydata = [];
-    const sdate     = document.querySelector('#sdate');
-    const speticionpago = document.querySelector('#speticionpago');
+    const sdatePagosAutorizados         = document.querySelector('#sdate-pagos-autorizados');
+    const speticionpagoPagosAutorizados = document.querySelector('#speticionpago-pagos-autorizados');
     const sorts = document.querySelectorAll('th');
    
 
@@ -14,22 +14,22 @@
     //revise que el valor no es nulo
     //copie la data desde el promise
     //
-    sdate.addEventListener('change', e =>{
+    sdatePagosAutorizados.addEventListener('change', e =>{
         const value = e.target.value;
         if(value === '' || value === null){
             this.copydata = [...this.data];
-            checkForFilters(speticionpago);
+            checkForFilters(speticionpagoPagosAutorizados);
 
             return;
         }
         filterByDate(value);
     });
 
-    speticionpago.addEventListener('change', e =>{
+    speticionpagoPagosAutorizados.addEventListener('change', e =>{
         const value = e.target.value;
         if(value === '' || value === null){
             this.copydata = [...this.data];
-            checkForFilters(sdate);
+            checkForFilters(sdatePagosAutorizados);
 
             return;
         }
@@ -41,11 +41,11 @@
         if(object.value != ''){
             //console.log('hay un filtro de ' + object.id);
             switch(object.id){
-                case 'sdate':
+                case 'sdate-pagos-autorizados':
                     filterByDate(object.value);
                 break;  
 
-                case 'speticionpago':
+                case 'speticionpago-pagos-autorizados':
                     filterByPlanilla(object.value);
                 break;
 
@@ -118,6 +118,7 @@
     //pone nuevas filas con informacion en la tabla
     function renderData(data){
         var databody = document.querySelector('#databody');
+        //TODO Aqui deberia ir una funcion que actualice tambien la info del dropdown menu, o que actualice la pagina sin que se vaya al primer tab
         let total = 0;
         databody.innerHTML = '';
         data.forEach(item => { 

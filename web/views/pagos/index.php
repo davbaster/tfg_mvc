@@ -62,7 +62,7 @@ $peticionesPagoAutorizadas  = $this->d['peticionesPagoAutorizadas'];//recibe tod
         <p>Get in touch, or swing by for a cup of coffee.</p>
         </div>
 
-        <!-- PAGINA PAGOS PLANILLAS -->
+        <!-- PAGINA PAGOS PLANILLAS AUTORIZADAS PARA PAGO-->
         <div id="Historial" class="tabcontent">
                      
             <div id="history-container" class="container">
@@ -74,7 +74,7 @@ $peticionesPagoAutorizadas  = $this->d['peticionesPagoAutorizadas'];//recibe tod
                     
                     <div id="filters-container">
                     <div class="filter-container">
-                        <select id="sdate" class="custom-select">
+                        <select id="sdate-pagos-autorizados" class="custom-select">
                             <!-- va php code v11min51 -->
                             <option value="">Ver todas las fechas</option>
                                 <?php
@@ -87,7 +87,7 @@ $peticionesPagoAutorizadas  = $this->d['peticionesPagoAutorizadas'];//recibe tod
                     </div>
 
                     <div class="filter-container">
-                        <select id="speticionpago" class="custom-select">
+                        <select id="speticionpago-pagos-autorizados" class="custom-select">
                             <option value="">Ver todas las planillas</option>
                                 <?php
                                     $options = $peticionesPagoAutorizadas;
@@ -123,7 +123,7 @@ $peticionesPagoAutorizadas  = $this->d['peticionesPagoAutorizadas'];//recibe tod
             </div>
             
                                         
-        </div><!--FIN DE HISTORIAL  -->
+        </div><!--FIN DE PAGINA PAGOS PLANILLAS AUTORIZADAS PARA PAGO-->
 
         
 

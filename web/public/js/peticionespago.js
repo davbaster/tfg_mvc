@@ -6,7 +6,6 @@
     var copydata = [];
     const sdate     = document.querySelector('#sdate');
     const scontratista = document.querySelector('#scontratista');
-    const sestado = document.querySelector('#sestado');
     const sorts = document.querySelectorAll('th');
    
 
@@ -37,17 +36,6 @@
         filterByPlanilla(value);
     });
 
-    //
-    sestado.addEventListener('change', e =>{
-        const value = e.target.value;
-        if(value === '' || value === null){
-            this.copydata = [...this.data];
-            checkForFilters(sestado);
-
-            return;
-        }
-        filterByEstado(value);
-    });
 
     function checkForFilters(object){
         if(object.value != ''){
@@ -59,10 +47,6 @@
 
                 case 'scontratista':
                     filterByPlanilla(object.value);
-                break;
-
-                case 'sestado':
-                    filterByEstado(object.value);
                 break;
 
                 default:
@@ -106,22 +90,13 @@
     }
 
 
-    //.estado es un key de un array, item.estado esta accediendo a un valor del array.
-    function filterByEstado(value){
-        this.copydata = [...this.data];
-        const res = this.copydata.filter(item =>{
-            return value == item.estado;
-        });
-        this.copydata = [...res];
-        renderData(res);
-    }
 
     //Esta funcion al ser asyncrona usa promises
     //solo se puede acceder al array que viene dentro de la promise [...this.data] si la funcion es async, y se llama desde otra parte
     //https://web.dev/promises/ , https://stackoverflow.com/questions/37533929/how-to-return-data-from-promise
     async function getData(){
         
-        data = await fetch('http://localhost:41062/www/peticionespago/getPeticionesPagoHistoryJSON')
+        data = await fetch('http://localhost:41062/www/peticionespago/getAllPeticionesPendientes')
         .then(res =>res.json())
         .then(json => json);
         this.copydata = [...this.data];

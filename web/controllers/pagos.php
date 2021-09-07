@@ -243,7 +243,7 @@ class Pagos extends SessionController{
 
         if($res){//SI RES tiene un resultado
             //$this->redirect('pagos', ['success' => SuccessMessages::SUCCESS_PAGOS_PAGAR]);//TODO AGREGAR A LISTA
-            $this->getPagosHistoryJSON();
+            $this->getPagosAutorizados(); //obtiene los pagos con estado autorizado
 
         }else{
             $this->redirect('pagos', ['error' => ErrorMessages::ERROR_ADMIN_NEWPETICIONPAGO_EXISTS]);

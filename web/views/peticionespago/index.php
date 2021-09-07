@@ -100,17 +100,6 @@
                             </select>
                         </div>
 
-                        <div class="filter-container">
-                            <select id="sestado" class="custom-select">
-                                <option value="">Todos los estados</option>
-
-                                <option value="autorizado" >Autorizado</option>;
-                                    <option value="pendiente" >Pendiente</option>;
-                                    <option value="pagado" >Pagado</option>;
-
-                                
-                            </select>
-                        </div>
                     </div>   
                 </div>
                 
