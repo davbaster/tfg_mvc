@@ -77,7 +77,7 @@
                     foreach ($prestamos as $p) {
                         $nombre =  $p['nombre'].' '.$p['apellido1'].' '.$p['apellido2'];
 
-                        $prestamoPendiente = ($p['estado'] == "pendiente") ? true : false ;
+                        $prestamoPendientesPago = ( ($p['estado'] == "autorizado") || ($p['estado'] == "pendiente")  ) ? true : false ;
 
             ?>
 
@@ -100,7 +100,7 @@
   
     <!-- SECCION BOTON ENVIAR -->
     <?php 
-        if (!empty($pagosOpen) & (!$prestamoPendiente)) {
+        if (!empty($pagosOpen) & (!$prestamoPendientesPago)) {
     ?>
             <!--Debe de haber al menos un pago en la planilla para poder cerrarse  -->
             <!--No debe de haber prestamos pendientes de aprobacion  -->
@@ -114,6 +114,9 @@
     ?>          <!-- Deshabilitar boton de enviar -->
                 <div class="center">
                     <input type="submit" value="Eviar Planilla" disabled> 
+                </div>
+                <div class="center">
+                    <p>Debe de existir al menos un pago, y todos los prestamos deben de estar pagados para poder enviar la planilla.</p>
                 </div>
     <?php
                    

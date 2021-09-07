@@ -240,6 +240,10 @@ label{
     background-color: coral;
 }
 
+.card-error{
+    background-color: rgb(255, 80, 80);
+}
+
 .card-active{
     /* offset-x | offset-y | blur-radius | spread-radius | color */
     /* box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2); */

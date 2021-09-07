@@ -75,23 +75,39 @@ class PeticionesPago extends SessionController{
     }
 
 
-        //Devuelve un array con todas las peticionesPago pendiente->autorizado->pagado
+        //manda a la vista las peticiones en estado pendiente, osea peticionespago pendientes de autorizar
         function getAllPeticionesPendientes(){
             $joinModel = new JoinPeticionesUserModel();
-            $peticionesJoin = $joinModel->getAllPeticionesPendientes();//lista las peticiones de pago por id de user
+            $peticiones = $joinModel->getAllPeticionesPendientes();//lista las peticiones de pago por id de user
                                                                     //hacer un metodo para sacar las IDs con el resultado 
                                                                     //(array) de pagos enviado anteriormente en 
                                                                     //getAllPeticionesRecibidas
     
-            $res = [];
-            foreach ($peticionesJoin as $p) {
-                //guarda las peticionesPago en estructura json
-                array_push($res,  $p->toArray() ) ;//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json )
-                //array_push($res, $p->getPeticionPagoId());                                                   
-                
+            
+
+            if($peticiones){//SI tiene un resultado
+
+                $res = [];
+
+                foreach ($peticiones as $p) {
+                    //guarda las peticionesPago en estructura json
+                    array_push($res,  $p->toArray() ) ;//estamos metiendo un arreglo dentro de otro arreglo, simulando estructura json )
+                    //array_push($res, $p->getPeticionPagoId());                                                   
+                    
+                }
+                //$res = array_values(array_unique($res));//devuelve solo los valores del array. unique regresa solo valores unicos
+                $this->sendToViewAsJSON($res); //res contine un arreglo con IDs de peticiones de pago
+
+
+    
+            }else{
+                $res = [];
+
+                array_push($res, [ 'id_planilla' => 'false', 'mensaje' => 'No hay planillas pendientes de autorizar.' ]);
+                $this->sendToViewAsJSON($res);
             }
-            //$res = array_values(array_unique($res));//devuelve solo los valores del array. unique regresa solo valores unicos
-            $this->sendToViewAsJSON($res); //res contine un arreglo con IDs de peticiones de pago
+
+
         }
 
 
@@ -138,7 +154,7 @@ class PeticionesPago extends SessionController{
     //autoriza una peticionPago para ser pagada,
     //cambia el estado de la peticionPago/planilla de open a pendiente
     function autorizarPeticion($params){
-        error_log("PagosCONTROLLER::autorizarPeticion()");
+        error_log("PETICIONESPAGO_CONTROLLER::autorizarPeticion()");
         
         if($params === NULL) $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PETICIONPAGO_AUTORIZAR]);//TODO AGREGAR A LISTA
         $id = $params[0];
@@ -176,7 +192,7 @@ class PeticionesPago extends SessionController{
             }
 
             //refresca la tabla de la vista
-            $this->getPeticionesPagoHistoryJSON();
+            $this->getAllPeticionesPendientes();//ENVIA solo peticiones pendientes de autorizar
 
         }else{
             $this->redirect('peticionespago', ['error' => ErrorMessages::ERROR_PETICIONPAGO_AUTORIZAR]);

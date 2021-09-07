@@ -110,55 +110,64 @@
 
 
 
-    function numberWithCommas(x) {
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
+    // function numberWithCommas(x) {
+    //     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    // }
 
     function renderData(data){
-        var databody = document.querySelector('#databody');
+        var databodyPlaPendientes = document.querySelector('#databody-planillas-pendientes');
         let total = 0;
-        databody.innerHTML = '';
-        data.forEach(item => { 
-            //total += item.amount;
-            switch (item.estado) {
+        databodyPlaPendientes.innerHTML = '';
 
-                case "pendiente":
-
-                    databody.innerHTML += `<tr>
-                    <td data-titulo="Numero:">${item.id_planilla}</td>
-                    <td data-titulo="Nombre:">${item.nombre}</td>
-                    <td data-titulo="Fecha Creacion:">${item.fecha_creacion}</td>
-                    <td data-titulo="Monto:">¢${item.monto}</td>
-                    <td data-titulo="Estado:">${item.estado}</td>
-                    <td>
-                        <a class="btnVer show" id="btnVerItem_${item.id_planilla}" href="#" onclick="ver(${item.id_planilla})">Ver</a>
-                    </td>
-                    </tr>
-                    <tr>
-                        <div class="planilla-container hide" id="info_${item.id_planilla}" value="${item.id_planilla}"></div>
-                    </tr>
-                    `;
-                    
-
-                    break;
+        if (data[0].id_planilla == 'false') {
+    
+            databodyPlaPendientes.innerHTML = data[0].mensaje;
             
-                default:
-                    databody.innerHTML += `<tr>
-                    <td data-titulo="Numero:">${item.id_planilla}</td>
-                    <td data-titulo="Nombre:">${item.nombre}</td>
-                    <td data-titulo="Fecha Creacion:">${item.fecha_creacion}</td>
-                    <td data-titulo="Monto:">¢${item.monto}</td>
-                    <td data-titulo="Estado:">${item.estado}</td>
-                    <td>
-                        <a class="btnVer show" id="btnVerItem_${item.id_planilla}" href="#" onclick="ver(${item.id_planilla})">Ver</a>
-                    </td>                  
-                    </tr>
-                    <div class="planilla-container hide" id="info_${item.id_planilla}" value="${item.id_planilla}"></div>
-                    `;
+            
+        }else{
+
+                data.forEach(item => { 
+                    //total += item.amount;
+                    switch (item.estado) {
+
+                        case "pendiente":
+
+                            databodyPlaPendientes.innerHTML += `<tr>
+                            <td data-titulo="Numero:">${item.id_planilla}</td>
+                            <td data-titulo="Nombre:">${item.nombre}</td>
+                            <td data-titulo="Fecha Creacion:">${item.fecha_creacion}</td>
+                            <td data-titulo="Monto:">¢${item.monto}</td>
+                            <td data-titulo="Estado:">${item.estado}</td>
+                            <td>
+                                <a class="btnVer show" id="btnVerItem_${item.id_planilla}" href="#" onclick="ver(${item.id_planilla})">Ver</a>
+                            </td>
+                            </tr>
+                            <tr>
+                                <div class="planilla-container hide" id="info_${item.id_planilla}" value="${item.id_planilla}"></div>
+                            </tr>
+                            `;
+                            
+
+                            break;
                     
-                    break;
-            }
-        });
+                        default:
+                            databodyPlaPendientes.innerHTML += `<tr>
+                            <td data-titulo="Numero:">${item.id_planilla}</td>
+                            <td data-titulo="Nombre:">${item.nombre}</td>
+                            <td data-titulo="Fecha Creacion:">${item.fecha_creacion}</td>
+                            <td data-titulo="Monto:">¢${item.monto}</td>
+                            <td data-titulo="Estado:">${item.estado}</td>
+                            <td>
+                                <a class="btnVer show" id="btnVerItem_${item.id_planilla}" href="#" onclick="ver(${item.id_planilla})">Ver</a>
+                            </td>                  
+                            </tr>
+                            <div class="planilla-container hide" id="info_${item.id_planilla}" value="${item.id_planilla}"></div>
+                            `;
+                            
+                            break;
+                    }
+                });
+            }//fin else
     }
 
 

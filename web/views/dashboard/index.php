@@ -216,7 +216,7 @@
                             }else{
                                     foreach($prestamosRechazados as $p){ ?>
 
-                                        <div class="card card-normal w-30 bs-1" >
+                                        <div class="card card-error w-30 bs-1" >
                                             <div class="content category-name">
                                                 <?php echo $p['fecha_creacion']; ?>
                                             </div>

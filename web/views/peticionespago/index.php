@@ -41,7 +41,7 @@
                             <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="databody-prestamos">
+                        <tbody id="databody-prestamos-pendientes">
                             
                         </tbody>
                     </table>
@@ -62,7 +62,7 @@
         <p>Get in touch, or swing by for a cup of coffee.</p>
         </div>
 
-        <!-- PAGINA HISTORIAL DE PLANILLAS -->
+        <!-- TAB PLANILLAS PENDIENTES DE AUTORIZACION -->
         <div id="Historial" class="tabcontent">
                      
             <div id="history-container" class="container">
@@ -115,7 +115,7 @@
                             <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="databody">
+                        <tbody id="databody-planillas-pendientes">
                             
                         </tbody>
                     </table>
@@ -124,7 +124,7 @@
             </div>
             
                                         
-        </div><!--FIN DE HISTORIAL  -->
+        </div><!--FIN TAB PLANILLAS PENDIENTES DE AUTORIZACION -->
 
         
 

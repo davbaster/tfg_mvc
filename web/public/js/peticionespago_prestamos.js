@@ -40,13 +40,14 @@
 
     function renderDataPrestamos(data){
 
-        var databodyPre = document.querySelector('#databody-prestamos');
+        var databodyPre = document.querySelector('#databody-prestamos-pendientes');
         databodyPre.innerHTML = '';
 
 
         if (data[0].cedula == 'false') {
     
-            infoPrestamos.innerHTML = data[0].mensaje;
+            databodyPre.innerHTML = data[0].mensaje;
+            
             
         }else{
 
