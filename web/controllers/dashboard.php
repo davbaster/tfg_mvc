@@ -24,11 +24,11 @@ class Dashboard extends SessionController{
         error_log("Dashboard::RENDER() ");
 
 
-        //$pagosModel             = new PagosModel();
-        //$pagosPendientes        = $pagosModel->getPagosPendientes();
+        $JoinPeUserModel    = new JoinPeticionesUserModel();
+        $petiPendientesAprobar  = $JoinPeUserModel->getAllPeticionesPendientes();//planillas (peticiones pago) pendientes de aprobar
 
         $peticionesPagoModel    = new PeticionesPagoModel();
-        $petiPendientesAprobar  = $peticionesPagoModel->getPeticionesPendientesAprobacion();//planillas (peticiones pago) pendientes de aprobar
+        //$petiPendientesAprobar  = $peticionesPagoModel->getPeticionesPendientesAprobacion();//planillas (peticiones pago) pendientes de aprobar
         $petiPendientesPagar    = $peticionesPagoModel->getPeticionesPendientesPago();//planillas (peticiones pago) aprobadas y pendientes de pago
         $peticionesOpen         = $peticionesPagoModel->getPeticionesNoEnviadas();//peticiones que no se han enviado para aprobacion
 

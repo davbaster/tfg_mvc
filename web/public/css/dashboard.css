@@ -44,14 +44,25 @@ h2{
     padding: 40px 40px;
     
 }
-.transactions-container #expenses-recents{
+.transactions-container #planillas-recents {
     padding: 10px 20px;
     
 }
-.transactions-container #expenses-recents h2{
+.transactions-container #planillas-recents  h2{
     padding: 0 20px;
     
 }
+
+.transactions-container #pagos-recents{
+    padding: 10px 20px;
+    
+}
+
+.transactions-container #pagos-recents  h2{
+    padding: 0 20px;
+    
+}
+
 .preview-expense{
     border-radius: 10px;
     display: flex;

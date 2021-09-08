@@ -154,11 +154,11 @@
                                             </div>
                                             <div class="content category-name">
                                                 <!-- TODO poner el nombre y primer apellido  -->
-                                                <?php echo $p->getCedula(); ?>
+                                                <?php echo $p->getNombre() . " ". $p->getApellido1(); ?>
                                             </div>
                                             <div class="content category-name">
                                                 <!-- TODO poner el nombre y primer apellido  -->
-                                                <input type="hidden" name="idPeticionPago" id="idPeticionPago" value="<?php echo $p->getId() ?>">
+                                                <input type="hidden" name="idPeticionPago" id="idPeticionPago_<?php echo $p->getPeticionPagoId() ?>" value="<?php echo $p->getPeticionPagoId() ?>">
                                             </div>
 
                                             
@@ -287,7 +287,7 @@
                     </section>
 
                     <!-- Seccion de peticionesPago en estado OPEN -->
-                    <section id="expenses-recents">
+                    <section id="planillas-recents">
                         <h2>Planillas abiertas</h2>
                         <div id="planillasOpenContainer">
                             <?php
@@ -347,7 +347,7 @@
 
 
                     <!-- INICIO Seccion de pagos recientes -->
-                    <section id="expenses-recents">
+                    <section id="pagos-recents">
                     <h2>Pagos recientes</h2>
                     <?php
                         if($pagosRecientes == NULL){
