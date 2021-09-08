@@ -39,7 +39,11 @@ class Dashboard extends SessionController{
 
         $pagosRecientes             = $this->getPagosRecientes();
 
-        $peticionEstadistica       = $this->pagosOpenEstadistica($peticionesOpen[0]->getId());
+        if($peticionesOpen){//si hay peticiones en estado Open
+            $peticionEstadistica       = $this->pagosOpenEstadistica($peticionesOpen[0]->getId());
+        }
+
+        
         
         $prestamoController = new Prestamos();
         $prestamosRechazados  = $prestamoController->getPrestamosRechazados();
@@ -298,12 +302,6 @@ class Dashboard extends SessionController{
         if ($this->existPOST(['peticionPago_id'])) {
             $peticionPagoId = $this->getPost('peticionPago_id');
                 
-                // validacion de los valores obligatorios recibidos
-                // if($peticionPagoId == '' || empty ($peticionPagoId) ){
-
-                //     // redirige a pagina de inicio
-                //     $this->redirect('', ['error' => ErrorMessages::ERROR_LOGIN_AUTHENTICATE_EMPTY]);
-                // }
             
             if($peticionPagoId === NULL) $this->redirect('dashboard', ['error' => ErrorMessages::ERROR_PETICIONPAGO_AUTORIZAR]);
             

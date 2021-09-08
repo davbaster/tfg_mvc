@@ -64,8 +64,8 @@
                                 
                              <?php
                                 //total pagado del contrato $user->getBudget() = monto del contrato
-                               if($peticionesOpen[0]->getMonto() == NULL){
-                                   echo 'Hubo un problema al cargar la informacion';
+                               if(empty($peticionesOpen) || ($peticionesOpen[0]->getMonto() == NULL )  ){
+                                   echo 'No hay planillas seleccionadas';
                                }else{?>
                                     <span class="<?php echo ($peticionesOpen[0]->getMonto() < $peticionEstadistica[0]['montoTotal']  )? 'Sobregirado': '' ?>">¢<?php
                                    echo number_format($peticionEstadistica[0]['montoTotal'] , 2);?>
@@ -81,8 +81,15 @@
                                 <span class="total-amount-text">
                                     de
                                     ¢<?php 
-                                        //budget es la cantidad asignado al contrato
-                                        echo  $peticionesOpen[0]->getMonto();
+                                        //cantidad asignado al contrato
+                                        if (!empty($peticionesOpen)) {
+                                            echo  $peticionesOpen[0]->getMonto();
+                                        } else {
+                                            # No hay planilla seleccionada
+                                            echo  "0";
+                                        }
+                                        
+                                        
                                     ?>
                                 </span>
                             </div>
@@ -248,9 +255,10 @@
 
                         <?php
                             //peticionPago pagada mas alta en el mes
-                            if($peticionesOpen  == NULL){
-                                echo 'No hay planillas abiertas.';
-                        ?>
+                            if($peticionesOpen  == NULL){ ?>
+                                 
+                                 <!-- <div class="center">No hay planillas abiertas.</div> -->
+                        
                             <div>
                                 <a href="" class="btn-peticion" id="new-peticion-pago" value="">Crear Planilla<i class="material-icons">keyboard_arrow_right</i></a>
                             </div>
@@ -293,7 +301,7 @@
                             <?php
                                 //peticionPago pagada mas alta en el mes
                                 if($peticionesOpen  == NULL){
-                                    echo 'No hay Planillas abiertas.';
+                                    echo '<div class="center">No hay planillas abiertas.</div>';
                                 }else{
                                         foreach($peticionesOpen  as $p){ 
                                             //Agregar un onClick para llamar a una funcion con popup
